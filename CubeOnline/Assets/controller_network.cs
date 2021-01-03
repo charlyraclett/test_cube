@@ -9,11 +9,14 @@ public class controller_network : MonoBehaviour{
     public Vector3 offset;
 
 
-   
+    void Start(){
+
+        transform.position +=  offset;
+    }
 
     void Update(){
 
-        transform.position = test.position + offset;
-        transform.rotation = test.rotation;
+       // transform.position +=  offset;
+        
     }
 }
