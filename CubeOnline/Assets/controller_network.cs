@@ -5,18 +5,22 @@ using UnityEngine;
 public class controller_network : MonoBehaviour{
 
 
-    public Transform test;
-    public Vector3 offset;
+    public float speed = 5;
+    public float speed_rotation = 1;
+    public Transform origin_shoot;
+    public GameObject bullet;
+    public float force_shoot;
+   
+   
 
+    void shoot(){
 
-    void Start(){
-
-        transform.position +=  offset;
+        GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
+        Rigidbody rb = _bullet.GetComponent<Rigidbody>();
+        rb.velocity = transform.TransformDirection(Vector3.forward * force_shoot);
+        Destroy(_bullet, 5f);
     }
 
-    void Update(){
 
-       // transform.position +=  offset;
-        
-    }
+
 }
