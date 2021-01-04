@@ -86,7 +86,7 @@ public class network : MonoBehaviour{
         yield return new WaitForSeconds(delay); 
       
         while(my_avatar.is_dead == 0){
-            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/";
+            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/";
             sendMessage(position_msg);
             yield return new WaitForSeconds(0.02f);
         } 
@@ -110,9 +110,8 @@ public class network : MonoBehaviour{
         float rot = float.Parse(position_receive[3]); 
         int shoot = int.Parse(position_receive[4]); 
         int dead = int.Parse(position_receive[5]); 
-        int score = int.Parse(position_receive[6]); 
-
-
+      
+      
         foreach(Transform avatars in avatars_pos){
 
             if(avatars_pos[id_player] == null && id_player != myId){ // ajout player si inexistant
