@@ -50,6 +50,7 @@ public class network : MonoBehaviour{
     public Transform[] bases_pos;
     public Material[] color;
     public Text[] score_players;
+    public GameObject menu;
   
 
 
@@ -65,15 +66,14 @@ public class network : MonoBehaviour{
             inst = this;
         }
 
-        setupSocket();
-        StartCoroutine(network_position_send(1f)); 
+        setupSocket(); 
       
-        switch (_player){
-            case Player.player1: set_player(0); break;
-            case Player.player2: set_player(1); break;
-            case Player.player3: set_player(2); break;
-            case Player.player4: set_player(3); break;
-        }
+        // switch (_player){
+        //     case Player.player1: set_player(0); break;
+        //     case Player.player2: set_player(1); break;
+        //     case Player.player3: set_player(2); break;
+        //     case Player.player4: set_player(3); break;
+        // }
       
     }
 
@@ -164,6 +164,33 @@ public class network : MonoBehaviour{
 
         point_players[id_player]++;
         score_players[id_player].text = "" + point_players[id_player];
+    }
+
+
+    public void _button1(){ 
+        menu.SetActive(false);
+        set_player(0);
+        StartCoroutine(network_position_send(1f));
+    }
+
+    public void _button2(){
+        menu.SetActive(false);
+        set_player(1);
+        StartCoroutine(network_position_send(1f));
+
+    }
+
+    public void _button3(){ 
+        menu.SetActive(false);
+        set_player(2);
+        StartCoroutine(network_position_send(1f));
+
+    }
+
+    public void _button4(){  
+        menu.SetActive(false);
+        set_player(3);
+        StartCoroutine(network_position_send(1f));
     }
     
 
