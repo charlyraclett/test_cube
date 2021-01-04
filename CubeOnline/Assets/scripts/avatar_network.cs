@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class controller_network : MonoBehaviour{
+public class avatar_network : MonoBehaviour{
 
 
     public float speed = 5;

@@ -6,6 +6,7 @@ public class bullet : MonoBehaviour{
 
 
     public GameObject impact;
+    public int id_player_shoot;
 
    
     void OnTriggerEnter(Collider col){ 
