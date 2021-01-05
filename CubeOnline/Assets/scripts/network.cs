@@ -36,7 +36,7 @@ public class network : MonoBehaviour{
     int[] point_players = new int[]{0,0,0,0};
 
     [Header("Edition")]
-    public GameObject avatar_prefab;
+    public GameObject[] avatar_prefab;
     public Transform[] bases_pos;
     public Material[] color;
     public Text[] score_players;
@@ -46,6 +46,10 @@ public class network : MonoBehaviour{
     public GameObject[] buttons;
     public Transform cam;
     public Transform pos_cam;
+    public GameObject canvas;
+
+    public GameObject buttons_type_cont;
+    public int choix_type = 0;
   
 
 
@@ -59,6 +63,7 @@ public class network : MonoBehaviour{
             button_container.SetActive(false);
             setupSocket(); 
         }
+        canvas.SetActive(true); // je fais ce que je veux ouai 
     }
 
     IEnumerator move_cam(){
@@ -86,7 +91,7 @@ public class network : MonoBehaviour{
         yield return new WaitForSeconds(delay); 
       
         while(my_avatar.is_dead == 0){
-            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId];
+            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/"+choix_type;
             sendMessage(position_msg);
             yield return new WaitForSeconds(0.02f);
         } 
@@ -111,11 +116,12 @@ public class network : MonoBehaviour{
         int shoot = int.Parse(position_receive[4]); 
         int dead = int.Parse(position_receive[5]); 
         int score = int.Parse(position_receive[6]); 
+        int type = int.Parse(position_receive[7]); 
       
         foreach(Transform avatars in avatars_pos){
 
             if(avatars_pos[id_player] == null && id_player != myId){ // ajout player si inexistant
-                set_other_player(id_player);
+                set_other_player(id_player,type);
             }
 
             if(id_player != myId){
@@ -138,19 +144,18 @@ public class network : MonoBehaviour{
 
 
     void set_player(int id){
-        GameObject cube = Instantiate(avatar_prefab,bases_pos[id].position,bases_pos[id].rotation);
+        GameObject cube = Instantiate(avatar_prefab[choix_type],bases_pos[id].position,bases_pos[id].rotation);
         avatars_pos[id] = cube.GetComponent<Transform>();
         my_avatar = cube.GetComponent<controller_cube>();
         my_avatar.host = true;
         my_avatar.id_avatar = id;
         cube.GetComponent<MeshRenderer>().material = color[id];
-        myId = id;
         //sendMessage(myId.ToString());
     }
 
-    void set_other_player(int id){
+    void set_other_player(int id, int type){
         print("add player :"+ id);
-        GameObject cube = Instantiate(avatar_prefab,bases_pos[id].position,bases_pos[id].rotation);
+        GameObject cube = Instantiate(avatar_prefab[type],bases_pos[id].position,bases_pos[id].rotation);
         avatars_pos[id] = cube.GetComponent<Transform>();
         cube.GetComponent<controller_cube>().id_avatar = id;
         cube.GetComponent<MeshRenderer>().material = color[id];
@@ -166,8 +171,17 @@ public class network : MonoBehaviour{
 
     
     public void click_button(int id){
+        myId = id;
+        button_container.SetActive(false);
+        text_menu.text = "Choose Your Vehicule";
+        buttons_type_cont.SetActive(true);
+    }
+
+    public void click_button_type(int type){
+        choix_type = type;
         menu.SetActive(false);
-        set_player(id);
+        buttons_type_cont.SetActive(false);
+        set_player(myId);
         StartCoroutine(network_position_send(1f));
         StartCoroutine(move_cam());
     }

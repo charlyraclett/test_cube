@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class bullet : MonoBehaviour{
-
-
+    private const float V = 3f;
     public GameObject impact;
     public int id_player_shoot;
+    public bool no_death_touch_ground;
+
+
+
 
    
     void OnTriggerEnter(Collider col){ 
@@ -26,6 +29,13 @@ public class bullet : MonoBehaviour{
 
     void bullet_death(){
 
+        float delay = no_death_touch_ground ? 4f : 0f;
+        StartCoroutine(death_after(delay));
+    }
+
+    IEnumerator death_after(float delay){
+
+        yield return new WaitForSeconds(delay);
         GameObject _impact = Instantiate(impact,transform.position,transform.rotation);
         _impact.GetComponent<ParticleSystem>().Play();
         Destroy(_impact,4f);  

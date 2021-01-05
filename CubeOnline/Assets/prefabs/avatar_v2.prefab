@@ -98,17 +98,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   host: 0
   id_avatar: 0
-  speed: 5
-  speed_rotation: 0.6
+  speed: 7
+  speed_rotation: 1
   origin_shoot: {fileID: 5034993948477121902}
   shoot_effect: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4,
     type: 3}
   bullet: {fileID: 7630094332726742158, guid: 5698c49097dff364a982f892e620b70d, type: 3}
-  force_shoot: 12
+  force_shoot: 8
   death_effect: {fileID: 7480165748579919891, guid: 386f91283f218d743a994f0177c2ae7c,
     type: 3}
   is_dead: 0
   is_shooting: 0
+  type_catapulte: 1
 --- !u!54 &1962926036118206183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,8 +121,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -136,8 +137,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.0000002, y: 1.1298425, z: 1.0000002}
+  m_Center: {x: 0, y: -0.06492126, z: 0}
 --- !u!95 &1021942376948094627
 Animator:
   serializedVersion: 3
@@ -180,7 +181,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5034993947512933194}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -189,7 +190,7 @@ Transform:
   - {fileID: 4087427399944703639}
   m_Father: {fileID: 1962926036118206181}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &5034993948477121901
 GameObject:
   m_ObjectHideFlags: 0

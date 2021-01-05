@@ -17,16 +17,25 @@ public class controller_cube : MonoBehaviour{
     public int is_dead = 0;
     public int is_shooting = 0;
     bullet _bullet;
+    public bool type_catapulte;
+    bool shoot_running;
+    Rigidbody rb;
     
     void Start(){
-
+        rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         _bullet = bullet.GetComponent<bullet>();
         _bullet.id_player_shoot = id_avatar;
+        
     }
     
 
     void Update(){
+
+
+        if (rb.velocity.y < -15f){
+            controller_dead();
+        }
 
         if(host){
 
@@ -46,17 +55,23 @@ public class controller_cube : MonoBehaviour{
                 this.transform.Rotate(Vector3.up,speed_rotation);  
             } 
 
-            if (Input.GetKeyDown(KeyCode.Space)){  
-                StartCoroutine(shoot());
+            if (Input.GetKeyDown(KeyCode.Space)){ 
+                if(type_catapulte){
+                    anim.SetTrigger("shoot_two");
+                }else{
+                    if(shoot_running)
+                    return;
+                    StartCoroutine(shoot());
+                }
             }
         }  
     }
 
 
     public IEnumerator shoot(){
-
         if(is_shooting != 1){
             is_shooting = 1;
+            shoot_running = true;
             anim.SetTrigger("shoot");
             shoot_effect.Play();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
@@ -65,8 +80,23 @@ public class controller_cube : MonoBehaviour{
             Destroy(_bullet, 5f);
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0;
+            yield return new WaitForSeconds(1f);
+            shoot_running = false;
         }
-       
+    }
+
+    // trigger anim
+    public IEnumerator shoot_catapult(){
+        if(is_shooting != 1){
+            is_shooting = 1;
+            GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
+            _bullet.GetComponent<bullet>().no_death_touch_ground = true;
+            Rigidbody rb = _bullet.GetComponent<Rigidbody>();
+            rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
+            yield return new WaitForSeconds(0.02f);
+            is_shooting = 0;
+        }
+        yield return new WaitForSeconds(1f);
     }
 
 
