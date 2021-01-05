@@ -11,12 +11,28 @@ public class bullet : MonoBehaviour{
    
     void OnTriggerEnter(Collider col){ 
 
-        if(col.tag == "ground" || col.tag == "Player"){
-            
-            GameObject _impact = Instantiate(impact,transform.position,transform.rotation);
-            _impact.GetComponent<ParticleSystem>().Play();
-            Destroy(_impact,4f);
-            Destroy(gameObject);
-        } 
+        if(col.tag == "ground"){
+            bullet_death();   
+        }
+
+        else if(col.tag == "Player"){
+            print("touch player");
+            col.gameObject.GetComponent<controller_cube>().controller_dead();
+            network.inst.add_score_for(id_player_shoot);
+            bullet_death();
+        }
     }
+
+
+    void bullet_death(){
+
+        GameObject _impact = Instantiate(impact,transform.position,transform.rotation);
+        _impact.GetComponent<ParticleSystem>().Play();
+        Destroy(_impact,4f);  
+        Destroy(gameObject);
+    }
+
+
+
+
 }

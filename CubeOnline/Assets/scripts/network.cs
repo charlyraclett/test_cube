@@ -15,16 +15,6 @@ public class network : MonoBehaviour{
 
     public static network inst;
 
-    [Header("Choose Player")]
-    public Player _player;
-    public enum Player {
-        player1,
-        player2,
-        player3,
-        player4
-    };
-
-
     [Header("Info")]
     public int myId;
     string position_msg;
@@ -41,8 +31,6 @@ public class network : MonoBehaviour{
     StreamWriter socket_writer;
     StreamReader socket_reader;
 
-
-    
     int[] point_players = new int[]{0,0,0,0};
 
     [Header("Edition")]
@@ -51,12 +39,9 @@ public class network : MonoBehaviour{
     public Material[] color;
     public Text[] score_players;
     public GameObject menu;
-  
-
-
-
-
-
+    public Text text_menu;
+    public GameObject button_container;
+    public GameObject[] buttons;
   
 
 
@@ -66,14 +51,9 @@ public class network : MonoBehaviour{
             inst = this;
         }
 
+        text_menu.text = "Connection...";
+        button_container.SetActive(false);
         setupSocket(); 
-      
-        // switch (_player){
-        //     case Player.player1: set_player(0); break;
-        //     case Player.player2: set_player(1); break;
-        //     case Player.player3: set_player(2); break;
-        //     case Player.player4: set_player(3); break;
-        // }
       
     }
 
@@ -86,11 +66,11 @@ public class network : MonoBehaviour{
         yield return new WaitForSeconds(delay); 
       
         while(my_avatar.is_dead == 0){
-            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/";
+            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId];
             sendMessage(position_msg);
             yield return new WaitForSeconds(0.02f);
         } 
-        sendMessage(myId+"/0/0/0/0/1/");
+        sendMessage(myId+"/0/0/0/0/1/"+ point_players[myId]);
         avatars_pos[myId] = null;
         yield return new WaitForSeconds(2f); 
         set_player(myId);
@@ -110,7 +90,7 @@ public class network : MonoBehaviour{
         float rot = float.Parse(position_receive[3]); 
         int shoot = int.Parse(position_receive[4]); 
         int dead = int.Parse(position_receive[5]); 
-      
+        int score = int.Parse(position_receive[6]); 
       
         foreach(Transform avatars in avatars_pos){
 
@@ -119,7 +99,6 @@ public class network : MonoBehaviour{
             }
 
             if(id_player != myId){
-
                 controller_cube avatar_controller = avatars_pos[id_player].GetComponent<controller_cube>();
                
                 if(dead == 1){
@@ -127,13 +106,12 @@ public class network : MonoBehaviour{
                     avatars_pos[id_player] = null;
                     return;
                 }
-                 
                 avatars_pos[id_player].position = new Vector3(posX,0.8f,posZ);
                 avatars_pos[id_player].eulerAngles = new Vector3(avatars_pos[id_player].eulerAngles.x, rot, avatars_pos[id_player].eulerAngles.z);
                 if(shoot == 1){
                     StartCoroutine(avatar_controller.shoot());
                 }
-
+               
             }
         }     
     }
@@ -147,6 +125,7 @@ public class network : MonoBehaviour{
         my_avatar.id_avatar = id;
         cube.GetComponent<MeshRenderer>().material = color[id];
         myId = id;
+        //sendMessage(myId.ToString());
     }
 
     void set_other_player(int id){
@@ -160,47 +139,28 @@ public class network : MonoBehaviour{
 
 
     public void add_score_for(int id_player){
-
         point_players[id_player]++;
         score_players[id_player].text = "" + point_players[id_player];
     }
 
 
-    public void _button1(){ 
+    
+    public void click_button(int id){
         menu.SetActive(false);
-        set_player(0);
-        StartCoroutine(network_position_send(1f));
-    }
-
-    public void _button2(){
-        menu.SetActive(false);
-        set_player(1);
-        StartCoroutine(network_position_send(1f));
-
-    }
-
-    public void _button3(){ 
-        menu.SetActive(false);
-        set_player(2);
-        StartCoroutine(network_position_send(1f));
-
-    }
-
-    public void _button4(){  
-        menu.SetActive(false);
-        set_player(3);
+        set_player(id);
         StartCoroutine(network_position_send(1f));
     }
     
 
 
+    void show_menu_selection_player(){
+        text_menu.text = "Choose Your Player";
+        button_container.SetActive(true);
+    }
 
 
 
 
-
-
-    
 
 
 
@@ -239,7 +199,8 @@ public class network : MonoBehaviour{
             tcp_socket = new TcpClient(distantHost, port);
             net_stream = tcp_socket.GetStream();
             socket_ready = true;
-            StartCoroutine(testReceivedSocket());    
+            StartCoroutine(testReceivedSocket()); 
+            show_menu_selection_player();   
         }
         catch (Exception e)
         {

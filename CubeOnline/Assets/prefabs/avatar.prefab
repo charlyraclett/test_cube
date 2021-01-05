@@ -106,6 +106,9 @@ MonoBehaviour:
   force_shoot: 12
   death_effect: {fileID: 7480165748579919891, guid: 386f91283f218d743a994f0177c2ae7c,
     type: 3}
+  is_dead: 0
+  is_shooting: 0
+  point_win: 0
 --- !u!54 &1518590454746285266
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,7 +133,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518590454746285268}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
