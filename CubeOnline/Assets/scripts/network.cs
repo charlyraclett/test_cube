@@ -15,6 +15,8 @@ public class network : MonoBehaviour{
 
     public static network inst;
 
+    public bool test_online;
+
     [Header("Info")]
     public int myId;
     string position_msg;
@@ -42,6 +44,8 @@ public class network : MonoBehaviour{
     public Text text_menu;
     public GameObject button_container;
     public GameObject[] buttons;
+    public Transform cam;
+    public Transform pos_cam;
   
 
 
@@ -50,12 +54,28 @@ public class network : MonoBehaviour{
         if (inst == null){
             inst = this;
         }
-
-        text_menu.text = "Connection...";
-        button_container.SetActive(false);
-        setupSocket(); 
-      
+        if(test_online){
+            text_menu.text = "Connection...";
+            button_container.SetActive(false);
+            setupSocket(); 
+        }
     }
+
+    IEnumerator move_cam(){
+
+        while(true){
+
+            float step = 60 * Time.deltaTime;
+            cam.rotation = Quaternion.RotateTowards(cam.rotation, pos_cam.rotation, step);
+            cam.position = Vector3.MoveTowards(cam.position, pos_cam.position, step * 0.65f);
+            yield return new WaitForSeconds(0.02f);
+        } 
+        
+    }
+
+    
+
+
 
 
 
@@ -149,6 +169,7 @@ public class network : MonoBehaviour{
         menu.SetActive(false);
         set_player(id);
         StartCoroutine(network_position_send(1f));
+        StartCoroutine(move_cam());
     }
     
 
