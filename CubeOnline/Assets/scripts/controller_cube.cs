@@ -20,7 +20,8 @@ public class controller_cube : MonoBehaviour{
     public bool type_catapulte;
     bool shoot_running;
     Rigidbody rb;
-    
+    bool is_moving;
+
     void Start(){
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -40,7 +41,7 @@ public class controller_cube : MonoBehaviour{
         if(host){
 
             if (Input.GetKey(KeyCode.UpArrow)){  
-                this.transform.Translate(Vector3.forward * Time.deltaTime * speed);  
+                this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
             }  
             
             if (Input.GetKey(KeyCode.DownArrow)){  
@@ -52,9 +53,10 @@ public class controller_cube : MonoBehaviour{
             }  
             
             if (Input.GetKey(KeyCode.RightArrow)){  
-                this.transform.Rotate(Vector3.up,speed_rotation);  
+                this.transform.Rotate(Vector3.up,speed_rotation); 
             } 
 
+           
             if (Input.GetKeyDown(KeyCode.Space)){ 
                 if(type_catapulte){
                     anim.SetTrigger("shoot_two");
@@ -74,6 +76,7 @@ public class controller_cube : MonoBehaviour{
             shoot_running = true;
             anim.SetTrigger("shoot");
             shoot_effect.Play();
+            sound_manager.inst.sound_shoot_player();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
@@ -89,6 +92,7 @@ public class controller_cube : MonoBehaviour{
     public IEnumerator shoot_catapult(){
         if(is_shooting != 1){
             is_shooting = 1;
+            sound_manager.inst.sound_shoot2_player();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
             _bullet.GetComponent<bullet>().no_death_touch_ground = true;
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
@@ -105,6 +109,7 @@ public class controller_cube : MonoBehaviour{
         GameObject _death = Instantiate(death_effect, transform.position, transform.rotation);
         Destroy(_death,6f); 
         is_dead = 1;
+        sound_manager.inst.sound_death_player();
         Destroy(this.gameObject);      
     }
 

@@ -126,6 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impact: {fileID: 6690914959429050510}
+  id_player_shoot: 2
+  no_death_touch_ground: 0
+  bullet_death_sound: {fileID: 8300000, guid: ad4f43c7de49e7b40adce34dd84b40f0, type: 3}
 --- !u!135 &-451929964053860419
 SphereCollider:
   m_ObjectHideFlags: 0

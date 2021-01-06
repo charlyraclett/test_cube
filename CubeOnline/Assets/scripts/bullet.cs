@@ -7,11 +7,8 @@ public class bullet : MonoBehaviour{
     public GameObject impact;
     public int id_player_shoot;
     public bool no_death_touch_ground;
-
-
-
-
    
+
     void OnTriggerEnter(Collider col){ 
 
         if(col.tag == "ground"){
@@ -31,6 +28,7 @@ public class bullet : MonoBehaviour{
 
         float delay = no_death_touch_ground ? 4f : 0f;
         StartCoroutine(death_after(delay));
+        Destroy(gameObject, 5f);
     }
 
     IEnumerator death_after(float delay){
@@ -38,8 +36,10 @@ public class bullet : MonoBehaviour{
         yield return new WaitForSeconds(delay);
         GameObject _impact = Instantiate(impact,transform.position,transform.rotation);
         _impact.GetComponent<ParticleSystem>().Play();
-        Destroy(_impact,4f);  
+        Destroy(_impact,4f); 
+        sound_manager.inst.sound_bullet_death();
         Destroy(gameObject);
+
     }
 
 
