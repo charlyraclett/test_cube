@@ -6,17 +6,16 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class floor_creation : MonoBehaviour{
 
+    public static floor_creation inst;
 
     public int line;
     public int colonne;
     public int size = 1;
     public GameObject floor;
 
-    int id_base1 = 64;
-    int id_base2 = 56;
-    int id_base3 = 104;
-    int id_base4 = 16;
-
+    int[] id_floor_base = {64,56,104,16};
+    public Material material_base;
+    
     public float delay_falling = 3f;
     int count = 0;
 
@@ -25,12 +24,18 @@ public class floor_creation : MonoBehaviour{
 
     
     void Start(){
+       inst = this;
        create_floor();
     } 
 
+    void Update(){
+
+          
+    }
+
   
 
-    void create_floor(){
+    public void create_floor(){
         int i = 0;
 
         for(int row = 0; row < line; row++){
@@ -67,27 +72,25 @@ public class floor_creation : MonoBehaviour{
 
 
 
-    void create_bases(){
+    public void create_bases(){
 
-       
-        floor_list[id_base1].GetComponent<MeshRenderer>().material = network.inst.color[4];
-        floor_list[id_base2].GetComponent<MeshRenderer>().material = network.inst.color[4];
-        floor_list[id_base3].GetComponent<MeshRenderer>().material = network.inst.color[4];
-        floor_list[id_base4].GetComponent<MeshRenderer>().material = network.inst.color[4];
+        for (int i = 0; i < id_floor_base.Length;i++){
+            floor_list[id_floor_base[i]].GetComponent<MeshRenderer>().material = material_base;
+        }
 
-        floor_list[id_base1].transform.Rotate(0,-90,0);
-        floor_list[id_base2].transform.Rotate(0,90,0);
-        floor_list[id_base3].transform.Rotate(0,180,0);
+        floor_list[id_floor_base[0]].transform.Rotate(0,-90,0);
+        floor_list[id_floor_base[1]].transform.Rotate(0,90,0);
+        floor_list[id_floor_base[2]].transform.Rotate(0,180,0);
 
-        network.inst.bases_pos[0] = floor_list[id_base1].transform;
-        network.inst.bases_pos[1] = floor_list[id_base2].transform;
-        network.inst.bases_pos[2] = floor_list[id_base3].transform;
-        network.inst.bases_pos[3] = floor_list[id_base4].transform;
+        for (int i = 0; i < network.inst.bases_pos.Length;i++){
+            network.inst.bases_pos[i] = floor_list[id_floor_base[i]].transform;
+        }
 
-        floor_list.RemoveAt(id_base3);  
-        floor_list.RemoveAt(id_base1);
-        floor_list.RemoveAt(id_base2);
-        floor_list.RemoveAt(id_base4);
+    
+        floor_list.RemoveAt(id_floor_base[2]);  
+        floor_list.RemoveAt(id_floor_base[0]);
+        floor_list.RemoveAt(id_floor_base[1]);
+        floor_list.RemoveAt(id_floor_base[3]);
  
     }
 

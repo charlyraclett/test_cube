@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1962926036118206183}
   - component: {fileID: 2302654815425378972}
   - component: {fileID: 1021942376948094627}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: avatar_v2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962926036118206177}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -6.895545, y: 0.657, z: -5.0040226}
+  m_LocalPosition: {x: -6.895545, y: 1, z: -5.0040226}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5034993947512933195}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: acb6181a9187715478a41e55d29c4f8e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,12 +104,13 @@ MonoBehaviour:
   shoot_effect: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4,
     type: 3}
   bullet: {fileID: 7630094332726742158, guid: 5698c49097dff364a982f892e620b70d, type: 3}
-  force_shoot: 8
+  force_shoot: 15
   death_effect: {fileID: 7480165748579919891, guid: 386f91283f218d743a994f0177c2ae7c,
     type: 3}
   is_dead: 0
   is_shooting: 0
   type_catapulte: 1
+  v3: 0
 --- !u!54 &1962926036118206183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -137,8 +138,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0000002, y: 1.1298425, z: 1.0000002}
-  m_Center: {x: 0, y: -0.06492126, z: 0}
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1021942376948094627
 Animator:
   serializedVersion: 3
@@ -167,7 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5034993947512933195}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5034993948477121902}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: origin_shoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +234,7 @@ GameObject:
   - component: {fileID: 5034993949035415836}
   - component: {fileID: 5034993949035415827}
   - component: {fileID: 5034993949035415826}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +326,7 @@ GameObject:
   - component: {fileID: 4087427399944703639}
   - component: {fileID: 3681588398791931385}
   - component: {fileID: 708964499001665903}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bullet
   m_TagString: degat
   m_Icon: {fileID: 0}

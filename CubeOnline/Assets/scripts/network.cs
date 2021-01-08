@@ -44,16 +44,17 @@ public class network : MonoBehaviour{
     public Text text_menu;
     public GameObject button_container;
     public GameObject[] buttons;
-    public Transform cam;
-    public Transform pos_cam;
+   
     public GameObject canvas;
+    public GameObject button_exit;
 
     public GameObject buttons_type_cont;
+    public GameObject cont_ui_cam_vehicule;
     public int choix_type = 0;
 
-    public floor_creation _floor_sc;
-  
+    public int id_event = 0;
 
+    
 
     void Awake(){
 
@@ -66,27 +67,27 @@ public class network : MonoBehaviour{
             setupSocket(); 
         }
         canvas.SetActive(true);
+        button_exit.SetActive(false);
     }
 
     
     
 
 
-    IEnumerator network_position_send(float delay){
+    public IEnumerator network_position_send(){
 
-        yield return new WaitForSeconds(delay); 
-      
         while(my_avatar.is_dead == 0){
-            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/"+choix_type;
+            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/"+choix_type+"/"+id_event+"/";
             sendMessage(position_msg);
             yield return new WaitForSeconds(0.02f);
         } 
-        sendMessage(myId+"/0/0/0/0/1/"+ point_players[myId]);
+
+        sendMessage(myId+"/0/0/0/0/1/"+ point_players[myId] + choix_type);
         avatars_pos[myId] = null;
         yield return new WaitForSeconds(2f); 
         //set_player(myId);
+        if(!menu.activeSelf)
         StartCoroutine(createplayer(myId,true, choix_type));
-        StartCoroutine(network_position_send(0f)); 
     }
 
 
@@ -104,11 +105,14 @@ public class network : MonoBehaviour{
         int dead = int.Parse(position_receive[5]); 
         int score = int.Parse(position_receive[6]); 
         int type = int.Parse(position_receive[7]); 
+        int Idevent = int.Parse(position_receive[8]); 
+      
       
         foreach(Transform avatars in avatars_pos){
 
             if(avatars_pos[id_player] == null && id_player != myId){ // ajout player si inexistant
                 StartCoroutine(createplayer(id_player,false,type));
+                return;  
             }
 
             if(id_player != myId){
@@ -119,40 +123,24 @@ public class network : MonoBehaviour{
                     avatars_pos[id_player] = null;
                     return;
                 }
-                avatars_pos[id_player].position = new Vector3(posX,0.8f,posZ);
+                avatars_pos[id_player].position = new Vector3(posX,1f,posZ);
                 avatars_pos[id_player].eulerAngles = new Vector3(avatars_pos[id_player].eulerAngles.x, rot, avatars_pos[id_player].eulerAngles.z);
                 if(shoot == 1){
                     StartCoroutine(avatar_controller.shoot());
                 }
-               
+                score_players[id_player].text  = score.ToString(); 
             }
-        }     
+        }  
+       
+        if(Idevent > 0){
+
+            switch(Idevent){
+                case 1 :  StartCoroutine(floor_creation.inst.delete_floor(0f)); break;
+            }
+        }   
     }
 
 
-    // void set_player(int id){
-    //     Vector3 pos_base = new Vector3(bases_pos[id].position.x,1f,bases_pos[id].position.z);
-    //     GameObject cube = Instantiate(avatar_prefab[choix_type],pos_base,bases_pos[id].rotation);
-    //     avatars_pos[id] = cube.GetComponent<Transform>();
-    //     cube.GetComponent<MeshRenderer>().material = color[id];
-
-
-    //     my_avatar = cube.GetComponent<controller_cube>();
-    //     my_avatar.host = true;
-    //     my_avatar.id_avatar = id;
-    //     //sendMessage(myId.ToString());
-    // }
-
-    // void set_other_player(int id, int type){
-    
-    //     Vector3 pos_base = new Vector3(bases_pos[id].position.x,1f,bases_pos[id].position.z);
-    //     GameObject cube = Instantiate(avatar_prefab[type],pos_base,bases_pos[id].rotation);
-    //     avatars_pos[id] = cube.GetComponent<Transform>();
-    //     cube.GetComponent<MeshRenderer>().material = color[id];
-
-
-    //     cube.GetComponent<controller_cube>().id_avatar = id;
-    // }
 
 
 
@@ -161,8 +149,12 @@ public class network : MonoBehaviour{
         score_players[id_player].text = "" + point_players[id_player];
     }
 
+    void show_menu_selection_player(){
+        text_menu.text = "Choose Your Player";
+        button_container.SetActive(true);
+    }
 
-    
+
     public void click_button(int id){
         sound_manager.inst.sound_click();
         myId = id;
@@ -176,24 +168,42 @@ public class network : MonoBehaviour{
         choix_type = type;
         menu.SetActive(false);
         buttons_type_cont.SetActive(false);
-      
+        button_exit.SetActive(true);
+        cont_ui_cam_vehicule.SetActive(false);
         StartCoroutine(createplayer(myId,true,type));
-        StartCoroutine(network_position_send(1f));
-        StartCoroutine(_floor_sc.delete_floor(5f));
+    }
+
+    
+
+
+    public void hover_button(){
+        sound_manager.inst.sound_hover();
+        
+    }
+
+    public void exit_button(){
+        button_exit.SetActive(false);
+        cont_ui_cam_vehicule.SetActive(true);
+        text_menu.text = "Choose Your Player";
+        menu.SetActive(true);
+        button_container.SetActive(true); 
+        if(my_avatar != null){
+            StopCoroutine("network_position_send");
+            my_avatar = null;
+            Destroy(avatars_pos[myId].gameObject,0f);
+        }
+
     }
     
 
 
-    void show_menu_selection_player(){
-        text_menu.text = "Choose Your Player";
-        button_container.SetActive(true);
-    }
+  
 
 
 
 
      
-    IEnumerator createplayer(int id,bool ismine, int type){
+    public IEnumerator createplayer(int id,bool ismine, int type){
 
         float elapsed = 0.0f;
         float duree = 0.8f;
@@ -206,24 +216,21 @@ public class network : MonoBehaviour{
             case 3 : angle = 180; break;
         }
 
-        var start = Quaternion.Euler (0, angle, 180);
-        var target = Quaternion.Euler (180, angle, 180);
+        var start = Quaternion.Euler(0, angle, 180);
+        var target = Quaternion.Euler(180, angle, 180);
 
-        Vector3 pos_base = new Vector3( network.inst.bases_pos[id].position.x,1f, bases_pos[id].position.z);
-        GameObject cube = Instantiate( avatar_prefab[type],pos_base, bases_pos[id].rotation);
+        Vector3 pos_base = new Vector3(bases_pos[id].position.x, 1f, bases_pos[id].position.z);
+        GameObject cube = Instantiate(avatar_prefab[type],pos_base, bases_pos[id].rotation);
         avatars_pos[id] = cube.GetComponent<Transform>();
         cube.GetComponent<MeshRenderer>().material = color[id];
+        cube.GetComponent<controller_cube>().id_avatar = id;
 
-        if(ismine){
-            my_avatar = cube.GetComponent<controller_cube>();
-            my_avatar.id_avatar = id;
-        }
-        
+    
         cube.transform.parent = bases_pos[id];
         sound_manager.inst.sound_friction();
 
         while( elapsed < duree ){
-            bases_pos[id].localRotation = Quaternion.Slerp(start, target,elapsed / duree);
+            bases_pos[id].localRotation = Quaternion.Slerp(start, target, elapsed / duree);
             elapsed += Time.deltaTime;
             yield return null;
         } 
@@ -231,8 +238,14 @@ public class network : MonoBehaviour{
         cube.transform.parent = null;
         cube.GetComponent<Rigidbody>().useGravity = true;
         cube.GetComponent<Rigidbody>().isKinematic = false;
-        my_avatar.host = ismine;
 
+        if(ismine){
+            myId = id;  
+            my_avatar = cube.GetComponent<controller_cube>();
+            my_avatar.host = ismine;
+            StartCoroutine("network_position_send"); 
+        }
+    
     }
 
 

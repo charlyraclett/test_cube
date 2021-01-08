@@ -18,6 +18,7 @@ public class controller_cube : MonoBehaviour{
     public int is_shooting = 0;
     bullet _bullet;
     public bool type_catapulte;
+    public bool v3;
     bool shoot_running;
     Rigidbody rb;
     bool is_moving;
@@ -25,9 +26,6 @@ public class controller_cube : MonoBehaviour{
     void Start(){
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        _bullet = bullet.GetComponent<bullet>();
-        _bullet.id_player_shoot = id_avatar;
-        
     }
     
 
@@ -40,29 +38,39 @@ public class controller_cube : MonoBehaviour{
 
         if(host){
 
-            if (Input.GetKey(KeyCode.UpArrow)){  
+           
+            if(Input.GetKey(KeyCode.UpArrow)){  
                 this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
             }  
             
-            if (Input.GetKey(KeyCode.DownArrow)){  
+            if(Input.GetKey(KeyCode.DownArrow)){  
                 this.transform.Translate(Vector3.back * Time.deltaTime * speed);  
             }  
             
-            if (Input.GetKey(KeyCode.LeftArrow)){  
-                this.transform.Rotate(Vector3.up,-speed_rotation);  
+            if(Input.GetKey(KeyCode.LeftArrow)){    
+               this.transform.Rotate(Vector3.up,-speed_rotation);  
             }  
             
-            if (Input.GetKey(KeyCode.RightArrow)){  
+            if(Input.GetKey(KeyCode.RightArrow)){  
                 this.transform.Rotate(Vector3.up,speed_rotation); 
             } 
 
            
             if (Input.GetKeyDown(KeyCode.Space)){ 
+
+                if(shoot_running)
+                return;
+
+                bullet.GetComponent<bullet>().id_player_shoot = id_avatar;
+                shoot_running = true;
+        
                 if(type_catapulte){
-                    anim.SetTrigger("shoot_two");
-                }else{
-                    if(shoot_running)
-                    return;
+                     StartCoroutine(shoot_catapult());
+                }
+                else if(v3){
+                    StartCoroutine(shoot3());
+                }
+                else{
                     StartCoroutine(shoot());
                 }
             }
@@ -73,7 +81,6 @@ public class controller_cube : MonoBehaviour{
     public IEnumerator shoot(){
         if(is_shooting != 1){
             is_shooting = 1;
-            shoot_running = true;
             anim.SetTrigger("shoot");
             shoot_effect.Play();
             sound_manager.inst.sound_shoot_player();
@@ -82,14 +89,33 @@ public class controller_cube : MonoBehaviour{
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
             Destroy(_bullet, 5f);
             yield return new WaitForSeconds(0.02f);
+            is_shooting = 0; // network
+            yield return new WaitForSeconds(0.6f);
+            shoot_running = false;
+        }
+    }
+
+    public IEnumerator shoot3(){
+        if(is_shooting != 1){
+            is_shooting = 1;
+            anim.SetTrigger("shoot_three");
+            shoot_effect.Play();
+            sound_manager.inst.sound_bullet_death();
+            GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
+            _bullet.GetComponent<Rigidbody>().useGravity = false;
+            StartCoroutine(_bullet.GetComponent<bullet>().simple_bullet());
+            yield return new WaitForSeconds(0.02f);
             is_shooting = 0;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             shoot_running = false;
         }
     }
 
     // trigger anim
     public IEnumerator shoot_catapult(){
+
+        anim.SetTrigger("shoot_two");
+        yield return new WaitForSeconds(0.07f);
         if(is_shooting != 1){
             is_shooting = 1;
             sound_manager.inst.sound_shoot2_player();
@@ -101,6 +127,7 @@ public class controller_cube : MonoBehaviour{
             is_shooting = 0;
         }
         yield return new WaitForSeconds(1f);
+        shoot_running = false;
     }
 
 

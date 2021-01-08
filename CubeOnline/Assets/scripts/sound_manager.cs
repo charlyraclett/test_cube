@@ -19,6 +19,7 @@ public class sound_manager : MonoBehaviour{
     public AudioClip friction;
     public AudioClip move;
     public AudioClip click;
+     public AudioClip hover;
    
    
     void Start(){
@@ -26,9 +27,15 @@ public class sound_manager : MonoBehaviour{
     }
 
     public void sound_click(){
-        audio_source_player.clip = click;
-        audio_source_player.Play();
+       
+        audio_source_player.PlayOneShot(click,1f);
     }
+
+    public void sound_hover(){
+       
+        audio_source_player.PlayOneShot(hover,0.6f);
+    }
+
 
     
     public void sound_death_player(){
