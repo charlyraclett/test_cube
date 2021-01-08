@@ -35,7 +35,7 @@ public class bullet : MonoBehaviour{
             transform.position += transform.forward * speed * Time.deltaTime; // forward
             yield return new WaitForSeconds(0.01f);
         }
-        Destroy(gameObject, 5f); 
+        Destroy(this.gameObject, 5f); 
     }
 
 
@@ -43,7 +43,7 @@ public class bullet : MonoBehaviour{
         death = true;
         float delay = no_death_touch_ground ? 4f : 0f;
         StartCoroutine(death_after(delay));
-        Destroy(gameObject, 5f);
+        Destroy(this.gameObject, 5f);
     }
 
     IEnumerator death_after(float delay){
@@ -53,7 +53,7 @@ public class bullet : MonoBehaviour{
         _impact.GetComponent<ParticleSystem>().Play();
         Destroy(_impact,4f); 
         sound_manager.inst.sound_bullet_death();
-        Destroy(gameObject);
+        Destroy(this.gameObject);
 
     }
 

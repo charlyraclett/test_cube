@@ -149,13 +149,25 @@ public class network : MonoBehaviour{
         score_players[id_player].text = "" + point_players[id_player];
     }
 
+
+
     void show_menu_selection_player(){
+        button_exit.SetActive(false);
         text_menu.text = "Choose Your Player";
         button_container.SetActive(true);
+        buttons_type_cont.SetActive(false);
+    }
+
+    void show_menu_selection_vehicule(){
+        button_exit.SetActive(false);
+        text_menu.text = "Choose Your Vehicule";
+        button_container.SetActive(false);
+        cont_ui_cam_vehicule.SetActive(true);
+        buttons_type_cont.SetActive(true);
     }
 
 
-    public void click_button(int id){
+    public void click_button(int id){ // choix player
         sound_manager.inst.sound_click();
         myId = id;
         button_container.SetActive(false);
@@ -163,30 +175,34 @@ public class network : MonoBehaviour{
         buttons_type_cont.SetActive(true);
     }
 
-    public void click_button_type(int type){
+    public void click_button_type(int type){ // choixv vehicule
         sound_manager.inst.sound_click();
         choix_type = type;
         menu.SetActive(false);
         buttons_type_cont.SetActive(false);
         button_exit.SetActive(true);
         cont_ui_cam_vehicule.SetActive(false);
+        sound_manager.inst.sound_music();
         StartCoroutine(createplayer(myId,true,type));
     }
 
     
-
-
     public void hover_button(){
         sound_manager.inst.sound_hover();
         
     }
 
+    public void back_button(){
+        show_menu_selection_player();
+    }
+
+
     public void exit_button(){
-        button_exit.SetActive(false);
-        cont_ui_cam_vehicule.SetActive(true);
-        text_menu.text = "Choose Your Player";
+        sound_manager.inst.audio_source_zic.Stop();
+        show_menu_selection_vehicule();
         menu.SetActive(true);
-        button_container.SetActive(true); 
+     
+
         if(my_avatar != null){
             StopCoroutine("network_position_send");
             my_avatar = null;
@@ -234,6 +250,7 @@ public class network : MonoBehaviour{
             elapsed += Time.deltaTime;
             yield return null;
         } 
+        bases_pos[id].localRotation = Quaternion.Euler(180, angle, 180);
 
         cube.transform.parent = null;
         cube.GetComponent<Rigidbody>().useGravity = true;

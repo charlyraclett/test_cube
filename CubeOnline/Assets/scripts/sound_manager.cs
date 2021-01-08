@@ -10,6 +10,7 @@ public class sound_manager : MonoBehaviour{
     public AudioSource audio_source_env;
     public AudioSource audio_source_bullet;
     public AudioSource audio_source_move;
+     public AudioSource audio_source_zic;
 
     public AudioClip death_player;
     public AudioClip shoot_player;
@@ -19,20 +20,25 @@ public class sound_manager : MonoBehaviour{
     public AudioClip friction;
     public AudioClip move;
     public AudioClip click;
-     public AudioClip hover;
+    public AudioClip hover;
+    public AudioClip zic;
    
    
     void Start(){
         inst = this;
     }
 
+    public void sound_music(){
+        audio_source_zic.volume = 1F;
+        audio_source_zic.clip = zic;
+        audio_source_zic.Play(); 
+    }
+
     public void sound_click(){
-       
         audio_source_player.PlayOneShot(click,1f);
     }
 
-    public void sound_hover(){
-       
+    public void sound_hover(){  
         audio_source_player.PlayOneShot(hover,0.6f);
     }
 

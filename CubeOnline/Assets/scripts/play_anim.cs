@@ -14,6 +14,7 @@ public class play_anim : MonoBehaviour
 
         init = gameObject.transform.rotation;
         anim = GetComponent<Animator>();
+      
     }
 
     public void change_color(int value){
@@ -34,11 +35,12 @@ public class play_anim : MonoBehaviour
 
 
     public IEnumerator turn_objet(){
+
         InvokeRepeating("play", 0.5f, 2f);
         while(true){
             transform.Rotate(Vector3.up, 80 * Time.deltaTime);
             yield return null;
-        }  
+        } 
     }
 
     public void turn(){
