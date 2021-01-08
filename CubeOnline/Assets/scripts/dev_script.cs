@@ -39,18 +39,18 @@ public class dev_script : MonoBehaviour{
 
         if(Input.GetKeyDown(KeyCode.Q)){ 
             inc = 1; 
-            network.inst.receive_data(inc+data);   
+            network.inst.receive_data(inc+data+ network.inst.id_event);   
         } 
         
         if(Input.GetKeyDown(KeyCode.W)){  
             inc = 2;
-            network.inst.receive_data(inc+data);   
+            network.inst.receive_data(inc+data+ network.inst.id_event);   
         } 
         
         
         if(Input.GetKeyDown(KeyCode.E)){  
             inc = 3;
-            network.inst.receive_data(inc+data);   
+            network.inst.receive_data(inc+data+ network.inst.id_event);   
         } 
 
         if(Input.GetKeyDown(KeyCode.F)){  
