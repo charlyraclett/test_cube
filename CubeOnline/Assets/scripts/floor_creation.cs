@@ -56,6 +56,8 @@ public class floor_creation : MonoBehaviour{
 
     public IEnumerator delete_floor(float delay){
 
+        yield return new WaitForSeconds(0.02f);  
+        network.inst.id_event = 0;   
         yield return new WaitForSeconds(delay);  
         int rand = Random.Range(0, floor_list.Count);
         StartCoroutine(floor_list[rand].GetComponent<falling_floor>().falling());

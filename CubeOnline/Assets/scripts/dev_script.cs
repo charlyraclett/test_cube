@@ -7,26 +7,18 @@ public class dev_script : MonoBehaviour{
     public bool skip_menu;
     public GameObject canvas;
     string data = "/0/0/0/0/0/0/0/";
-    int inc = 1;
+    int id = 1;
 
-     
-        // int id_player = int.Parse(position_receive[0]);
-		// float posX = float.Parse(position_receive[1]);
-        // float posZ = float.Parse(position_receive[2]); 
-        // float rot = float.Parse(position_receive[3]); 
-        // int shoot = int.Parse(position_receive[4]); 
-        // int dead = int.Parse(position_receive[5]); 
-        // int score = int.Parse(position_receive[6]); 
-        // int type = int.Parse(position_receive[7]); 
+    public int testid;
 
     void Start(){
 
-        if(skip_menu){
-           
+        if(skip_menu){  
             Invoke("start_without_menu",0.2f);  
-        }
-        
+        }  
     }
+
+
 
     void start_without_menu(){
         canvas.SetActive(!skip_menu);
@@ -38,35 +30,37 @@ public class dev_script : MonoBehaviour{
     void Update(){
 
         if(Input.GetKeyDown(KeyCode.Q)){ 
-            inc = 1; 
-            network.inst.receive_data(inc+data+ network.inst.id_event);   
+            id = 1; 
+            network.inst.receive_data("P/"+id+data+network.inst.id_event);   
         } 
         
         if(Input.GetKeyDown(KeyCode.W)){  
-            inc = 2;
-            network.inst.receive_data(inc+data+ network.inst.id_event);   
+            id = 2;
+            network.inst.receive_data("P/"+id+data+ network.inst.id_event);   
         } 
         
         
         if(Input.GetKeyDown(KeyCode.E)){  
-            inc = 3;
-            network.inst.receive_data(inc+data+ network.inst.id_event);   
+            id = 3;
+            network.inst.receive_data("P/"+id+data+ network.inst.id_event);   
         } 
 
-        if(Input.GetKeyDown(KeyCode.F)){  
-            
+        if(Input.GetKeyDown(KeyCode.F)){     
             StartCoroutine(floor_creation.inst.delete_floor(0f));
             network.inst.id_event = 1;   
-        } 
-        
-           
+        }      
     }
 
 
 
+    IEnumerator simule_network_msg(){
 
+        yield return new WaitForSeconds(1f);
 
-
-
+        while(true){
+            network.inst.receive_data("P/"+testid+"/0/0/0/0/0/0/2/0");
+            yield return new WaitForSeconds(1f);
+        }
+    }
 
 }

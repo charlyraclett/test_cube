@@ -16,17 +16,18 @@ public class network : MonoBehaviour{
     public static network inst;
 
     public bool test_online;
+    public bool localhost;
 
     [Header("Info")]
     public int myId;
     string position_msg;
     public Transform[] avatars_pos;
-    public const string distantHost = "167.71.58.214";
+    public string distantHost = "167.71.58.214";
     public controller_cube my_avatar;
 
 
     [HideInInspector] int bufferSize = 50;
-    Int32 port = 7779;
+    Int32 port = 7778;
     public bool socket_ready = false;
     TcpClient tcp_socket;
     NetworkStream net_stream;
@@ -42,11 +43,18 @@ public class network : MonoBehaviour{
     public Text[] score_players;
     public GameObject menu;
     public Text text_menu;
+    public Text text_network;
     public GameObject button_container;
+    public GameObject button_mode_game;
+    public GameObject button_mode_multi;
+    public GameObject button_back;
     public GameObject[] buttons;
+    public int ui_position = 0;
    
     public GameObject canvas;
     public GameObject button_exit;
+
+    public GameObject[] choix_player;
 
     public GameObject buttons_type_cont;
     public GameObject cont_ui_cam_vehicule;
@@ -61,12 +69,12 @@ public class network : MonoBehaviour{
         if (inst == null){
             inst = this;
         }
-        if(test_online){
-            text_menu.text = "Connection...";
-            button_container.SetActive(false);
-            setupSocket(); 
+      
+        if(localhost){
+            distantHost = "localhost";
         }
         canvas.SetActive(true);
+        show_menu_mode_game();
         button_exit.SetActive(false);
     }
 
@@ -77,15 +85,14 @@ public class network : MonoBehaviour{
     public IEnumerator network_position_send(){
 
         while(my_avatar.is_dead == 0){
-            position_msg = myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/"+choix_type+"/"+id_event+"/";
+            position_msg = "P/"+ myId +"/"+avatars_pos[myId].position.x +"/"+avatars_pos[myId].position.z +"/"+ avatars_pos[myId].eulerAngles.y+"/"+my_avatar.is_shooting+"/"+ my_avatar.is_dead+"/"+ point_players[myId]+"/"+choix_type+"/"+id_event+"/";
             sendMessage(position_msg);
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.02f); 
         } 
 
-        sendMessage(myId+"/0/0/0/0/1/"+ point_players[myId] + choix_type);
+        sendMessage("P/"+myId+"/0/0/0/0/1/"+point_players[myId]+"/"+choix_type+"/"+id_event+"/");
         avatars_pos[myId] = null;
         yield return new WaitForSeconds(2f); 
-        //set_player(myId);
         if(!menu.activeSelf)
         StartCoroutine(createplayer(myId,true, choix_type));
     }
@@ -96,48 +103,55 @@ public class network : MonoBehaviour{
     public void receive_data(string value){
 
 		string[] position_receive = value.Split('/');
-       
-        int id_player = int.Parse(position_receive[0]);
-		float posX = float.Parse(position_receive[1]);
-        float posZ = float.Parse(position_receive[2]); 
-        float rot = float.Parse(position_receive[3]); 
-        int shoot = int.Parse(position_receive[4]); 
-        int dead = int.Parse(position_receive[5]); 
-        int score = int.Parse(position_receive[6]); 
-        int type = int.Parse(position_receive[7]); 
-        int Idevent = int.Parse(position_receive[8]); 
-      
-      
-        foreach(Transform avatars in avatars_pos){
 
-            if(avatars_pos[id_player] == null && id_player != myId){ // ajout player si inexistant
-                StartCoroutine(createplayer(id_player,false,type));
-                return;  
-            }
+        print(value);
 
-            if(id_player != myId){
-                controller_cube avatar_controller = avatars_pos[id_player].GetComponent<controller_cube>();
-               
-                if(dead == 1){
-                    avatar_controller.controller_dead();
-                    avatars_pos[id_player] = null;
-                    return;
+        string command = position_receive[0];
+        int id_player = int.Parse(position_receive[1]);
+        float posX = float.Parse(position_receive[2]);
+        float posZ = float.Parse(position_receive[3]); 
+        float rot = float.Parse(position_receive[4]); 
+        int shoot = int.Parse(position_receive[5]); 
+        int dead = int.Parse(position_receive[6]); 
+        int score = int.Parse(position_receive[7]); 
+        int type = int.Parse(position_receive[8]); 
+        int Idevent = int.Parse(position_receive[9]); 
+
+
+        if(id_player != myId){
+            foreach(Transform avatars in avatars_pos){
+
+                if(avatars_pos[id_player] == null){ // ajout player si inexistant
+                    StartCoroutine(createplayer(id_player,false,type));
+                    choix_player[id_player].SetActive(false);
+                    print(id_player+" new player is comming");
+                    return;  
                 }
-                avatars_pos[id_player].position = new Vector3(posX,1f,posZ);
-                avatars_pos[id_player].eulerAngles = new Vector3(avatars_pos[id_player].eulerAngles.x, rot, avatars_pos[id_player].eulerAngles.z);
-                if(shoot == 1){
-                    StartCoroutine(avatar_controller.shoot());
-                }
-                score_players[id_player].text  = score.ToString(); 
-            }
-        }  
-       
-        if(Idevent > 0){
 
-            switch(Idevent){
-                case 1 :  StartCoroutine(floor_creation.inst.delete_floor(0f)); break;
-            }
-        }   
+                    if(id_player != myId){
+                        controller_cube avatar_controller = avatars_pos[id_player].GetComponent<controller_cube>();
+                    
+                        if(dead == 1){
+                            avatar_controller.controller_dead();
+                            avatars_pos[id_player] = null;
+                            choix_player[id_player].SetActive(true); 
+                            return;
+                        }
+                        avatars_pos[id_player].position = new Vector3(posX,1f,posZ);
+                        avatars_pos[id_player].eulerAngles = new Vector3(avatars_pos[id_player].eulerAngles.x, rot, avatars_pos[id_player].eulerAngles.z);
+                        if(shoot == 1){
+                            StartCoroutine(avatar_controller.shoot());
+                        }
+                        score_players[id_player].text  = score.ToString(); 
+                    }
+            }  
+            if(Idevent > 0){
+                switch(Idevent){
+                    case 1 :  StartCoroutine(floor_creation.inst.delete_floor(0f)); break;
+                }
+            } 
+        } 
+         
     }
 
 
@@ -149,13 +163,54 @@ public class network : MonoBehaviour{
         score_players[id_player].text = "" + point_players[id_player];
     }
 
+    void show_menu_mode_game(){
+        text_menu.text = "Choose Your Game";
+        button_mode_game.SetActive(true);
+        button_container.SetActive(false);
+        buttons_type_cont.SetActive(false);
+        button_mode_multi.SetActive(false);
+        button_back.SetActive(false);
+        ui_position = 0;
+        
+    }
 
+    public void button_solo(){
+        sound_manager.inst.sound_click();
+        show_menu_selection_player(); 
+        ui_position = 1; 
+    }
+
+    public void button_multi(){
+        sound_manager.inst.sound_click();
+        show_multi();
+        setupSocket();
+        StartCoroutine(testReceivedSocket()); 
+        ui_position = 1;
+    }
+
+   
+    void show_menu_multi(){
+        button_back.SetActive(true);
+        button_mode_multi.SetActive(true);
+        button_mode_game.SetActive(false);
+        ui_position = -1;
+    }
+
+
+
+    void show_multi(){
+        text_menu.text = "Connexion...";
+        button_mode_game.SetActive(false);
+    }
 
     void show_menu_selection_player(){
-        button_exit.SetActive(false);
+        button_mode_game.SetActive(false);
+        button_mode_multi.SetActive(false);
         text_menu.text = "Choose Your Player";
         button_container.SetActive(true);
         buttons_type_cont.SetActive(false);
+        button_back.SetActive(true);
+        ui_position = 1;
     }
 
     void show_menu_selection_vehicule(){
@@ -164,6 +219,19 @@ public class network : MonoBehaviour{
         button_container.SetActive(false);
         cont_ui_cam_vehicule.SetActive(true);
         buttons_type_cont.SetActive(true);
+        button_back.SetActive(true);  
+    }
+
+    public void click_create_game(){
+        StartCoroutine(testReceivedSocket()); 
+        text_network.text = "";
+        show_menu_selection_player();
+    }
+
+    public void click_join_game(){
+        StartCoroutine(testReceivedSocket()); 
+        sendMessage("J/"+myId+"/0/0/0/0/0/0/0/0");
+       
     }
 
 
@@ -173,16 +241,21 @@ public class network : MonoBehaviour{
         button_container.SetActive(false);
         text_menu.text = "Choose Your Vehicule";
         buttons_type_cont.SetActive(true);
+        ui_position = 2;
     }
+    
 
-    public void click_button_type(int type){ // choixv vehicule
+    public void click_button_type(int type){ // choix vehicule + start game
+
+        sendMessage("C/"+myId+"/0/0/0/0/0/0/"+type+"/0/");
         sound_manager.inst.sound_click();
+        sound_manager.inst.sound_music();
         choix_type = type;
         menu.SetActive(false);
         buttons_type_cont.SetActive(false);
         button_exit.SetActive(true);
+        button_back.SetActive(false);
         cont_ui_cam_vehicule.SetActive(false);
-        sound_manager.inst.sound_music();
         StartCoroutine(createplayer(myId,true,type));
     }
 
@@ -193,7 +266,15 @@ public class network : MonoBehaviour{
     }
 
     public void back_button(){
-        show_menu_selection_player();
+
+        sound_manager.inst.sound_click_back();
+        text_network.text = "";
+
+        switch(ui_position){
+            case 1 : show_menu_mode_game(); break;
+            case 2 : show_menu_selection_player(); break;
+            case -1 : show_menu_mode_game(); break;
+        }   
     }
 
 
@@ -301,14 +382,26 @@ public class network : MonoBehaviour{
             tcp_socket = new TcpClient(distantHost, port);
             net_stream = tcp_socket.GetStream();
             socket_ready = true;
-            StartCoroutine(testReceivedSocket()); 
-            show_menu_selection_player();   
+            StartCoroutine(text_ok_msg_server()); 
         }
         catch (Exception e)
         {
             Debug.Log("could not setup socket : " + e.Message);
+            Invoke("text_error_msg_server",2f);
             StopAllCoroutines();
         }
+    }
+
+    void text_error_msg_server(){
+        text_menu.text = "No server found";
+        button_back.SetActive(true);
+    }
+
+    IEnumerator text_ok_msg_server(){
+        yield return new WaitForSeconds(1f);
+        show_menu_multi();   
+        text_menu.text = "";
+       
     }
 
 
