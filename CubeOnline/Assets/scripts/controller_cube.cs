@@ -18,14 +18,24 @@ public class controller_cube : MonoBehaviour{
     public int is_shooting = 0;
     bullet _bullet;
     public bool type_catapulte;
-    public bool v3;
+    public bool type_canon;
     bool shoot_running;
     Rigidbody rb;
-    bool is_moving;
+    public bool is_moving;
+
+    public bool key_holding;
+    public bool is_grounded;
+
+    List<KeyCode> pressedInput = new List<KeyCode>();
 
     void Start(){
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        pressedInput.Add(KeyCode.UpArrow);
+        pressedInput.Add(KeyCode.DownArrow);
+        pressedInput.Add(KeyCode.LeftArrow);
+        pressedInput.Add(KeyCode.RightArrow);
     }
     
 
@@ -38,22 +48,36 @@ public class controller_cube : MonoBehaviour{
 
         if(host){
 
-           
             if(Input.GetKey(KeyCode.UpArrow)){  
                 this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
+                key_holding = true;
+                sound_manager.inst.sound_move();    
             }  
             
             if(Input.GetKey(KeyCode.DownArrow)){  
                 this.transform.Translate(Vector3.back * Time.deltaTime * speed);  
+                key_holding = true;
+                sound_manager.inst.sound_move();    
             }  
             
             if(Input.GetKey(KeyCode.LeftArrow)){    
-               this.transform.Rotate(Vector3.up,-speed_rotation);  
+                this.transform.Rotate(Vector3.up,-speed_rotation); 
+                key_holding = true;
+                sound_manager.inst.sound_move();     
             }  
             
             if(Input.GetKey(KeyCode.RightArrow)){  
-                this.transform.Rotate(Vector3.up,speed_rotation); 
+                this.transform.Rotate(Vector3.up,speed_rotation);
+                key_holding = true;
+                sound_manager.inst.sound_move();     
             } 
+           
+
+            if(!Input.anyKey && key_holding) {
+                key_holding = false;
+                sound_manager.inst.audio_source_move.Stop();     
+            }
+ 
 
            
             if (Input.GetKeyDown(KeyCode.Space)){ 
@@ -65,9 +89,9 @@ public class controller_cube : MonoBehaviour{
                 shoot_running = true;
         
                 if(type_catapulte){
-                     StartCoroutine(shoot_catapult());
+                    StartCoroutine(shoot_catapult());
                 }
-                else if(v3){
+                else if(type_canon){
                     StartCoroutine(shoot3());
                 }
                 else{
@@ -103,7 +127,7 @@ public class controller_cube : MonoBehaviour{
             sound_manager.inst.sound_bullet_death();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
             _bullet.GetComponent<Rigidbody>().useGravity = false;
-            StartCoroutine(_bullet.GetComponent<bullet>().simple_bullet());
+            _bullet.GetComponent<bullet>().canon = true;
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0;
             yield return new WaitForSeconds(1.5f);
@@ -131,13 +155,34 @@ public class controller_cube : MonoBehaviour{
     }
 
 
-
+    // trigger bullet
     public void controller_dead(){
         GameObject _death = Instantiate(death_effect, transform.position, transform.rotation);
         Destroy(_death,6f); 
         is_dead = 1;
         sound_manager.inst.sound_death_player();
+        if(host){
+            network.inst.player_dead();
+        }
         Destroy(this.gameObject);      
     }
+
+
+
+
+
+    void OnTriggerStay(Collider col){
+        if(col.tag == "ground"){
+            is_grounded = true;
+        }
+    }
+
+    void OnTriggerExit(Collider col){
+        if(col.tag == "ground"){
+            sound_manager.inst.audio_source_move.Stop();     
+            is_grounded = false;
+        }  
+    }
+
 
 }

@@ -8,8 +8,26 @@ public class bullet : MonoBehaviour{
     public int id_player_shoot;
     public bool no_death_touch_ground;
     public float speed = 5f;
-    bool death;
+    public bool canon;
+
+
+    void Start(){
+
+        if(canon){
+            Destroy(this.gameObject, 5f); 
+        }
+    }
+
+
+
+    void Update(){  
+        if(canon){
+        transform.position += transform.forward * speed * Time.deltaTime; // forward
+        }
+    }
    
+
+
 
     void OnTriggerEnter(Collider col){ 
 
@@ -18,32 +36,10 @@ public class bullet : MonoBehaviour{
         }
 
         else if(col.tag == "Player"){
-            print("touch player");
-            death = true;
             col.gameObject.GetComponent<controller_cube>().controller_dead();
-            network.inst.add_score_for(id_player_shoot);
+            ui_manager.inst.add_score_for(id_player_shoot);
             bullet_death();
         }
-    }
-
-
-     
-    public IEnumerator simple_bullet(){  
-
-        Invoke("destroy",5f);
-        while(!death){
-            transform.position += transform.forward * speed * Time.deltaTime; // forward
-            yield return new WaitForSeconds(0.01f);
-        }
-        Destroy(this.gameObject, 5f); 
-    }
-
-
-    void bullet_death(){
-        death = true;
-        float delay = no_death_touch_ground ? 4f : 0f;
-        StartCoroutine(death_after(delay));
-        Destroy(this.gameObject, 5f);
     }
 
     IEnumerator death_after(float delay){
@@ -57,11 +53,13 @@ public class bullet : MonoBehaviour{
 
     }
 
-    void destroy(){
-        death = true;
+    void bullet_death(){ 
+        float delay = no_death_touch_ground ? 4f : 0f;
+        StartCoroutine(death_after(delay));
+        Destroy(this.gameObject, 5f);
     }
 
-
+   
 
 
 }

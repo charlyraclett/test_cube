@@ -11,10 +11,8 @@ public class play_anim : MonoBehaviour
 
 
     void Start(){
-
         init = gameObject.transform.rotation;
         anim = GetComponent<Animator>();
-      
     }
 
     public void change_color(int value){
@@ -22,9 +20,7 @@ public class play_anim : MonoBehaviour
     }
 
 
-   
     void play(){
-
         switch(id){
             case 0 :  anim.SetTrigger("shoot"); break;
             case 1 :  anim.SetTrigger("shoot_two"); break;
@@ -35,7 +31,6 @@ public class play_anim : MonoBehaviour
 
 
     public IEnumerator turn_objet(){
-
         InvokeRepeating("play", 0.5f, 2f);
         while(true){
             transform.Rotate(Vector3.up, 80 * Time.deltaTime);
@@ -46,6 +41,7 @@ public class play_anim : MonoBehaviour
     public void turn(){
         StartCoroutine(turn_objet());
     }
+
 
     public void stop_turn(){
         CancelInvoke();

@@ -6,10 +6,16 @@ public class dev_script : MonoBehaviour{
     
     public bool skip_menu;
     public GameObject canvas;
-    string data = "/0/0/0/0/0/0/0/";
-    int id = 1;
+    [Range(0,20)]
+    public float posX;
+    [Range(0,20)]
+    public float posY;
+    [Range(0,360)]
+    public float rot;
 
-    public int testid;
+    string data = "/0/0/0/0/0/0/0/0/0/0/0/";
+    public int id = 1;
+
 
     void Start(){
 
@@ -22,7 +28,7 @@ public class dev_script : MonoBehaviour{
 
     void start_without_menu(){
         canvas.SetActive(!skip_menu);
-        StartCoroutine(network.inst.createplayer(0,skip_menu, 1));  
+        StartCoroutine(network.inst.createplayer(0,true, 1));  
         StartCoroutine(network.inst.network_position_send());
     }
 
@@ -30,20 +36,26 @@ public class dev_script : MonoBehaviour{
     void Update(){
 
         if(Input.GetKeyDown(KeyCode.Q)){ 
-            id = 1; 
-            network.inst.receive_data("P/"+id+data+network.inst.id_event);   
+            id = 1;
+            print("send: "+" P/" + id + data);
+            network.inst.receive_data("P/" + id + data);
+            //StartCoroutine(simule_network_msg());     
         } 
         
         if(Input.GetKeyDown(KeyCode.W)){  
             id = 2;
-            network.inst.receive_data("P/"+id+data+ network.inst.id_event);   
+            network.inst.receive_data("P/" + id + data);  
+           // StartCoroutine(simule_network_msg());   
         } 
         
         
         if(Input.GetKeyDown(KeyCode.E)){  
             id = 3;
-            network.inst.receive_data("P/"+id+data+ network.inst.id_event);   
+            network.inst.receive_data("P/" + id + data); 
+            //StartCoroutine(simule_network_msg());    
         } 
+
+    
 
         if(Input.GetKeyDown(KeyCode.F)){     
             StartCoroutine(floor_creation.inst.delete_floor(0f));
@@ -57,9 +69,9 @@ public class dev_script : MonoBehaviour{
 
         yield return new WaitForSeconds(1f);
 
-        while(true){
-            network.inst.receive_data("P/"+testid+"/0/0/0/0/0/0/2/0");
-            yield return new WaitForSeconds(1f);
+        while(true){   
+            //network.inst.receive_data("P/"+id+"/"+posX+"/"+posY+"/"+rot+"/0/0/0/0/2/0");
+            yield return new WaitForSeconds(0.02f);
         }
     }
 

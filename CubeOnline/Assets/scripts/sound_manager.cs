@@ -22,21 +22,52 @@ public class sound_manager : MonoBehaviour{
     public AudioClip click;
     public AudioClip click_back;
     public AudioClip hover;
-    public AudioClip zic;
+    public AudioClip zic_battle;
+    public AudioClip zic_menu;
+    public AudioClip network_ok;
+    public AudioClip error;
+    public AudioClip point_win;
+     public AudioClip game_found;
+   
    
    
     void Start(){
         inst = this;
+        sound_manager.inst.sound_music_menu();
+
     }
 
-    public void sound_music(){
-        audio_source_zic.volume = 1F;
-        audio_source_zic.clip = zic;
+    public void sound_music_battle(){
+        audio_source_zic.volume = 0.3f;
+        audio_source_zic.clip = zic_battle;
         audio_source_zic.Play(); 
+    }
+
+     public void sound_music_menu(){
+        audio_source_zic.volume = 0.2f;
+        audio_source_zic.clip = zic_menu;
+        audio_source_zic.Play(); 
+    }
+
+    public void sound_game_found(){
+        audio_source_player.PlayOneShot(game_found,1f);
+    }
+
+
+    public void sound_win_point(){
+        audio_source_player.PlayOneShot(point_win,1f);
     }
 
     public void sound_click(){
         audio_source_player.PlayOneShot(click,1f);
+    }
+
+    public void sound_server_ok(){
+        audio_source_player.PlayOneShot(network_ok,1f);
+    }
+
+    public void sound_server_error(){
+        audio_source_player.PlayOneShot(error,1f);
     }
 
     public void sound_click_back(){
@@ -75,10 +106,10 @@ public class sound_manager : MonoBehaviour{
 
     public void sound_move(){
 
-        if(audio_source_move.isPlaying)
-        return;
-        audio_source_move.volume = 1F;
-        audio_source_move.clip = move;
-        audio_source_move.Play();
+        if(!audio_source_move.isPlaying){
+            audio_source_move.volume = 1f;
+            audio_source_move.clip = move;
+            audio_source_move.Play();
+        }
     }
 }
