@@ -27,7 +27,12 @@ public class sound_manager : MonoBehaviour{
     public AudioClip network_ok;
     public AudioClip error;
     public AudioClip point_win;
-     public AudioClip game_found;
+    public AudioClip game_found;
+    public AudioClip enemy_nest;
+
+   
+
+    public AudioClip fire;
    
    
    
@@ -88,6 +93,10 @@ public class sound_manager : MonoBehaviour{
         audio_source_bullet.PlayOneShot(shoot_player,1f);
     }
 
+     public void sound_shoot_fire(){ 
+        audio_source_bullet.PlayOneShot(fire,0.6f);
+    }
+
     public void sound_shoot2_player(){ 
         audio_source_bullet.PlayOneShot(shoot_2_player,1f);
     }
@@ -99,6 +108,11 @@ public class sound_manager : MonoBehaviour{
     public void sound_rocks(){
         audio_source_env.PlayOneShot(rocks,0.3f);
     }
+
+    public void sound_enemy_nest(){
+        audio_source_env.PlayOneShot(enemy_nest,0.4f);
+    }
+    
 
     public void sound_friction(){
         audio_source_bullet.PlayOneShot(friction,1f);

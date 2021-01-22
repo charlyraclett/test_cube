@@ -12,6 +12,9 @@ public class controller_cube : MonoBehaviour{
     public Transform origin_shoot;
     public ParticleSystem shoot_effect;
     public GameObject bullet;
+    public GameObject particule_cross_hair;
+    GameObject temp_cross_hair;
+    public GameObject origin_cross_hair;
     public float force_shoot;
     public GameObject death_effect;
     public int is_dead = 0;
@@ -26,16 +29,10 @@ public class controller_cube : MonoBehaviour{
     public bool key_holding;
     public bool is_grounded;
 
-    List<KeyCode> pressedInput = new List<KeyCode>();
-
+   
     void Start(){
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-
-        pressedInput.Add(KeyCode.UpArrow);
-        pressedInput.Add(KeyCode.DownArrow);
-        pressedInput.Add(KeyCode.LeftArrow);
-        pressedInput.Add(KeyCode.RightArrow);
     }
     
 
@@ -50,26 +47,23 @@ public class controller_cube : MonoBehaviour{
 
             if(Input.GetKey(KeyCode.UpArrow)){  
                 this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
-                key_holding = true;
-                sound_manager.inst.sound_move();    
+                play_fx_sound();
             }  
             
             if(Input.GetKey(KeyCode.DownArrow)){  
                 this.transform.Translate(Vector3.back * Time.deltaTime * speed);  
-                key_holding = true;
-                sound_manager.inst.sound_move();    
+                play_fx_sound();
             }  
             
             if(Input.GetKey(KeyCode.LeftArrow)){    
                 this.transform.Rotate(Vector3.up,-speed_rotation); 
-                key_holding = true;
-                sound_manager.inst.sound_move();     
+                play_fx_sound();
+ 
             }  
             
             if(Input.GetKey(KeyCode.RightArrow)){  
                 this.transform.Rotate(Vector3.up,speed_rotation);
-                key_holding = true;
-                sound_manager.inst.sound_move();     
+                play_fx_sound();  
             } 
            
 
@@ -77,24 +71,31 @@ public class controller_cube : MonoBehaviour{
                 key_holding = false;
                 sound_manager.inst.audio_source_move.Stop();     
             }
- 
 
-           
+            if(Input.GetKeyDown(KeyCode.Space) && type_catapulte){ 
+                show_particule_cross_hair();
+            }
+
+            if(Input.GetKeyUp(KeyCode.Space) && type_catapulte){ 
+                if(shoot_running) 
+                return;
+                shoot_running = true;
+                StartCoroutine(shoot_catapult());
+            }
+
             if (Input.GetKeyDown(KeyCode.Space)){ 
 
                 if(shoot_running)
                 return;
 
                 bullet.GetComponent<bullet>().id_player_shoot = id_avatar;
-                shoot_running = true;
         
-                if(type_catapulte){
-                    StartCoroutine(shoot_catapult());
-                }
-                else if(type_canon){
+                if(type_canon){
+                    shoot_running = true;
                     StartCoroutine(shoot3());
                 }
-                else{
+                else if (!type_catapulte){
+                    shoot_running = true;
                     StartCoroutine(shoot());
                 }
             }
@@ -111,7 +112,9 @@ public class controller_cube : MonoBehaviour{
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
-            Destroy(_bullet, 5f);
+
+            _bullet.GetComponent<bullet>().target = network.inst.avatars_pos[3]; // test bullet  tete chercheuse
+
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0; // network
             yield return new WaitForSeconds(0.6f);
@@ -126,6 +129,11 @@ public class controller_cube : MonoBehaviour{
             shoot_effect.Play();
             sound_manager.inst.sound_bullet_death();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
+          
+           
+            rb.velocity = transform.TransformDirection(Vector3.back * 3f);
+
+          
             _bullet.GetComponent<Rigidbody>().useGravity = false;
             _bullet.GetComponent<bullet>().canon = true;
             yield return new WaitForSeconds(0.02f);
@@ -135,18 +143,20 @@ public class controller_cube : MonoBehaviour{
         }
     }
 
-    // trigger anim
+   
     public IEnumerator shoot_catapult(){
-
         anim.SetTrigger("shoot_two");
+        if(temp_cross_hair != null){
+            temp_cross_hair.transform.parent = null;
+        }
         yield return new WaitForSeconds(0.07f);
         if(is_shooting != 1){
             is_shooting = 1;
             sound_manager.inst.sound_shoot2_player();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
-            _bullet.GetComponent<bullet>().no_death_touch_ground = true;
-            Rigidbody rb = _bullet.GetComponent<Rigidbody>();
-            rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
+            _bullet.GetComponent<bullet>().catapult = true;
+            Rigidbody rigid = _bullet.GetComponent<Rigidbody>();
+            rigid.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0;
         }
@@ -158,6 +168,7 @@ public class controller_cube : MonoBehaviour{
     // trigger bullet
     public void controller_dead(){
         GameObject _death = Instantiate(death_effect, transform.position, transform.rotation);
+        sound_manager.inst.audio_source_move.Stop();    
         Destroy(_death,6f); 
         is_dead = 1;
         sound_manager.inst.sound_death_player();
@@ -170,19 +181,26 @@ public class controller_cube : MonoBehaviour{
 
 
 
-
-    void OnTriggerStay(Collider col){
-        if(col.tag == "ground"){
-            is_grounded = true;
-        }
+    void play_fx_sound(){
+        if(is_dead == 0){
+            key_holding = true;
+            sound_manager.inst.sound_move();  
+        }   
     }
 
-    void OnTriggerExit(Collider col){
-        if(col.tag == "ground"){
-            sound_manager.inst.audio_source_move.Stop();     
-            is_grounded = false;
-        }  
+
+
+    void show_particule_cross_hair(){
+        temp_cross_hair = Instantiate(particule_cross_hair,origin_cross_hair.transform);
+        temp_cross_hair.GetComponent<ParticleSystem>().Play();
+        Destroy(temp_cross_hair,5f);
     }
+       
+    
+
+   
+
+
 
 
 }

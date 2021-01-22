@@ -5,10 +5,8 @@ using System;
 using System.IO;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Linq;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
+using Cinemachine;
 
 
 public class ui_manager : MonoBehaviour{
@@ -49,7 +47,6 @@ public class ui_manager : MonoBehaviour{
     public int game_found_id;
 
     
-
     void Awake(){
 
         if (inst == null){
@@ -100,8 +97,8 @@ public class ui_manager : MonoBehaviour{
     public void click_create_game(){  // network
         sound_manager.inst.sound_click();
         text_network.text = "";
-        network.inst.sendMessage("C/");
-        print("send to server : C/");  
+        network.inst.sendMessage("C/pseudo_game/");
+        print("send to server : C/pseudo_game/");  
         show_menu_selection_player();
        // StartCoroutine(testReceivedSocket()); 
     }
@@ -137,6 +134,9 @@ public class ui_manager : MonoBehaviour{
         button_back.SetActive(false);
         cont_ui_cam_vehicule.SetActive(false);
         StartCoroutine(network.inst.createplayer(network.inst.myId,true,type));
+        StartCoroutine(camera_manager.inst.switch_cam_game());
+        camera_manager.inst.target_cam_player = network.inst.avatars_pos[network.inst.myId];
+
     }
 
     
@@ -208,8 +208,8 @@ public class ui_manager : MonoBehaviour{
         sound_manager.inst.sound_click_back();
         text_network.text = "";
         switch(ui_position){
-            case 1 : show_menu_mode_game(); break;
-            case 2 : show_menu_selection_player(); break;
+            case 1  : show_menu_mode_game(); break;
+            case 2  : show_menu_selection_player(); break;
             case -1 : show_menu_mode_game(); break;
             case -2 : show_menu_salon_multi(); break;
         }  
@@ -246,39 +246,32 @@ public class ui_manager : MonoBehaviour{
     }
 
     // trigger network game found
-    public void show_games_in_network(int nbr){
-
+    public void show_games_in_network(int id_game){
         container_button_game_found.SetActive(true);
         ui_position = -2;
         button_salon_multi.SetActive(false);
         ui_manager.inst.text_menu.text = "";
         ui_manager.inst.text_network.text = "";
-        StartCoroutine(create_button(nbr));
+        StartCoroutine(create_button(id_game));
     }
 
-    IEnumerator create_button(int nbr){// creation bouton pour rejoindre partie
-
-        game_found_id = 0;
-      
-        for(int i = 0; i < nbr; i++){ 
-            GameObject button_game = Instantiate(prefab_button_game_network);
-            button_game.SetActive(true);
-            sound_manager.inst.sound_game_found();
-            Button myButton = button_game.GetComponentInChildren<Button>();
-            myButton.GetComponentInChildren<Text>().text = "Game "+ (i+1);
-            myButton.GetComponentInChildren<button_game_found>().id_button = game_found_id;
-            button_game.transform.parent = container_button_game_found.transform;
-            game_found_id++;
-            yield return new WaitForSeconds(0.3f);
-        }
+    IEnumerator create_button(int id_game){// creation bouton pour rejoindre partie
+        GameObject button_game = Instantiate(prefab_button_game_network);
+        button_game.SetActive(true);
+        sound_manager.inst.sound_game_found();
+        Button myButton = button_game.GetComponentInChildren<Button>();
+        myButton.GetComponentInChildren<Text>().text = "Game "+ (id_game+1);
+        myButton.GetComponentInChildren<button_game_found>().id_button = id_game;
+        button_game.transform.parent = container_button_game_found.transform;
+        yield return new WaitForSeconds(0.3f);   
     }
 
 
 
     public void click_button_game_found(int id){ 
-        network.inst.sendMessage("J/"+ id +"/");  
-        print("send to server : J/"+ id +"/");  
-        //show_menu_selection_player();
+        network.inst.sendMessage("J/"+ id + "/");  
+        print("send to server : J/"+ id + "/");  
+        show_menu_selection_player();
     }
 
 
@@ -299,11 +292,10 @@ public class ui_manager : MonoBehaviour{
             text_network.text = "";
         }
     }
-      
-    
-    
-    
 
+
+    
+   
 
 
      

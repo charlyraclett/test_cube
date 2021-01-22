@@ -40,15 +40,15 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
   serializedVersion: 6
-  lengthInSec: 1
-  simulationSpeed: 1
+  lengthInSec: 2
+  simulationSpeed: 2.88
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -203,7 +203,7 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.6226415, g: 0.6226415, b: 0.51397294, a: 0.9647059}
+      minColor: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0.69411767}
       maxColor: {r: 0.01886791, g: 0.018454697, b: 0.017710915, a: 0.95686275}
       maxGradient:
         serializedVersion: 2
@@ -811,7 +811,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 99.7
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1258,10 +1258,10 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.9098039, g: 0.7372549, b: 0, a: 0}
-        key1: {r: 1, g: 0.69411767, b: 0, a: 1}
-        key2: {r: 0.8235294, g: 0.30980393, b: 0, a: 1}
-        key3: {r: 0.53333336, g: 0, b: 0, a: 0}
+        key0: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 0, b: 0, a: 1}
+        key2: {r: 0.2264151, g: 0.20442964, b: 0.19117124, a: 1}
+        key3: {r: 0.16862746, g: 0.19215688, b: 0.227451, a: 0}
         key4: {r: 0.11764706, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
@@ -1276,7 +1276,7 @@ ParticleSystem:
         ctime7: 0
         atime0: 0
         atime1: 6553
-        atime2: 52428
+        atime2: 61777
         atime3: 65535
         atime4: 0
         atime5: 0

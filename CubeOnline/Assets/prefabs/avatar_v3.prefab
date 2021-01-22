@@ -179,11 +179,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   host: 0
   id_avatar: 0
-  speed: 5
+  speed: 6
   speed_rotation: 0.6
   origin_shoot: {fileID: 1518590455355181575}
   shoot_effect: {fileID: 1705863768348537053}
   bullet: {fileID: 7630094332726742158, guid: 5698c49097dff364a982f892e620b70d, type: 3}
+  particule_cross_hair: {fileID: 0}
+  origin_cross_hair: {fileID: 0}
   force_shoot: 12
   death_effect: {fileID: 7480165748579919891, guid: 386f91283f218d743a994f0177c2ae7c,
     type: 3}
