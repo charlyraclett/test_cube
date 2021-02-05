@@ -7,6 +7,12 @@ TagManager:
   - ground
   - degat
   - enemy
+  - led
+  - bomb
+  - base_player4
+  - base_player3
+  - base_player2
+  - base_player1
   layers:
   - Default
   - TransparentFX
@@ -16,7 +22,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - game
   - 
   - 
   - 

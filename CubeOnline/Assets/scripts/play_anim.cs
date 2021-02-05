@@ -16,7 +16,7 @@ public class play_anim : MonoBehaviour
     }
 
     public void change_color(int value){
-        gameObject.GetComponent<MeshRenderer>().material = network.inst.color[value];
+        gameObject.GetComponent<MeshRenderer>().material = player_manager.inst.color[value];
     }
 
 
@@ -33,7 +33,7 @@ public class play_anim : MonoBehaviour
     public IEnumerator turn_objet(){
         InvokeRepeating("play", 0.5f, 2f);
         while(true){
-            transform.Rotate(Vector3.up, 80 * Time.deltaTime);
+            transform.Rotate(Vector3.up, 80 * Time.unscaledDeltaTime);
             yield return null;
         } 
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class particule_collider : MonoBehaviour{
 
-    public int id_player_bullet;
+    public int id_player_shoot;
     SphereCollider col;
 
 
@@ -20,18 +20,29 @@ public class particule_collider : MonoBehaviour{
         if(col.tag == "Player"){
             controller_cube cube = col.gameObject.GetComponent<controller_cube>();
             cube.controller_dead();
-            if(id_player_bullet != cube.id_avatar){
-                ui_manager.inst.add_score_for(id_player_bullet);
+            if(id_player_shoot != cube.id_avatar){ 
+                StartCoroutine(player_manager.inst.refresh_score(id_player_shoot,0));
             }
             StopAllCoroutines();
             Destroy(this);
         }
-        else if(col.tag == "enemy"){
-            col.gameObject.GetComponent<navmesh_agent>().agent_dead();
-            ui_manager.inst.add_score_for(id_player_bullet);
+
+        else if(col.tag == "enemy"){ 
+            StartCoroutine(player_manager.inst.refresh_score(id_player_shoot,0));
+            navmesh_agent enemy = col.gameObject.GetComponent<navmesh_agent>();
+            enemy.agent_dead();
             StopAllCoroutines();
             Destroy(this);
         }
+
+        else if(col.tag == "bomb"){  
+            StartCoroutine(player_manager.inst.refresh_score(id_player_shoot,0));
+            bomb_enemy bomb = col.gameObject.GetComponent<bomb_enemy>();
+            bomb.agent_dead();
+            StopAllCoroutines();
+            Destroy(this);
+        }
+       
     }
 
 
@@ -55,6 +66,7 @@ public class particule_collider : MonoBehaviour{
             elapsed += Time.deltaTime;
             yield return null;
         }
+        col.radius = 0f;
 
         Destroy(this);
 
