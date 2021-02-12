@@ -52,7 +52,7 @@ public class dev_script : MonoBehaviour{
     string data = "/0/0/0/0/0/0/0/0/0/0/0/";
     int id = 1;
     int type_vehicule;
-    int start_at;
+    public int start_at;
     int level_id;
 
     public GameObject menu;
@@ -62,14 +62,11 @@ public class dev_script : MonoBehaviour{
 
 
 
-    void Start(){
-
+    void Awake(){
         inst = this;
-
         set_player();
         set_vehicule();
         set_vague();
-
         if(skip_menu){  
             StartCoroutine(start_without_menu());
         }else{
@@ -79,9 +76,7 @@ public class dev_script : MonoBehaviour{
         if(unlimit_life){
             player_manager.inst.life_player = 1000;
         }
-
         level_manager.inst.id_vague = start_at;
-  
     }
 
     
@@ -97,7 +92,7 @@ public class dev_script : MonoBehaviour{
         if(!no_enemy){
             StartCoroutine(level_manager.inst.change_vague(start_at));
         }
-        sound_manager.inst.sound_music_level(level_manager.inst.id_level);
+        sound_manager.inst.sound_music_level(game_manager.inst.id_level);
 
     }
 
@@ -166,8 +161,7 @@ public class dev_script : MonoBehaviour{
     }
 
 
-    public void set_player(){
-
+    void set_player(){
         switch(player_color){
             case player.green :   player_manager.inst.myId = 0; break;
             case player.blue :    player_manager.inst.myId = 1; break;
@@ -176,17 +170,16 @@ public class dev_script : MonoBehaviour{
         }
     }
 
-    public void set_vehicule(){
+    void set_vehicule(){
         switch(_type){
             case choix_vehicule.classic :  type_vehicule = 0; break;
             case choix_vehicule.catapult : type_vehicule = 1; break;
             case choix_vehicule.canon :    type_vehicule = 2; break; 
         }
-        player_manager.inst.choix_type = type_vehicule;
-        
+        player_manager.inst.choix_type = type_vehicule;   
     }
 
-    public void set_vague(){
+    void set_vague(){
         switch(start_vague){
             case vague.I         : start_at = 0; break;
             case vague.II        : start_at = 1; break;
@@ -195,23 +188,21 @@ public class dev_script : MonoBehaviour{
             case vague.V         : start_at = 4; break; 
             case vague.the_last  : start_at = 5; break; 
             case vague.end_Level : start_at = 6; break; 
-        }
-        
+        } 
     }
 
-    public void set_level(){
+    void set_level(){
         switch(_level){
             case choix_level.level1 : level_id = 0; break;
             case choix_level.level2 : level_id = 1; break;
         }
-
         for (int i = 0; i < level.Length; i++){
             if(i == level_id){
                 level[i].SetActive(true);
             }else{
                 level[i].SetActive(false);
             }   
-        }   
+        }  
     }
 
 

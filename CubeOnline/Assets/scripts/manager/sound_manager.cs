@@ -194,7 +194,7 @@ public class sound_manager : MonoBehaviour{
     }
 
     public IEnumerator sound_end_last_pv(){ 
-         yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.4f);
         while(player_manager.inst.life_player == 1){
         audio_source_bullet.PlayOneShot(last_life_sound,1f);
         yield return new WaitForSeconds(2f);
@@ -288,7 +288,7 @@ public class sound_manager : MonoBehaviour{
 
 
 
-    public  IEnumerator set_mixer_in_game(float duration, float targetVolume){
+    public IEnumerator set_mixer_in_game(float duration, float targetVolume){
         float currentTime = 0f;
         float currentVol = 0f;
         mixer_in_game.GetFloat("volume_in_game", out currentVol);

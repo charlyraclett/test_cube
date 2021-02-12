@@ -53,7 +53,7 @@ public class navmesh_agent : MonoBehaviour{
 
   
     IEnumerator run(){
-        agent.speed = 1f;
+
         while(true){
             if(target_agent != null){
                 agent.SetDestination(target_agent.position);
@@ -79,7 +79,7 @@ public class navmesh_agent : MonoBehaviour{
     }
 
     void search_target(){
-        agent.speed = 6f;
+       
         foreach(Transform _target in player_manager.inst.avatars_pos){
             if(_target != null){
                 target_agent = _target;

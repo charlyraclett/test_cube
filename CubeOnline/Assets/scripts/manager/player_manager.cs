@@ -49,10 +49,11 @@ public class player_manager : MonoBehaviour{
 
     // trigger game_manager
     public void player_win(){
+        player_manager.inst.life_player = 3;
         start_timer = false;
         my_avatar.host = false;
         if(timer <  PlayerPrefs.GetFloat("Timer")){
-            print("new Record");
+            print("new Record !!");
             PlayerPrefs.SetFloat("Timer", timer);
             PlayerPrefs.Save(); 
         } 
@@ -104,7 +105,12 @@ public class player_manager : MonoBehaviour{
         GameObject cube = Instantiate(avatars_prefab[type],pos_base, bases_pos[id].rotation);
         avatars_pos[id] = cube.GetComponent<Transform>();
         controller_cube controller = cube.GetComponent<controller_cube>();
-        cube.GetComponent<MeshRenderer>().material = color[id];
+
+      
+        foreach(GameObject color_player in GameObject.FindGameObjectsWithTag("color")){
+            color_player.GetComponent<MeshRenderer>().material = color[id];
+        }
+     
         controller.id_avatar = id;
         sound_manager.inst.sound_friction();
         ui_manager.inst.score_players[id].transform.parent.gameObject.SetActive(true);
@@ -123,10 +129,9 @@ public class player_manager : MonoBehaviour{
         cube.transform.parent = null;
         bases_pos[id].GetComponent<Animator>().SetBool("turn_player_create",false);
 
-      
         if(ismine){   
             cube.GetComponent<Rigidbody>().useGravity = true;
-            cube.GetComponent<Rigidbody>().isKinematic = false;
+            cube.GetComponent<Rigidbody>().isKinematic = false; 
             my_avatar.host = ismine;
 
             if(player_active_multi){

@@ -19,7 +19,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""id"": ""b3c4342f-1868-46f7-ac67-c7ed99b67f35"",
             ""actions"": [
                 {
-                    ""name"": ""shoot"",
+                    ""name"": ""left_bump"",
                     ""type"": ""Button"",
                     ""id"": ""f4e80b66-aa3e-4755-ac47-96abab64ace1"",
                     ""expectedControlType"": ""Button"",
@@ -65,6 +65,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""right_bump"",
+                    ""type"": ""Value"",
+                    ""id"": ""d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -75,7 +83,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""shoot"",
+                    ""action"": ""left_bump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -86,7 +94,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""shoot"",
+                    ""action"": ""left_bump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -232,6 +240,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""move_cube"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""right_bump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -256,31 +275,20 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 }
             ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""852a1a72-a554-4fb4-8b7e-c19937c148c0"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
 }");
         // game_pad
         m_game_pad = asset.FindActionMap("game_pad", throwIfNotFound: true);
-        m_game_pad_shoot = m_game_pad.FindAction("shoot", throwIfNotFound: true);
+        m_game_pad_left_bump = m_game_pad.FindAction("left_bump", throwIfNotFound: true);
         m_game_pad_move_cube = m_game_pad.FindAction("move_cube", throwIfNotFound: true);
         m_game_pad_rotate_cube = m_game_pad.FindAction("rotate_cube", throwIfNotFound: true);
         m_game_pad_Newaction = m_game_pad.FindAction("New action", throwIfNotFound: true);
         m_game_pad_pause = m_game_pad.FindAction("pause", throwIfNotFound: true);
         m_game_pad_WASD = m_game_pad.FindAction("WASD", throwIfNotFound: true);
+        m_game_pad_right_bump = m_game_pad.FindAction("right_bump", throwIfNotFound: true);
         // keyboard
         m_keyboard = asset.FindActionMap("keyboard", throwIfNotFound: true);
         m_keyboard_A = m_keyboard.FindAction("A", throwIfNotFound: true);
@@ -334,22 +342,24 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     // game_pad
     private readonly InputActionMap m_game_pad;
     private IGame_padActions m_Game_padActionsCallbackInterface;
-    private readonly InputAction m_game_pad_shoot;
+    private readonly InputAction m_game_pad_left_bump;
     private readonly InputAction m_game_pad_move_cube;
     private readonly InputAction m_game_pad_rotate_cube;
     private readonly InputAction m_game_pad_Newaction;
     private readonly InputAction m_game_pad_pause;
     private readonly InputAction m_game_pad_WASD;
+    private readonly InputAction m_game_pad_right_bump;
     public struct Game_padActions
     {
         private @PlayerControls m_Wrapper;
         public Game_padActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @shoot => m_Wrapper.m_game_pad_shoot;
+        public InputAction @left_bump => m_Wrapper.m_game_pad_left_bump;
         public InputAction @move_cube => m_Wrapper.m_game_pad_move_cube;
         public InputAction @rotate_cube => m_Wrapper.m_game_pad_rotate_cube;
         public InputAction @Newaction => m_Wrapper.m_game_pad_Newaction;
         public InputAction @pause => m_Wrapper.m_game_pad_pause;
         public InputAction @WASD => m_Wrapper.m_game_pad_WASD;
+        public InputAction @right_bump => m_Wrapper.m_game_pad_right_bump;
         public InputActionMap Get() { return m_Wrapper.m_game_pad; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -359,9 +369,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_Game_padActionsCallbackInterface != null)
             {
-                @shoot.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnShoot;
-                @shoot.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnShoot;
-                @shoot.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnShoot;
+                @left_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
+                @left_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
+                @left_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
                 @move_cube.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
                 @move_cube.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
                 @move_cube.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
@@ -377,13 +387,16 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @WASD.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
                 @WASD.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
                 @WASD.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
+                @right_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
+                @right_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
+                @right_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
             }
             m_Wrapper.m_Game_padActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @shoot.started += instance.OnShoot;
-                @shoot.performed += instance.OnShoot;
-                @shoot.canceled += instance.OnShoot;
+                @left_bump.started += instance.OnLeft_bump;
+                @left_bump.performed += instance.OnLeft_bump;
+                @left_bump.canceled += instance.OnLeft_bump;
                 @move_cube.started += instance.OnMove_cube;
                 @move_cube.performed += instance.OnMove_cube;
                 @move_cube.canceled += instance.OnMove_cube;
@@ -399,6 +412,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @WASD.started += instance.OnWASD;
                 @WASD.performed += instance.OnWASD;
                 @WASD.canceled += instance.OnWASD;
+                @right_bump.started += instance.OnRight_bump;
+                @right_bump.performed += instance.OnRight_bump;
+                @right_bump.canceled += instance.OnRight_bump;
             }
         }
     }
@@ -446,12 +462,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public KeyboardActions @keyboard => new KeyboardActions(this);
     public interface IGame_padActions
     {
-        void OnShoot(InputAction.CallbackContext context);
+        void OnLeft_bump(InputAction.CallbackContext context);
         void OnMove_cube(InputAction.CallbackContext context);
         void OnRotate_cube(InputAction.CallbackContext context);
         void OnNewaction(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnWASD(InputAction.CallbackContext context);
+        void OnRight_bump(InputAction.CallbackContext context);
     }
     public interface IKeyboardActions
     {

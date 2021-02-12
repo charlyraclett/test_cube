@@ -24,11 +24,8 @@ public class map_manager : MonoBehaviour{
     int count = 0;
 
     public List<int> my_list_int_random = new List<int>();
-    int lastNumber = 1000;
-    int currentNumber = 0;
-
-    
-    
+   
+   
     void Start(){
         Invoke("initialize",0.1f);
     }
@@ -38,7 +35,7 @@ public class map_manager : MonoBehaviour{
         inst = this;
         add_floor_to_list();
         add_bases_to_player_manager();
-        print("start map_manager");
+        StartCoroutine(intro_anim_floor(0.5f,0.02f));
     }
 
 
@@ -113,14 +110,10 @@ public class map_manager : MonoBehaviour{
         }  
         floor_list.Clear();
         add_floor_to_list();
+
     }
 
 
-
-    // trigger level_manager
-    public void launch_anim_build_map(float delay,float cadence){   
-        StartCoroutine(intro_anim_floor(delay,cadence));
-    }
 
 
     IEnumerator intro_anim_floor(float delay, float cadence){
@@ -136,7 +129,10 @@ public class map_manager : MonoBehaviour{
         yield return new WaitForSeconds(1.5f);
         sound_manager.inst.sound_start_map_anim();
         yield return new WaitForSeconds(1f);
-        StartCoroutine(game_manager.inst.launch_level());
+
+        if(!dev_script.inst.skip_menu){
+            StartCoroutine(game_manager.inst.launch_level());
+        }
 
     }
 

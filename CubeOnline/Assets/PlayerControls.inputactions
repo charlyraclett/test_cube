@@ -6,7 +6,7 @@
             "id": "b3c4342f-1868-46f7-ac67-c7ed99b67f35",
             "actions": [
                 {
-                    "name": "shoot",
+                    "name": "left_bump",
                     "type": "Button",
                     "id": "f4e80b66-aa3e-4755-ac47-96abab64ace1",
                     "expectedControlType": "Button",
@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "right_bump",
+                    "type": "Value",
+                    "id": "d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -62,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "shoot",
+                    "action": "left_bump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -73,7 +81,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "shoot",
+                    "action": "left_bump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -219,6 +227,17 @@
                     "action": "move_cube",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cefbe91b-d66d-43e7-8442-957b8977f46e",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "right_bump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -243,19 +262,7 @@
                     "interactions": ""
                 }
             ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "852a1a72-a554-4fb4-8b7e-c19937c148c0",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "bindings": []
         }
     ],
     "controlSchemes": []

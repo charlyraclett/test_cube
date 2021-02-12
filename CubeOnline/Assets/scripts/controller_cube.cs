@@ -8,13 +8,14 @@ public class controller_cube : MonoBehaviour{
     Rigidbody rb;
     GameObject temp_cross_hair;
 
-    //PlayerControls gameplay;
+    PlayerControls gameplay;
 
     [Header("Characteristic")]
     public bool host;
     public int id_avatar;
     public float speed = 5;
     public float speed_rotation = 1;
+    public float head_rotation_speed = 100f;
     public float force_shoot;
     public bool type_catapulte;
     public bool type_canon;
@@ -28,16 +29,26 @@ public class controller_cube : MonoBehaviour{
     public GameObject particule_cross_hair;
     public GameObject origin_cross_hair;
     public GameObject death_effect;
+    public Transform head_turn;
+    public Transform body;
 
-    [HideInInspector]public int is_dead = 0;
+    [HideInInspector] public int is_dead = 0;
     [HideInInspector] public int is_shooting = 0;
-    [HideInInspector]public bool is_moving;
-    [HideInInspector]public bool key_holding;
+    [HideInInspector] public bool is_moving;
+    [HideInInspector] public bool key_holding;
+
     bool shoot_running;
 
     Vector2 left_stick;
     Vector2 right_stick;
 
+    public float smooth_rotate = 0.1f;
+    public float smooth_rotate_head = 0.5f;
+    float TurnSmoothVelocity;
+    float TurnSmoothVelocityHead;
+    
+    bool lock_rotation;
+    float value_bumper_right;
 
     
     void Awake(){
@@ -47,44 +58,47 @@ public class controller_cube : MonoBehaviour{
             invulnerable = true;
         }
 
-        // gameplay = new PlayerControls();
-        // gameplay.game_pad.shoot.performed += ctx => press_for_shoot();
-        // gameplay.game_pad.pause.performed += ctx => button_start();
+        gameplay = new PlayerControls();
+        gameplay.game_pad.left_bump.performed += ctx => press_for_shoot();
+        gameplay.game_pad.right_bump.performed += ctx => value_bumper_right = ctx.ReadValue<float>();
+        gameplay.game_pad.right_bump.canceled += ctx => value_bumper_right = 0f;
+        gameplay.game_pad.pause.performed += ctx => button_start();
 
-        // gameplay.game_pad.move_cube.performed += ctx => left_stick = ctx.ReadValue<Vector2>();
-        // gameplay.game_pad.move_cube.canceled += ctx => left_stick = Vector2.zero;
+        gameplay.game_pad.move_cube.performed += ctx => left_stick = ctx.ReadValue<Vector2>();
+        gameplay.game_pad.move_cube.canceled += ctx => left_stick = Vector2.zero;
 
-        // gameplay.game_pad.rotate_cube.performed += ctx => right_stick = ctx.ReadValue<Vector2>();
-        // gameplay.game_pad.rotate_cube.canceled += ctx => right_stick = Vector2.zero;
+        gameplay.game_pad.rotate_cube.performed += ctx => right_stick = ctx.ReadValue<Vector2>();
+        gameplay.game_pad.rotate_cube.canceled += ctx => right_stick = Vector2.zero;
 
     }
 
-    // void OnEnable(){
-    //     gameplay.game_pad.Enable();
-    // }
+    void OnEnable(){
+        gameplay.game_pad.Enable();
+    }
 
-    // void OnDisable(){
-    //     gameplay.game_pad.Disable();
-    // }
+    void OnDisable(){
+        gameplay.game_pad.Disable();
+    }
+
+    void lock_player_rotation(){
+        lock_rotation = value_bumper_right > 0 ? true : false;  
+    }
     
 
     void Update(){
  
-        Vector3 origin = transform.position;
-        Vector3 direction = transform.forward;
-        Ray ray = new Ray(origin,direction);
+        // Vector3 origin = transform.position;
+        // Vector3 direction = transform.forward;
+        // Ray ray = new Ray(origin,direction);
 
-
-
-        if (Physics.Raycast(ray, out RaycastHit raycastHit)){
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.green);
-            float distance = Vector3.Distance (transform.position, raycastHit.transform.transform.position);
-          //  Debug.Log("Did Hit "+ raycastHit.transform.tag+" distance : "+distance);
-
-        }
-        else{
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.white);
-        }
+        // if (Physics.Raycast(ray, out RaycastHit raycastHit)){
+        //     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.green);
+        //     float distance = Vector3.Distance (transform.position, raycastHit.transform.transform.position);
+        //   //  Debug.Log("Did Hit "+ raycastHit.transform.tag+" distance : "+distance);
+        // }
+        // else{
+        //     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.white);
+        // }
 
 
         if (rb.velocity.y < -15f){
@@ -94,15 +108,29 @@ public class controller_cube : MonoBehaviour{
 
         if(host){
 
-            // float x = left_stick.x * Time.deltaTime * speed;
-            // float y = left_stick.y * Time.deltaTime * speed;
-            // transform.Translate(x, 0, y);
-            // float r = right_stick.x * Time.deltaTime * speed_rotation * 100f;
-            // Vector3 rot = new Vector3 (transform.rotation.x,r,transform.rotation.z)
-          
+            float r = right_stick.x * Time.deltaTime * speed_rotation * head_rotation_speed;
+            Vector3 rot = new Vector3 (head_turn.rotation.x,r,head_turn.rotation.z);
+            head_turn.Rotate(Vector3.up,r); 
+
+            float horizontal = left_stick.x;
+            float vertical = left_stick.y;
+            Vector3 direction = new Vector3(horizontal, 0f, vertical);
+            Vector3 move = new Vector3(horizontal, 0f, vertical) * Time.deltaTime * speed;
 
            
+            if(direction.magnitude >= 0.1f){
+                float targetAngle = Mathf.Atan2(direction.x,direction.z) * Mathf.Rad2Deg; 
+                float angle = Mathf.SmoothDampAngle(body.eulerAngles.y, targetAngle, ref TurnSmoothVelocity, smooth_rotate);
+                body.rotation = Quaternion.Euler(0f,angle, 0f);
+                this.transform.Translate(move,Space.World);
+                play_fx_sound();
+            }
+            else{
+                sound_manager.inst.audio_source_move.Stop();     
+            }
 
+            
+            
             if(Input.GetKey(KeyCode.UpArrow)){  
                 this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
                 play_fx_sound();
@@ -125,10 +153,10 @@ public class controller_cube : MonoBehaviour{
             } 
            
 
-            if(!Input.anyKey && key_holding) {
-                key_holding = false;
-                sound_manager.inst.audio_source_move.Stop();     
-            }
+            // if(!Input.anyKey && key_holding) {
+            //     key_holding = false;
+            //     sound_manager.inst.audio_source_move.Stop();     
+            // }
 
             if(Input.GetKeyDown(KeyCode.Space) && type_catapulte){ 
                 show_particule_cross_hair();
@@ -142,7 +170,6 @@ public class controller_cube : MonoBehaviour{
             }
 
             if (Input.GetKeyDown(KeyCode.Space)){ 
-
                 press_for_shoot();
             }
         }  
@@ -150,6 +177,8 @@ public class controller_cube : MonoBehaviour{
 
 
     public void press_for_shoot(){
+        if(!host)
+        return;
         if(shoot_running)
         return;
         if(type_canon){
@@ -160,6 +189,7 @@ public class controller_cube : MonoBehaviour{
             shoot_running = true;
             StartCoroutine(shoot());
         }
+        
     }
 
 
@@ -175,7 +205,7 @@ public class controller_cube : MonoBehaviour{
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
 
-            _bullet.GetComponent<bullet>().target = network.inst.avatars_pos[3]; // test bullet  tete chercheuse
+            //_bullet.GetComponent<bullet>().target = network.inst.avatars_pos[3]; // test bullet  tete chercheuse
 
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0; // network

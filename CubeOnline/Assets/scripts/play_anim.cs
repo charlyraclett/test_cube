@@ -16,7 +16,10 @@ public class play_anim : MonoBehaviour
     }
 
     public void change_color(int value){
-        gameObject.GetComponent<MeshRenderer>().material = player_manager.inst.color[value];
+        foreach(GameObject color_player in GameObject.FindGameObjectsWithTag("color")){
+            color_player.GetComponent<MeshRenderer>().material =  player_manager.inst.color[value];
+        }
+     
     }
 
 

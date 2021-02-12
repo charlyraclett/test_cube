@@ -21,6 +21,9 @@ public class ui_manager : MonoBehaviour{
     public GameObject prefab_button_game;
     public GameObject container_button_level;
 
+    [Header("UI buttons level")]
+    public Button[] buttons_level;
+
 
 
     [Header("Menus")]
@@ -64,6 +67,8 @@ public class ui_manager : MonoBehaviour{
 
     public Text text_vague_nbr;
     public Text text_level_nbr;
+
+    public Animator black_panel_end_level;
 
     
     void Awake(){
@@ -149,13 +154,12 @@ public class ui_manager : MonoBehaviour{
     
 
     public void click_button_level(int id_level){ 
-        level_manager.inst.id_level = id_level;
+       game_manager.inst.id_level = id_level;
         sound_manager.inst.sound_click();
         menu.GetComponent<Animator>().SetTrigger("hide_menu");
         logo_cube.GetComponent<Animator>().SetTrigger("hide_logo");
         button_back.SetActive(false);
         container_button_level.SetActive(false);
-    
         StartCoroutine(game_manager.inst.launch_game());
 
         if(player_active_multi){
@@ -209,12 +213,14 @@ public class ui_manager : MonoBehaviour{
     }
 
     public void show_menu_selection_level(){ 
-        print("show_level container ");
+        print("show level container ");
         text_menu.text = "";
         cont_ui_cam_vehicule.SetActive(false);
         buttons_type_cont.SetActive(false);
-        level_manager.inst.active_buttons_acces_levels();
+        buttons_players_container.SetActive(false);
+        button_mode_game_container.SetActive(false);
         container_button_level.SetActive(true);
+        active_buttons_acces_levels();
         button_back.SetActive(true);
         ui_position = 3;    
     }
@@ -347,11 +353,21 @@ public class ui_manager : MonoBehaviour{
     }
 
     public void click_button_next_level(){
+        StartCoroutine(show_level_after_level_finished());
+    }
+
+    IEnumerator show_level_after_level_finished(){
+        black_panel_end_level.SetTrigger("hide_screen");
+        yield return new WaitForSeconds(1.2f);
+        player_manager.inst.reset_all_player();
+        level_manager.inst.delete_level();
+        camera_manager.inst.reset_cameras();
         menu_in_game.SetActive(false);
+        menu_end_level.SetActive(false);
         menu.SetActive(true);
         show_menu_selection_level();
-        print("Soon Man !");
-    }
+        sound_manager.inst.sound_music_menu(); 
+    } 
 
     public void click_button_restart_gameover(){
         StartCoroutine(game_manager.inst.reset_and_restart());
@@ -407,7 +423,7 @@ public class ui_manager : MonoBehaviour{
 
 
 
-     public  IEnumerator set_alpha_ui_game(float duration, float target_alpha){
+    public  IEnumerator set_alpha_ui_game(float duration, float target_alpha){
 
         float currentTime = 0f;
         float value =  ui_in_game.alpha;
@@ -420,6 +436,20 @@ public class ui_manager : MonoBehaviour{
             yield return null;
         }
         yield break;
+    }
+
+
+
+    public void active_buttons_acces_levels(){
+        int level_complete = PlayerPrefs.GetInt("level_complete");
+
+        print("unlock level "+ level_complete);
+        for (int i = 0; i <= level_complete; i++){
+            buttons_level[i].interactable = true;
+            buttons_level[i].gameObject.GetComponent<Animator>().enabled = true;
+            buttons_level[i].transform.GetChild(0).gameObject.SetActive(false);
+            buttons_level[i].transform.GetChild(1).gameObject.SetActive(true);
+        }  
     }
 
 

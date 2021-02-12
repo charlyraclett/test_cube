@@ -9,10 +9,23 @@ public class game_manager : MonoBehaviour{
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
+    private Vector2 cursorPosition;
+
+    public int id_level;
+
+    public GameObject[] levels_prefab;
+    Dictionary<int, string> dictionary = new Dictionary<int, string>();
+
+
+
 
    
     void Start(){
         inst = this; 
+        dictionary.Add(0, "I");
+        dictionary.Add(1, "II");
+        dictionary.Add(2, "III");
+        dictionary.Add(3, "IV"); 
 
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
 
@@ -21,14 +34,28 @@ public class game_manager : MonoBehaviour{
             sound_manager.inst.sound_music_menu(); 
             ui_manager.inst.ui_in_game.alpha = 0f;  
         }
+  
+        Cursor.visible = true;
+        // optional place it in the center on start
+       // cursorPosition = new Vector2(Screen.width/2f, Screen.height/2f);
     }
 
 
-    // trigger ui manager button type vehicule
+
+    // private void OnGUI(){
+    //     float h = 150f * Input.GetAxis("Horizontal") * Time.deltaTime;
+    //     float v = 150f * Input.GetAxis("Vertical") * Time.deltaTime;   
+    //     cursorPosition.x += h;
+    //     cursorPosition.y += v;
+    //     GUI.DrawTexture(new Rect(cursorPosition.x, Screen.height - cursorPosition.y, 40, 40), cursorTexture);
+    // }
+
+    // trigger ui manager button level
     public IEnumerator launch_game(){
         sound_manager.inst.sound_start_game_anim();
         yield return new WaitForSeconds(1f);// end anim menu
-        level_manager.inst.load_level();
+        Instantiate(levels_prefab[id_level], new Vector3(0, 0, 0), Quaternion.identity); 
+        ui_manager.inst.refresh_text_level_nbr(dictionary[id_level]);
         yield return new WaitForSeconds(1f); // time to anim floor intro
         StartCoroutine(camera_manager.inst.switch_cam_game());  
     }
@@ -40,11 +67,11 @@ public class game_manager : MonoBehaviour{
         sound_manager.inst.sound_title_start_game();
         ui_manager.inst.anim_start_level.SetTrigger("show_start");
         yield return new WaitForSeconds(2.5f);
-        StartCoroutine(player_manager.inst.create_player(player_manager.inst.myId,true, player_manager.inst.choix_type,0.1f));
+        StartCoroutine(player_manager.inst.create_player(player_manager.inst.myId, true, player_manager.inst.choix_type, 0.1f));
         StartCoroutine(level_manager.inst.change_vague(level_manager.inst.id_vague));
         StartCoroutine(player_manager.inst.count_time());
         StartCoroutine(ui_manager.inst.set_alpha_ui_game(0.5f,1f));
-        sound_manager.inst.sound_music_level(level_manager.inst.id_level);
+        sound_manager.inst.sound_music_level(id_level);
     }
 
 
@@ -78,8 +105,10 @@ public class game_manager : MonoBehaviour{
         sound_manager.inst.audio_source_zic.Stop();
         sound_manager.inst.sound_win_level();
         player_manager.inst.player_win();
-         
-      //  sound_manager.inst.audio_source_move.Stop();
+        id_level++;
+        PlayerPrefs.SetInt("level_complete", id_level);
+        PlayerPrefs.Save(); 
+        print("save unlock level "+ id_level);
     }
 
 
@@ -94,8 +123,7 @@ public class game_manager : MonoBehaviour{
         map_manager.inst.reinitialze_floor();
         camera_manager.inst.reset_cameras();
         level_manager.inst.id_vague = 0;
-        StartCoroutine(sound_manager.inst.set_mixer_in_game(1f,1f));
-        
+        StartCoroutine(sound_manager.inst.set_mixer_in_game(1f,1f)); 
         ui_manager.inst.black_menu_gameover.GetComponent<Animator>().SetBool("black_panel",false);
         yield return new WaitForSeconds(1f); 
         StartCoroutine(launch_level());

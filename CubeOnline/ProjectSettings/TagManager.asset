@@ -13,6 +13,7 @@ TagManager:
   - base_player3
   - base_player2
   - base_player1
+  - color
   layers:
   - Default
   - TransparentFX

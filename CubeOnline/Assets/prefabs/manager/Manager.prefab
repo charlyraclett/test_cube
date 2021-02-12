@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2767629690920691314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2767629690920691312}
+  - component: {fileID: 2767629690920691308}
+  - component: {fileID: 2767629690920691310}
+  - component: {fileID: 2767629690920691311}
+  - component: {fileID: 2767629690920691309}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2767629690920691312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2767629690920691308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f505f0e3acb3b341a926c7ff217dca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies_in_game: 0
+  id_vague: 0
+--- !u!114 &2767629690920691310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d25131942808e947b8fafc9291753b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 2800000, guid: 18d50884228a47d4abd6920f94ca5618, type: 3}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 1}
+  id_level: 0
+  levels_prefab:
+  - {fileID: 6768955940654426667, guid: 6ab6a8e8667473145bb928e56ac32cd6, type: 3}
+  - {fileID: 8817822969961288537, guid: 40619d106b9e70042a8c460d66caa603, type: 3}
+--- !u!114 &2767629690920691311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc05bb4a5402ee1419d3dcefc4c93bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nest_enemy:
+  - {fileID: 2373533187474083733, guid: cc000d9623990614ab7343c4dadb6169, type: 3}
+  enemies_prefab:
+  - {fileID: 659672002434680306, guid: 8ea82627f21bcfc468991ee7bff028ca, type: 3}
+  - {fileID: 5607240695773308577, guid: 6273f64e4fa40464fa4e16e1cc923f30, type: 3}
+  - {fileID: 6880021961373504234, guid: 3d5c7922e4748d742a8c673ca689bb3e, type: 3}
+  _wall_fire:
+  - {fileID: 0}
+  - {fileID: 0}
+  wall_fan: {fileID: 0}
+  gear_floor: {fileID: 0}
+  position_nest:
+  - {fileID: 0}
+  - {fileID: 0}
+  enemy_in_game: []
+--- !u!114 &2767629690920691309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7f3eb2ef834454498090cf1ab20ce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroy_player_prefs: 0
+  my_avatar: {fileID: 0}
+  myId: 0
+  choix_type: 0
+  enemies_killed: 0
+  enemies_to_kill_per_vague: 0
+  nbr_shoot: 0
+  time_finish_level: 0
+  bases_pos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  avatars_pos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  point_players: 00000000000000000000000000000000
+  player_active_multi: 0
+  pv_player_ui: {fileID: 0}
+  life_player: 3
+  distance_great_shot: 15
+  avatars_prefab:
+  - {fileID: 1518590454746285268, guid: 8fea0ebe66a3eb94fa10634c4473f962, type: 3}
+  - {fileID: 1962926036118206177, guid: 3796ac651f541694eb1c44ddc354afc2, type: 3}
+  - {fileID: 2228697627809123019, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
+  color:
+  - {fileID: 2100000, guid: 13c532aaa1ebb8b44894260b2e5374c7, type: 2}
+  - {fileID: 2100000, guid: 8b006dd7ae3dda64da68167ebf3b4e1d, type: 2}
+  - {fileID: 2100000, guid: bfb9f98e3ef2a644eb2344542a3a5897, type: 2}
+  - {fileID: 2100000, guid: a707f765c28a8364a8120f6cf3691011, type: 2}
+  bases_anim:
+  - {fileID: 0}
+  start_timer: 0

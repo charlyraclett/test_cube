@@ -17,6 +17,10 @@ public class level_one_behaviour : level_manager{
 
     int pv_player_temp;
 
+    void Start(){
+        id_vague = dev_script.inst.start_at;
+    }
+
 
     public override void vague_0(){ 
         print("vague 0");
@@ -156,6 +160,12 @@ public class level_one_behaviour : level_manager{
         yield return new WaitForSeconds(5f);
         Destroy(nest);
         sound_manager.inst.audio_source_nest.Stop();
+    }
+
+
+    public override void delete_level(){
+        base.delete_level();
+        Destroy(this.gameObject);
     }
 
 

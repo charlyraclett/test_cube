@@ -74,6 +74,29 @@ public class camera_manager : MonoBehaviour{
         cam_player_gameover.Priority = 20;
         dolly_cam_gameover.m_Speed = 1;
     }
+
+
+
+
+
+    public IEnumerator start_shake_cam_pressoir(){ 
+       
+        CinemachineBasicMultiChannelPerlin perlin = cam_game.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        float elapsed = 0.0f;
+        float duree = 0.1f; 
+      
+        perlin.m_AmplitudeGain = 1f;
+        
+        yield return new WaitForSeconds(0.2f);
+        elapsed = 0.0f;
+        duree = 0.1f; 
+        while( elapsed < duree ){
+            perlin.m_AmplitudeGain = Mathf.Lerp(1f,0f,elapsed / duree);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        perlin.m_AmplitudeGain = 0f;  
+    }
       
     
 }

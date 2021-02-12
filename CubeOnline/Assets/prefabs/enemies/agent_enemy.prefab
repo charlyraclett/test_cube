@@ -226,6 +226,7 @@ MonoBehaviour:
   shoot_effect: {fileID: 2952096891082905476}
   origin_shoot: {fileID: 659672001701399329}
   bullet: {fileID: 2178882160609412043, guid: f0a805dda16c471479edc1e9f16830d6, type: 3}
+  has_initialize: 0
 --- !u!195 &4908246653109295286
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -236,7 +237,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 1
-  m_Speed: 3
+  m_Speed: 1.5
   m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 300
