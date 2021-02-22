@@ -215,12 +215,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e89b8a76e6bdbf4fb37a63315c7a0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 4908246653109295286}
   target_agent: {fileID: 0}
   active_agent: 0
   distance_attack: 7
   force_shoot: 10
   has_canon: 0
   cadence_canon: 1.5
+  speed_bullet_canon: 6
   death_effect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,
     type: 3}
   shoot_effect: {fileID: 2952096891082905476}
@@ -237,7 +239,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 1
-  m_Speed: 1.5
+  m_Speed: 2.5
   m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 300

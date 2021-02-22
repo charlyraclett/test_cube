@@ -14,9 +14,9 @@ public class wall_press : MonoBehaviour{
     public BoxCollider colldier_press;
     public Light light_alert;
 
-    int nbr_press = 3;
 
     public bool active_detection;
+    bool toggle_auto_detection;
     bool ready;
 
 
@@ -28,51 +28,39 @@ public class wall_press : MonoBehaviour{
 
 
     // trigger level_two_behaviour
-    public void start_pressoir(float delay, int nbr){
+    public void start_pressoir(float delay){
         StartCoroutine(press_player(delay));
-        nbr_press = nbr;
+        
     }
 
 
     void OnTriggerEnter(Collider col){ 
-        if(col.tag == "Player" && active_detection && ready){      
+        if(col.tag == "Player" && active_detection && ready && !toggle_auto_detection){      
             StartCoroutine(press_player(0f));
-            active_detection = false; 
-            nbr_press = 1;
+            toggle_auto_detection = true; 
         }
     }
 
     void OnTriggerExit(){
-      //  active_detection = true;             
+        if(active_detection)
+        toggle_auto_detection = false;         
     }
 
 
     IEnumerator press_player(float delay){
 
         ready = false;
-
         yield return new WaitForSeconds(delay);
-
         anim.SetBool("in_game",true);
         sound_fx_play(move_wall,1f);
+
         yield return new WaitForSeconds(0.5f);
         audio_source.Stop();
 
         yield return new WaitForSeconds(2f);
-    
-        while(nbr_press > 0){
-            anim.SetTrigger("press");
-            colldier_press.isTrigger = true;
-            StartCoroutine(touch_ground());
-            nbr_press--;
-            if(nbr_press == 0){
-                StartCoroutine(end_wall());
-                yield break;
-            }
-            yield return new WaitForSeconds(6f);// delai si player dead pour esquiver
-        }
-
-       
+        anim.SetTrigger("press");
+        colldier_press.isTrigger = true;
+        StartCoroutine(touch_ground()); 
     }
 
     IEnumerator end_wall(){
@@ -80,8 +68,10 @@ public class wall_press : MonoBehaviour{
         anim.SetBool("in_game",false);
         sound_fx_play(move_wall,1f);
         yield return new WaitForSeconds(1f);
-        level_manager.inst.remove_enemy_in_game(); 
         ready = true;
+        if(!active_detection)
+        level_manager.inst.remove_enemy_in_game(); 
+        
     }
 
 
@@ -92,6 +82,7 @@ public class wall_press : MonoBehaviour{
         sound_fx_play(touch_ground_fx,1f);
         yield return new WaitForSeconds(0.1f);
         colldier_press.isTrigger = false;
+        StartCoroutine(end_wall()); 
     }
 
     

@@ -14,6 +14,9 @@ public class bullet_enemy : MonoBehaviour{
     Rigidbody rb;
 
 
+    public GameObject trail;
+
+
     public Vector3 target_refech_pos;
 
   
@@ -26,6 +29,7 @@ public class bullet_enemy : MonoBehaviour{
         // test a delete
        // StartCoroutine(DoRotationAtTargetDirection(1f));
        // canon = true;
+      
     }
 
 
@@ -39,7 +43,7 @@ public class bullet_enemy : MonoBehaviour{
 
     void OnTriggerEnter(Collider col){ 
         if(col.tag == "ground"){
-            death_bullet();   
+            death_bullet(); 
         }
 
         else if(col.tag == "Player"){
@@ -55,6 +59,10 @@ public class bullet_enemy : MonoBehaviour{
         _impact.GetComponent<ParticleSystem>().Play();
         Destroy(_impact,4f); 
         sound_manager.inst.sound_bullet_death();
+        if(trail != null){
+            trail.transform.parent = null; 
+            Destroy(trail,0.5f); 
+        }
         Destroy(this.gameObject);
     }
 

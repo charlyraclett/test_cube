@@ -15,6 +15,7 @@ public class sound_manager : MonoBehaviour{
     public AudioSource audio_source_zic;
     public AudioSource audio_source_nest;
     public AudioSource audio_source_ui;
+    public AudioSource audio_source_move_canon;
 
     public AudioMixer mixer_in_game;
 
@@ -25,6 +26,7 @@ public class sound_manager : MonoBehaviour{
 
     [Header("Player")]
     public AudioClip move;
+    public AudioClip move_canon;
     public AudioClip death_sound;
     public AudioClip death_player;
     public AudioClip shoot_player;
@@ -32,6 +34,12 @@ public class sound_manager : MonoBehaviour{
     public AudioClip death_bullet;
     public AudioClip untouched_sound;
     public AudioClip last_life_sound;
+    public AudioClip interactable_sound;
+    public AudioClip press_buttonA_sound;
+    public AudioClip turbo_sound;
+    public AudioClip boost_reload_sound;
+
+
 
     [Header("UI")]
     public AudioClip click;
@@ -116,6 +124,7 @@ public class sound_manager : MonoBehaviour{
     }
 
     public void sound_win_level(){
+        audio_source_player.Stop();
         audio_source_ui.PlayOneShot(win_level,0.6f);
     }
 
@@ -157,6 +166,23 @@ public class sound_manager : MonoBehaviour{
 
 
     //player
+
+     public void sound_reload_boost(){
+        audio_source_player.PlayOneShot(boost_reload_sound,0.5f);
+    }
+
+    public void sound_interaction(){
+        audio_source_player.PlayOneShot(interactable_sound,0.5f);
+    }
+
+    public void sound_press_button_a(){
+        audio_source_player.PlayOneShot(press_buttonA_sound,1f);
+    }
+
+     public void sound_turbo(){
+        audio_source_player.PlayOneShot(turbo_sound,1f);
+    }
+
     public void sound_death_player(){
         audio_source_player.PlayOneShot(death_player,0.5f);
     }
@@ -185,11 +211,23 @@ public class sound_manager : MonoBehaviour{
         audio_source_bullet.PlayOneShot(untouched_sound,1f);
     }
 
-    public void sound_move(){
+    public void sound_move(float pitch){
+
+        audio_source_move.pitch = pitch;
         if(!audio_source_move.isPlaying){
-            audio_source_move.volume = 1f;
+            audio_source_move.volume = 0.4f;
             audio_source_move.clip = move;
             audio_source_move.Play();
+        }
+    }
+
+    
+    public void sound_move_canon(){
+
+        if(!audio_source_move_canon.isPlaying){
+            audio_source_move_canon.volume = 0.1f;
+            audio_source_move_canon.clip = move_canon;
+            audio_source_move_canon.Play();
         }
     }
 
@@ -274,6 +312,8 @@ public class sound_manager : MonoBehaviour{
         audio_source_move.Pause();
         audio_source_zic.Pause();
         audio_source_nest.Pause();
+        audio_source_move_canon.Pause();
+
     }
 
     public void play_all_sources(){
@@ -294,7 +334,7 @@ public class sound_manager : MonoBehaviour{
         mixer_in_game.GetFloat("volume_in_game", out currentVol);
         currentVol = Mathf.Pow(10, currentVol / 20);
         float targetValue = Mathf.Clamp(targetVolume, 0.0001f, 1);
-
+        
         while (currentTime < duration){
             currentTime += Time.deltaTime;
             float newVol = Mathf.Lerp(currentVol, targetValue, currentTime / duration);
@@ -302,5 +342,14 @@ public class sound_manager : MonoBehaviour{
             yield return null;
         }
         yield break;
+    }
+
+
+
+
+    public void stop_sound_player_death(){
+        audio_source_move.Stop();    
+        audio_source_move_canon.Stop();
+        audio_source_player.Stop();
     }
 }

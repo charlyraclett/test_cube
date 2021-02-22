@@ -11,6 +11,7 @@ public class dev_script : MonoBehaviour{
     public bool skip_menu;
     public bool no_enemy;
     public bool unlimit_life;
+    public bool invincible;
 
     
 
@@ -115,32 +116,17 @@ public class dev_script : MonoBehaviour{
             network.inst.receive_data("P/" + id + data); 
         } 
 
-
         if(Input.GetKeyDown(KeyCode.P)){  
             StartCoroutine(enemies_manager.inst.create_enemy_floor(0,2,false, 58));
         }
-
-       
+  
         if(Input.GetKeyDown(KeyCode.G)){  
             StartCoroutine(level_manager.inst.change_vague(6));
         }
 
         if(Input.GetKeyDown(KeyCode.L)){     
             StartCoroutine(game_manager.inst.game_over());
-        }
-
-        if(Input.GetKeyDown(KeyCode.X)){     
-            StartCoroutine(player_manager.inst.refresh_score(0,15.2f));
-        }
-
-        if(Input.GetKeyDown(KeyCode.F)){     
-            StartCoroutine(map_manager.inst.falling_floor(0.1f));
-        }
-
-        if(Input.GetKeyDown(KeyCode.D)){     
-            map_manager.inst.reinitialze_floor();
-        }
-               
+        }           
     }
 
 

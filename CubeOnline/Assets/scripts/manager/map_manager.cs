@@ -13,7 +13,6 @@ public class map_manager : MonoBehaviour{
     public Transform[] bases;
     public Transform floor_container;
     public GameObject particule_falling_floor;
-   // public Material color_floor;
     public Animator alerte_wall;
 
     [Header("Info")]
@@ -118,11 +117,11 @@ public class map_manager : MonoBehaviour{
 
     IEnumerator intro_anim_floor(float delay, float cadence){
         yield return new WaitForSeconds(delay);
-        for(int i = 0; i < floor_list.Count; i++){  
+        for(int i = 0; i < floor_list.Count; i++){  // show anim floor
             floor_list[my_list_int_random[i]].GetComponentInChildren<falling_floor>().anim_initial_position(true);
             yield return new WaitForSeconds(cadence);
         }    
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);  //  shox anim bases
         for(int i = 0; i < bases.Length; i++){
             bases[i].GetComponent<Animator>().SetBool("in_game",true);
         }
@@ -140,12 +139,12 @@ public class map_manager : MonoBehaviour{
 
     public IEnumerator alert_floor_airwall(float delai){
         yield return new WaitForSeconds(delai);
-       alerte_wall.SetTrigger("alerte_red");
+        alerte_wall.SetTrigger("alerte_red");
     }
 
 
 
-    void list_number_random(){
+    void list_number_random(){  // creation list random pour anim intro floor
         while(my_list_int_random.Count < floor_list.Count){
             int numToAdd = Random.Range(0,floor_list.Count);   
             while(!my_list_int_random.Contains(numToAdd)){
@@ -156,8 +155,6 @@ public class map_manager : MonoBehaviour{
         }
     }
 
-
-  
-    
+   
  
 }

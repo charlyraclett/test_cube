@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 
 public class ui_manager : MonoBehaviour{
+
+
+    
+    public EventSystem eventSystem;
 
     public static ui_manager inst;
     int[] point_players = new int[]{0,0,0,0};
@@ -20,6 +26,10 @@ public class ui_manager : MonoBehaviour{
     public GameObject buttons_type_cont;
     public GameObject prefab_button_game;
     public GameObject container_button_level;
+
+    public GameObject button_resume_game;
+    public GameObject button_game_aventure;
+
 
     [Header("UI buttons level")]
     public Button[] buttons_level;
@@ -37,8 +47,9 @@ public class ui_manager : MonoBehaviour{
     public CanvasGroup ui_in_game;
     public Animator anim_start_level;
     public GameObject logo_cube;
-   
-   
+    
+    public Animator flash_dead;
+
     public Text[] score_players;
     public Text text_menu;
     public Text text_network;
@@ -57,6 +68,8 @@ public class ui_manager : MonoBehaviour{
 
     public GameObject[] choix_player;
 
+    public GameObject light_container;
+
     public GameObject cont_ui_cam_vehicule;
     public int choix_type = 0;
 
@@ -67,8 +80,11 @@ public class ui_manager : MonoBehaviour{
 
     public Text text_vague_nbr;
     public Text text_level_nbr;
+    public Animator buttonA_action;
+    public TMP_Text button_action_text;
 
     public Animator black_panel_end_level;
+    public Animator black_panel_menu;
 
     
     void Awake(){
@@ -154,12 +170,13 @@ public class ui_manager : MonoBehaviour{
     
 
     public void click_button_level(int id_level){ 
-       game_manager.inst.id_level = id_level;
+        game_manager.inst.id_level = id_level;
         sound_manager.inst.sound_click();
         menu.GetComponent<Animator>().SetTrigger("hide_menu");
         logo_cube.GetComponent<Animator>().SetTrigger("hide_logo");
         button_back.SetActive(false);
         container_button_level.SetActive(false);
+        black_panel_menu.SetBool("black_panel",true);
         StartCoroutine(game_manager.inst.launch_game());
 
         if(player_active_multi){
@@ -228,6 +245,8 @@ public class ui_manager : MonoBehaviour{
    
 
     public void back_button(){
+
+        print("back");
         sound_manager.inst.sound_click_back();
         text_network.text = "";
         switch(ui_position){
@@ -333,14 +352,18 @@ public class ui_manager : MonoBehaviour{
     
     public void show_menu_paused(){
         Time.timeScale = 0.0f;
+        eventSystem.firstSelectedGameObject = button_resume_game;
+        eventSystem.SetSelectedGameObject(button_resume_game);
         menu_in_game.SetActive(true);
-       // AudioListener.pause = true;
+        //AudioListener.pause = true;
         sound_manager.inst.pause_all_sources();
     }
 
 
     public void click_button_quit(){
         print("button_restart gameover");
+        eventSystem.firstSelectedGameObject = button_game_aventure;
+        eventSystem.SetSelectedGameObject(button_game_aventure);
         game_manager.inst.reset_level();
         StartCoroutine(set_alpha_ui_game(2f,0f));
     }
@@ -446,16 +469,25 @@ public class ui_manager : MonoBehaviour{
         print("unlock level "+ level_complete);
         for (int i = 0; i <= level_complete; i++){
             buttons_level[i].interactable = true;
-            buttons_level[i].gameObject.GetComponent<Animator>().enabled = true;
             buttons_level[i].transform.GetChild(0).gameObject.SetActive(false);
             buttons_level[i].transform.GetChild(1).gameObject.SetActive(true);
         }  
     }
 
 
+    public void show_button_action(bool value){
+        buttonA_action.SetBool("show_buttonA",value);
+    }
+
+
+    public void flash_effect_dead(){
+        flash_dead.SetTrigger("dead");
+    }
+
+
     
 
-
+    
    
     
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class controller_cube : MonoBehaviour{
 
@@ -14,12 +15,14 @@ public class controller_cube : MonoBehaviour{
     public bool host;
     public int id_avatar;
     public float speed = 5;
-    public float speed_rotation = 1;
     public float head_rotation_speed = 100f;
+    public float smooth_rotate_body = 0.1f;
     public float force_shoot;
     public bool type_catapulte;
     public bool type_canon;
     public bool invulnerable;
+    public float speed_boost = 0.2f;
+    public float reload_time_boost = 2f;
 
     [Header("Edit")]
     public Transform origin_shoot;
@@ -31,24 +34,28 @@ public class controller_cube : MonoBehaviour{
     public GameObject death_effect;
     public Transform head_turn;
     public Transform body;
+    public ParticleSystem trail_turbo;
+    
+    public Slider slider_boost;
+    public Animator slider_boost_anim;
+
 
     [HideInInspector] public int is_dead = 0;
     [HideInInspector] public int is_shooting = 0;
     [HideInInspector] public bool is_moving;
-    [HideInInspector] public bool key_holding;
-
+   
     bool shoot_running;
 
     Vector2 left_stick;
     Vector2 right_stick;
-
-    public float smooth_rotate = 0.1f;
-    public float smooth_rotate_head = 0.5f;
-    float TurnSmoothVelocity;
-    float TurnSmoothVelocityHead;
-    
-    bool lock_rotation;
     float value_bumper_right;
+
+    float TurnSmoothVelocity;
+
+    bool cube_has_boost;
+    bool start_timer_boost;
+ 
+    
 
     
     void Awake(){
@@ -59,10 +66,13 @@ public class controller_cube : MonoBehaviour{
         }
 
         gameplay = new PlayerControls();
+
         gameplay.game_pad.left_bump.performed += ctx => press_for_shoot();
+        gameplay.game_pad.pause.performed += ctx => button_start();
+        gameplay.game_pad.actionA.performed += ctx => interactable_manager.inst.press_for_action();
+      
         gameplay.game_pad.right_bump.performed += ctx => value_bumper_right = ctx.ReadValue<float>();
         gameplay.game_pad.right_bump.canceled += ctx => value_bumper_right = 0f;
-        gameplay.game_pad.pause.performed += ctx => button_start();
 
         gameplay.game_pad.move_cube.performed += ctx => left_stick = ctx.ReadValue<Vector2>();
         gameplay.game_pad.move_cube.canceled += ctx => left_stick = Vector2.zero;
@@ -80,27 +90,10 @@ public class controller_cube : MonoBehaviour{
         gameplay.game_pad.Disable();
     }
 
-    void lock_player_rotation(){
-        lock_rotation = value_bumper_right > 0 ? true : false;  
-    }
-    
+   
 
     void Update(){
  
-        // Vector3 origin = transform.position;
-        // Vector3 direction = transform.forward;
-        // Ray ray = new Ray(origin,direction);
-
-        // if (Physics.Raycast(ray, out RaycastHit raycastHit)){
-        //     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.green);
-        //     float distance = Vector3.Distance (transform.position, raycastHit.transform.transform.position);
-        //   //  Debug.Log("Did Hit "+ raycastHit.transform.tag+" distance : "+distance);
-        // }
-        // else{
-        //     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 10f, Color.white);
-        // }
-
-
         if (rb.velocity.y < -15f){
             invulnerable = false;
             controller_dead();
@@ -108,9 +101,17 @@ public class controller_cube : MonoBehaviour{
 
         if(host){
 
-            float r = right_stick.x * Time.deltaTime * speed_rotation * head_rotation_speed;
+            float r = right_stick.x * Time.deltaTime * head_rotation_speed;
             Vector3 rot = new Vector3 (head_turn.rotation.x,r,head_turn.rotation.z);
             head_turn.Rotate(Vector3.up,r); 
+
+           
+
+            if(r == 0f){
+                sound_manager.inst.audio_source_move_canon.Stop();
+            }else{
+                play_fx_sound_move_canon();
+            }
 
             float horizontal = left_stick.x;
             float vertical = left_stick.y;
@@ -120,44 +121,25 @@ public class controller_cube : MonoBehaviour{
            
             if(direction.magnitude >= 0.1f){
                 float targetAngle = Mathf.Atan2(direction.x,direction.z) * Mathf.Rad2Deg; 
-                float angle = Mathf.SmoothDampAngle(body.eulerAngles.y, targetAngle, ref TurnSmoothVelocity, smooth_rotate);
-                body.rotation = Quaternion.Euler(0f,angle, 0f);
+                float angle = Mathf.SmoothDampAngle(body.eulerAngles.y, targetAngle, ref TurnSmoothVelocity, smooth_rotate_body);
+                body.rotation = Quaternion.Euler(head_turn.rotation.x, angle, head_turn.rotation.z);
                 this.transform.Translate(move,Space.World);
-                play_fx_sound();
+                play_fx_sound(Mathf.Clamp(direction.magnitude, 0.4f,1.5f));
+
+                if(value_bumper_right > 0 && !cube_has_boost && !start_timer_boost){
+                    cube_has_boost = true;
+                    start_timer_boost = true;
+                    StartCoroutine(add_turbo_boost(move));
+                }
+                if(value_bumper_right <= 0.1f){
+                    cube_has_boost = false;
+                }
             }
             else{
                 sound_manager.inst.audio_source_move.Stop();     
             }
 
             
-            
-            if(Input.GetKey(KeyCode.UpArrow)){  
-                this.transform.Translate(Vector3.forward * Time.deltaTime * speed); 
-                play_fx_sound();
-            }  
-            
-            if(Input.GetKey(KeyCode.DownArrow)){  
-                this.transform.Translate(Vector3.back * Time.deltaTime * speed);  
-                play_fx_sound();
-            }  
-            
-            if(Input.GetKey(KeyCode.LeftArrow)){    
-                this.transform.Rotate(Vector3.up,-speed_rotation); 
-                play_fx_sound();
- 
-            }  
-            
-            if(Input.GetKey(KeyCode.RightArrow)){  
-                this.transform.Rotate(Vector3.up,speed_rotation);
-                play_fx_sound();  
-            } 
-           
-
-            // if(!Input.anyKey && key_holding) {
-            //     key_holding = false;
-            //     sound_manager.inst.audio_source_move.Stop();     
-            // }
-
             if(Input.GetKeyDown(KeyCode.Space) && type_catapulte){ 
                 show_particule_cross_hair();
             }
@@ -169,9 +151,6 @@ public class controller_cube : MonoBehaviour{
                 StartCoroutine(shoot_catapult());
             }
 
-            if (Input.GetKeyDown(KeyCode.Space)){ 
-                press_for_shoot();
-            }
         }  
     }
 
@@ -205,8 +184,6 @@ public class controller_cube : MonoBehaviour{
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
 
-            //_bullet.GetComponent<bullet>().target = network.inst.avatars_pos[3]; // test bullet  tete chercheuse
-
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0; // network
             yield return new WaitForSeconds(0.6f);
@@ -223,7 +200,6 @@ public class controller_cube : MonoBehaviour{
             sound_manager.inst.sound_bullet_death();
             GameObject _bullet = Instantiate(bullet, origin_shoot.position, origin_shoot.rotation);
             _bullet.GetComponent<bullet>().id_player_shoot = id_avatar;
-            rb.velocity = transform.TransformDirection(Vector3.back * 3f);
             _bullet.GetComponent<Rigidbody>().useGravity = false;
             _bullet.GetComponent<bullet>().canon = true;
             yield return new WaitForSeconds(0.02f);
@@ -259,9 +235,12 @@ public class controller_cube : MonoBehaviour{
 
     // trigger bullet
     public void controller_dead(){
+        if(dev_script.inst.invincible)
+        return;
+
         if(!invulnerable){
             GameObject _death = Instantiate(death_effect, transform.position, transform.rotation);
-            sound_manager.inst.audio_source_move.Stop();    
+            sound_manager.inst.stop_sound_player_death();
             Destroy(_death,6f); 
             is_dead = 1;
             sound_manager.inst.sound_death_player();
@@ -275,12 +254,19 @@ public class controller_cube : MonoBehaviour{
 
 
 
-    void play_fx_sound(){
+    void play_fx_sound(float pitch){
         if(is_dead == 0){
-            key_holding = true;
-            sound_manager.inst.sound_move();  
+            sound_manager.inst.sound_move(pitch);  
         }   
     }
+
+    void play_fx_sound_move_canon(){
+        if(is_dead == 0){
+            sound_manager.inst.sound_move_canon();  
+        }   
+    }
+
+
 
 
 
@@ -310,13 +296,61 @@ public class controller_cube : MonoBehaviour{
     // trigger gamepad
     public void button_start(){
         if(!ui_manager.inst.menu_in_game.activeSelf){
-            ui_manager.inst.show_menu_paused();   
+            ui_manager.inst.show_menu_paused(); 
+            sound_manager.inst.audio_source_move.volume = 0f;
         }else{
             ui_manager.inst.click_button_back_to_game();
         }
     }
 
-       
+
+    IEnumerator add_turbo_boost(Vector3 _move){
+
+        float elapsed = 0f;
+        float duree = 0.2f;
+
+        trail_turbo.Play();
+        slider_boost.value = 0f;
+        slider_boost_anim.SetBool("boost",true);
+        sound_manager.inst.sound_turbo();
+
+        while(elapsed < duree ){
+            this.transform.Translate(_move + new Vector3(left_stick.x * speed_boost, 0f, left_stick.y * speed_boost),Space.World);
+            float boost_bar_value = Mathf.Lerp(1,0, elapsed / duree);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        trail_turbo.Stop();
+
+        yield return new WaitForSeconds(1f);
+
+        elapsed = 0f;
+        duree = reload_time_boost;
+        sound_manager.inst.sound_reload_boost();
+
+        yield return new WaitForSeconds(0.5f);
+
+        while(elapsed < duree ){
+            float boost_bar_value = Mathf.Lerp(0,1, elapsed / duree);
+            slider_boost.value = boost_bar_value;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        sound_manager.inst.audio_source_player.Stop();
+
+        slider_boost.value = 1f;
+        slider_boost_anim.SetBool("boost",false);
+        yield return new WaitForSeconds(0.2f);
+        start_timer_boost = false;
+    }
+
+
+
+    
+
+    
     
 
    

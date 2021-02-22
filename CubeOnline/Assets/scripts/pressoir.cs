@@ -14,33 +14,33 @@ public class pressoir : MonoBehaviour{
     public BoxCollider colldier_press;
     public Light light_alert;
 
-    int nbr_press;
-    
-    
+  
     void Start(){
         anim = GetComponent<Animator>();
         audio_source = GetComponent<AudioSource>();     
     }
 
 
-    public void start_pressoir(float delay, int nbr){
-        StartCoroutine(active_pressoir(delay, nbr));
-        nbr_press = nbr;
+    public void start_pressoir(float delay){
+        StartCoroutine(active_pressoir(delay));
+    }
+
+    public void stop_pressoir(){
+        StopAllCoroutines();
     }
 
 
 
-    IEnumerator active_pressoir(float delay, int nbr){
+    IEnumerator active_pressoir(float delay){
         yield return new WaitForSeconds(delay); 
         while(true){ 
             get_position_player();
             StartCoroutine(press_player()); 
-            nbr_press--;
-            if(nbr_press == 0){
+            if(level_manager.inst.enemies_in_game == 1){
                 Invoke("end_press",3f);
                 yield break;
             }
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(Random.Range(3,6));
         }
     }
 

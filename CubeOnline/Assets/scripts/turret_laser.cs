@@ -35,13 +35,15 @@ public class turret_laser : MonoBehaviour{
     }
 
     // trigger level2 behaviour
-    public void active_turret(){
-        StartCoroutine(start_turret());
+    public void active_turret(float delay){
+        StartCoroutine(start_turret(delay));
     }
 
 
 
-    IEnumerator start_turret(){
+    IEnumerator start_turret(float delay){
+
+        yield return new WaitForSeconds(delay);
 
         anim.SetBool("in_game",true);
         sound_fx_play(move_in_game,1f);

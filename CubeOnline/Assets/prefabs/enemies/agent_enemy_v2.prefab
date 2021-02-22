@@ -512,17 +512,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e89b8a76e6bdbf4fb37a63315c7a0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
   target_agent: {fileID: 0}
   active_agent: 0
   distance_attack: 15
   force_shoot: 8
   has_canon: 1
-  cadence_canon: 4
+  cadence_canon: 3
+  speed_bullet_canon: 12
   death_effect: {fileID: 7480165748579919891, guid: 386f91283f218d743a994f0177c2ae7c,
     type: 3}
   shoot_effect: {fileID: 5723939072498635432}
   origin_shoot: {fileID: 5607240696506591346}
   bullet: {fileID: 2178882160609412043, guid: f0a805dda16c471479edc1e9f16830d6, type: 3}
+  has_initialize: 0
 --- !u!195 &2361774933171343892
 NavMeshAgent:
   m_ObjectHideFlags: 0

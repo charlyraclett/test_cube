@@ -36,25 +36,16 @@ public class game_manager : MonoBehaviour{
         }
   
         Cursor.visible = true;
-        // optional place it in the center on start
-       // cursorPosition = new Vector2(Screen.width/2f, Screen.height/2f);
     }
 
-
-
-    // private void OnGUI(){
-    //     float h = 150f * Input.GetAxis("Horizontal") * Time.deltaTime;
-    //     float v = 150f * Input.GetAxis("Vertical") * Time.deltaTime;   
-    //     cursorPosition.x += h;
-    //     cursorPosition.y += v;
-    //     GUI.DrawTexture(new Rect(cursorPosition.x, Screen.height - cursorPosition.y, 40, 40), cursorTexture);
-    // }
 
     // trigger ui manager button level
     public IEnumerator launch_game(){
         sound_manager.inst.sound_start_game_anim();
         yield return new WaitForSeconds(1f);// end anim menu
         Instantiate(levels_prefab[id_level], new Vector3(0, 0, 0), Quaternion.identity); 
+        ui_manager.inst.light_container.SetActive(false);
+        ui_manager.inst.black_panel_menu.SetBool("black_panel", false);
         ui_manager.inst.refresh_text_level_nbr(dictionary[id_level]);
         yield return new WaitForSeconds(1f); // time to anim floor intro
         StartCoroutine(camera_manager.inst.switch_cam_game());  
@@ -84,6 +75,8 @@ public class game_manager : MonoBehaviour{
 
    // trigger ui manager button back menu pause
     public void reset_and_back_to_menu(){
+
+        ui_manager.inst.light_container.SetActive(true);
         print("quit_game game_manager");
         StopAllCoroutines();
         level_manager.inst.stop_all();
@@ -122,7 +115,7 @@ public class game_manager : MonoBehaviour{
         player_manager.inst.reset_all_player();
         map_manager.inst.reinitialze_floor();
         camera_manager.inst.reset_cameras();
-        level_manager.inst.id_vague = 0;
+        level_manager.inst.reset_level();
         StartCoroutine(sound_manager.inst.set_mixer_in_game(1f,1f)); 
         ui_manager.inst.black_menu_gameover.GetComponent<Animator>().SetBool("black_panel",false);
         yield return new WaitForSeconds(1f); 

@@ -27,6 +27,8 @@ public class turret_enemy : MonoBehaviour{
     public Transform lookup;
     public Gradient gradient;
     public Image fill;
+    public collider_switch_turret switch1;
+    public collider_switch_turret switch2;
 
     [Header("Sound")]
     public AudioClip reload;
@@ -36,8 +38,7 @@ public class turret_enemy : MonoBehaviour{
     public AudioClip move_turret;
     public AudioClip alert;
   
-    int temp_nbr_salve;
-
+  
     void Start(){
         audio_source = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
@@ -49,17 +50,29 @@ public class turret_enemy : MonoBehaviour{
 
 
     // trigger level_two_behaviour
-    public void start_turret(float delay, int value_nbr_salve){
-        nbr_salve = value_nbr_salve;
-        temp_nbr_salve = nbr_salve;
+    public void start_turret(float delay){  
         StartCoroutine(go_start_turret(delay));
     }
 
     IEnumerator go_start_turret(float delay){
+        reinitialize();
         yield return new WaitForSeconds(delay);
         anim.SetBool("in_game",true);
         audio_source.PlayOneShot(move_turret,1f);
         StartCoroutine(reload_turret(3f,4f,100f));  
+        StartCoroutine(check_switch());  
+    }
+
+    IEnumerator check_switch(){
+        bool check = true;
+
+        while(check){
+            if(switch1.switch_is_active && switch2.switch_is_active){
+               check = false;
+            }   
+            yield return new WaitForSeconds(0.1f);
+        }
+        end_turret();    
     }
 
 
@@ -69,17 +82,22 @@ public class turret_enemy : MonoBehaviour{
 
     IEnumerator look_player(){
 
-        Transform target = player_manager.inst.my_avatar.transform;  
 
-        while(true){
-           
+        try{Transform target = player_manager.inst.my_avatar.transform;  
+        }
+        catch{
+            target = null;
+        }
+
+        while(true){ 
             if(shoot){
                 if(target != null){
                     head.LookAt(target);   
                 } 
                 else{  
+                    shoot = false;
                     StopAllCoroutines();
-                    temp_nbr_salve = 0;   
+                    StartCoroutine(check_switch());
                     StartCoroutine(DoRotationAtTargetDirection(0f,lookup));
                 }   
             }
@@ -88,20 +106,33 @@ public class turret_enemy : MonoBehaviour{
     }
 
 
-    void end_turret(){
+    public void end_turret(){
         StopAllCoroutines();
+        audio_source.Stop();
+        Invoke("end",1f); 
+    }
+
+    void end(){
         anim.SetBool("in_game",false);
         audio_source.PlayOneShot(move_turret,1f);
+        level_manager.inst.remove_enemy_in_game(); 
+    }
+
+
+
+    void reinitialize(){  
         value_meter = 0f;
         bar_slider.value = value_meter; 
         fill.color = gradient.Evaluate(0f);
+        switch1.reinitilize();
+        switch2.reinitilize();
     }
 
 
 
     IEnumerator is_shooting(){
 
-        while(value_meter > 0){   
+        while(value_meter > 0 && target != null){   
             anim.SetTrigger("shoot");   
             shoot_effect.Play();
             value_meter = value_meter - 20;
@@ -115,7 +146,6 @@ public class turret_enemy : MonoBehaviour{
         }
         StartCoroutine(DoRotationAtTargetDirection(0f,lookup));
         shoot = false;
-        temp_nbr_salve--;
     }
 
 
@@ -145,12 +175,20 @@ public class turret_enemy : MonoBehaviour{
         fill.color = gradient.Evaluate(bar_slider.normalizedValue);
         audio_source.PlayOneShot(reload_full,1f);
 
-        if(player_manager.inst.my_avatar.transform != null){
-            StartCoroutine(DoRotationAtTargetDirection(0f,player_manager.inst.my_avatar.transform)); 
-        }else{
-            stop_turret();
+        try{ target = player_manager.inst.my_avatar.transform;
+
+            StartCoroutine(DoRotationAtTargetDirection(0f,target)); 
         }
-        yield break;
+        catch{
+            StartCoroutine(wait_player_alive());
+        }
+       
+    }
+
+    IEnumerator wait_player_alive(){
+        StartCoroutine(DoRotationAtTargetDirection(0f,lookup));
+        yield return new WaitForSeconds(3f);
+
     }
 
 
@@ -171,12 +209,6 @@ public class turret_enemy : MonoBehaviour{
 
         audio_source.Stop();
 
-        if(temp_nbr_salve == 0){
-            end_turret();
-            level_manager.inst.remove_enemy_in_game(); 
-            yield break;
-        }
-
         if(target_look != lookup){
             shoot = true;
             StartCoroutine(look_player());
@@ -196,13 +228,9 @@ public class turret_enemy : MonoBehaviour{
     }
 
 
-
-
-
     public void stop_turret(){
         StopAllCoroutines();
         anim.SetBool("in_game",false);
-
     }
 
 

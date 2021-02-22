@@ -38,15 +38,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""rotate_cube"",
                     ""type"": ""Value"",
                     ""id"": ""3040395e-cc11-43a0-b2b4-41e7312d77c5"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""a4990350-b79b-4a60-a088-6a3be0a92ba3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -59,17 +51,33 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""WASD"",
-                    ""type"": ""Button"",
-                    ""id"": ""4b1f4596-ee1a-435f-9cfa-32d8c06f4eae"",
+                    ""name"": ""right_bump"",
+                    ""type"": ""Value"",
+                    ""id"": ""d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""right_bump"",
-                    ""type"": ""Value"",
-                    ""id"": ""d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5"",
+                    ""name"": ""actionA"",
+                    ""type"": ""Button"",
+                    ""id"": ""a3a5ac12-3584-4a85-824b-7f72a10fb4af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""buttonB"",
+                    ""type"": ""Button"",
+                    ""id"": ""be7df2b4-d0b2-4a03-9d05-4c267e170a92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""cross_left"",
+                    ""type"": ""Button"",
+                    ""id"": ""d83ea349-99c3-4c8a-864a-52835e293e24"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -100,6 +108,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ada8d87f-0981-4949-87e6-24ae1ca229c9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""left_bump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""928e0d64-9a86-4332-8bff-d2879b6d25f4"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
@@ -121,15 +140,59 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""14740479-aec5-46dd-a1a0-d5aff81a667c"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""31a3f5ae-7f73-4bee-a50f-782ecd7e8fd9"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""rotate_cube"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e2a30ca9-8440-4eb6-922c-4393a90b2853"",
                     ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""rotate_cube"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""fa403f93-c7dc-48aa-9ee6-3535cfbf0d92"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""rotate_cube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f6a74a8a-d557-4afd-95c6-8e93590d44f4"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(max=-1)"",
+                    ""groups"": """",
+                    ""action"": ""rotate_cube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""aeba5f9d-36a8-4184-8ca6-04eb71ec4a79"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(max=1)"",
+                    ""groups"": """",
+                    ""action"": ""rotate_cube"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -143,13 +206,68 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""wasd"",
+                    ""name"": """",
+                    ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""right_bump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b531a20-c39c-482a-9a04-2ab68cdf576c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""actionA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1104903a-b143-4787-9274-e559573a3ae9"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""actionA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b13b79f0-db9a-49fa-b9e9-acf7303c7a93"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11f7de56-8bf1-4891-bfb5-a7b3125a884f"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""arrow [Keyboard]"",
                     ""id"": ""f7f09fa2-23cc-440d-bc8a-5bec54e523a4"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""WASD"",
+                    ""action"": ""move_cube"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -158,9 +276,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""9490b581-b7d9-498b-b65a-a71140248879"",
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
-                    ""action"": ""WASD"",
+                    ""action"": ""move_cube"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -169,9 +287,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""0ab08212-f1d4-4044-ab28-77cb9412c4dc"",
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
-                    ""action"": ""WASD"",
+                    ""action"": ""move_cube"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -180,9 +298,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""cdecc018-4e85-4220-8d4f-07185dfb05e7"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
-                    ""action"": ""WASD"",
+                    ""action"": ""move_cube"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -191,51 +309,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""f8c9ba65-e5d3-49a8-b27e-8879b5208d85"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WASD"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""5a481b6d-0207-4fd7-bb0f-a37465cee9fe"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""move_cube"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""2821efd3-8b38-420d-a50e-259fbc374f69"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""move_cube"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""fe1a42f8-b935-45fd-a22e-3ff50b6a0407"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""move_cube"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""6d546f93-c847-4b69-a3ef-d2e2510fec63"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2"",
                     ""groups"": """",
                     ""action"": ""move_cube"",
                     ""isComposite"": false,
@@ -243,12 +317,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""id"": ""9b4d6ce0-0bfb-4129-b71a-633831356a96"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""right_bump"",
+                    ""action"": ""cross_left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -285,10 +359,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_game_pad_left_bump = m_game_pad.FindAction("left_bump", throwIfNotFound: true);
         m_game_pad_move_cube = m_game_pad.FindAction("move_cube", throwIfNotFound: true);
         m_game_pad_rotate_cube = m_game_pad.FindAction("rotate_cube", throwIfNotFound: true);
-        m_game_pad_Newaction = m_game_pad.FindAction("New action", throwIfNotFound: true);
         m_game_pad_pause = m_game_pad.FindAction("pause", throwIfNotFound: true);
-        m_game_pad_WASD = m_game_pad.FindAction("WASD", throwIfNotFound: true);
         m_game_pad_right_bump = m_game_pad.FindAction("right_bump", throwIfNotFound: true);
+        m_game_pad_actionA = m_game_pad.FindAction("actionA", throwIfNotFound: true);
+        m_game_pad_buttonB = m_game_pad.FindAction("buttonB", throwIfNotFound: true);
+        m_game_pad_cross_left = m_game_pad.FindAction("cross_left", throwIfNotFound: true);
         // keyboard
         m_keyboard = asset.FindActionMap("keyboard", throwIfNotFound: true);
         m_keyboard_A = m_keyboard.FindAction("A", throwIfNotFound: true);
@@ -345,10 +420,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_game_pad_left_bump;
     private readonly InputAction m_game_pad_move_cube;
     private readonly InputAction m_game_pad_rotate_cube;
-    private readonly InputAction m_game_pad_Newaction;
     private readonly InputAction m_game_pad_pause;
-    private readonly InputAction m_game_pad_WASD;
     private readonly InputAction m_game_pad_right_bump;
+    private readonly InputAction m_game_pad_actionA;
+    private readonly InputAction m_game_pad_buttonB;
+    private readonly InputAction m_game_pad_cross_left;
     public struct Game_padActions
     {
         private @PlayerControls m_Wrapper;
@@ -356,10 +432,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @left_bump => m_Wrapper.m_game_pad_left_bump;
         public InputAction @move_cube => m_Wrapper.m_game_pad_move_cube;
         public InputAction @rotate_cube => m_Wrapper.m_game_pad_rotate_cube;
-        public InputAction @Newaction => m_Wrapper.m_game_pad_Newaction;
         public InputAction @pause => m_Wrapper.m_game_pad_pause;
-        public InputAction @WASD => m_Wrapper.m_game_pad_WASD;
         public InputAction @right_bump => m_Wrapper.m_game_pad_right_bump;
+        public InputAction @actionA => m_Wrapper.m_game_pad_actionA;
+        public InputAction @buttonB => m_Wrapper.m_game_pad_buttonB;
+        public InputAction @cross_left => m_Wrapper.m_game_pad_cross_left;
         public InputActionMap Get() { return m_Wrapper.m_game_pad; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -378,18 +455,21 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @rotate_cube.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRotate_cube;
                 @rotate_cube.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRotate_cube;
                 @rotate_cube.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRotate_cube;
-                @Newaction.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnNewaction;
                 @pause.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
                 @pause.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
                 @pause.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
-                @WASD.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
-                @WASD.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
-                @WASD.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnWASD;
                 @right_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
                 @right_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
                 @right_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
+                @actionA.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
+                @actionA.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
+                @actionA.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
+                @buttonB.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
+                @buttonB.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
+                @buttonB.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
+                @cross_left.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
+                @cross_left.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
+                @cross_left.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
             }
             m_Wrapper.m_Game_padActionsCallbackInterface = instance;
             if (instance != null)
@@ -403,18 +483,21 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @rotate_cube.started += instance.OnRotate_cube;
                 @rotate_cube.performed += instance.OnRotate_cube;
                 @rotate_cube.canceled += instance.OnRotate_cube;
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
                 @pause.started += instance.OnPause;
                 @pause.performed += instance.OnPause;
                 @pause.canceled += instance.OnPause;
-                @WASD.started += instance.OnWASD;
-                @WASD.performed += instance.OnWASD;
-                @WASD.canceled += instance.OnWASD;
                 @right_bump.started += instance.OnRight_bump;
                 @right_bump.performed += instance.OnRight_bump;
                 @right_bump.canceled += instance.OnRight_bump;
+                @actionA.started += instance.OnActionA;
+                @actionA.performed += instance.OnActionA;
+                @actionA.canceled += instance.OnActionA;
+                @buttonB.started += instance.OnButtonB;
+                @buttonB.performed += instance.OnButtonB;
+                @buttonB.canceled += instance.OnButtonB;
+                @cross_left.started += instance.OnCross_left;
+                @cross_left.performed += instance.OnCross_left;
+                @cross_left.canceled += instance.OnCross_left;
             }
         }
     }
@@ -465,10 +548,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnLeft_bump(InputAction.CallbackContext context);
         void OnMove_cube(InputAction.CallbackContext context);
         void OnRotate_cube(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnWASD(InputAction.CallbackContext context);
         void OnRight_bump(InputAction.CallbackContext context);
+        void OnActionA(InputAction.CallbackContext context);
+        void OnButtonB(InputAction.CallbackContext context);
+        void OnCross_left(InputAction.CallbackContext context);
     }
     public interface IKeyboardActions
     {

@@ -59,7 +59,6 @@ public class camera_manager : MonoBehaviour{
        cam_player_finish.LookAt = player_manager.inst.my_avatar.transform;
        cam_player_finish.Follow = player_manager.inst.my_avatar.transform;
        cam_player_finish.Priority = 20;
-
     }
 
     public void reset_cameras(){

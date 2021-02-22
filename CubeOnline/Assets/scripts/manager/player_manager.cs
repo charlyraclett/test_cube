@@ -100,7 +100,7 @@ public class player_manager : MonoBehaviour{
     public IEnumerator create_player(int id,bool ismine, int type, float delay){
 
         yield return new WaitForSeconds(delay);
-       
+
         Vector3 pos_base = new Vector3(bases_pos[id].position.x,bases_pos[id].position.y - 1f, bases_pos[id].position.z);
         GameObject cube = Instantiate(avatars_prefab[type],pos_base, bases_pos[id].rotation);
         avatars_pos[id] = cube.GetComponent<Transform>();
@@ -149,6 +149,7 @@ public class player_manager : MonoBehaviour{
     public void player_dead(){
         life_player--;
         pv_player_ui.SetInteger("pv_player",life_player);
+        ui_manager.inst.flash_effect_dead();
         StartCoroutine(camera_manager.inst.start_shake_cam());
         avatars_pos[myId] = null;
 
@@ -161,7 +162,11 @@ public class player_manager : MonoBehaviour{
         }else{
             StartCoroutine(game_manager.inst.game_over());
             start_timer = false;
+            return;
         }   
+
+        interactable_manager.inst.quit_aera_interactable();
+        level_manager.inst.reinitialize_position_mechanism();
     }
 
     

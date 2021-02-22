@@ -39,19 +39,25 @@ public class enemies_manager : MonoBehaviour{
        
         _position_apparition = random ? Random.Range(0,map_manager.inst.floor_list.Count) : id_floor;
         Transform base_enemy = map_manager.inst.floor_list[_position_apparition].gameObject.transform.GetChild(0);
+
+        base_enemy.GetComponent<falling_floor>().create_enemy(enemies_prefab[id_prefab]);
       
-        base_enemy.GetComponent<Animator>().SetTrigger("create_enemy");
-        sound_manager.inst.sound_enemy_nest(); 
+        // base_enemy.GetComponent<Animator>().SetTrigger("alerte_floor");
+        // yield return new WaitForSeconds(2f);
 
-        yield return new WaitForSeconds(1f);
-        create_enemy(base_enemy, id_prefab); 
-        sound_manager.inst.sound_enemy_nest();
+        // base_enemy.GetComponent<Animator>().SetTrigger("create_enemy");
 
-        yield return new WaitForSeconds(1f);
-        agent.transform.parent = null;
+        // sound_manager.inst.sound_enemy_nest(); 
 
-        yield return new WaitForSeconds(0.3f);
-        initialize_enemy_floor(agent);
+        // yield return new WaitForSeconds(1f);
+        // create_enemy(base_enemy, id_prefab); 
+        // sound_manager.inst.sound_enemy_nest();
+
+        // yield return new WaitForSeconds(1f);
+        // agent.transform.parent = null;
+
+        // yield return new WaitForSeconds(0.3f);
+        // initialize_enemy_floor(agent);
        
     }
 

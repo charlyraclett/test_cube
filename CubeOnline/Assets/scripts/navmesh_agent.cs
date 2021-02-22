@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class navmesh_agent : MonoBehaviour{
 
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     Rigidbody rb;
     Animator anim;
     Vector3 initial_position; 
@@ -22,6 +22,7 @@ public class navmesh_agent : MonoBehaviour{
     public bool has_canon;
     [Range(1.5f,10)]
     public float cadence_canon = 1.5f;
+    public float speed_bullet_canon = 6f;
 
     [Header("Edition")]
     public GameObject death_effect;
@@ -177,7 +178,7 @@ public class navmesh_agent : MonoBehaviour{
     void setting_bullet(bullet_enemy _bullet){
         _bullet.GetComponent<Rigidbody>().useGravity = false;
         _bullet.canon = true;
-        _bullet.speed = force_shoot;
+        _bullet.speed = speed_bullet_canon;
     }
 
 

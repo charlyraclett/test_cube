@@ -87,8 +87,13 @@ public class level_manager : MonoBehaviour{
     }
 
 
+    public virtual void reset_level(){
+        level_manager.inst.id_vague = 0;
+    }
 
     public virtual void delete_level(){}
+    public virtual void reinitialize_position_mechanism(){}
+    
 
 
 
