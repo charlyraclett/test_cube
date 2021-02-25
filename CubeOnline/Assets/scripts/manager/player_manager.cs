@@ -64,6 +64,7 @@ public class player_manager : MonoBehaviour{
     // trigger game_manager
     public IEnumerator count_time(){
         start_timer = true;
+        timer = 0f;
         while(start_timer){
             timer = Time.deltaTime + timer;
             minutes = Mathf.Floor(timer / 60).ToString("0");
@@ -189,8 +190,6 @@ public class player_manager : MonoBehaviour{
     public void reset_all_player(){
 
         print("reset players");
-
-        //StopAllCoroutines();
         foreach(Transform player in avatars_pos){
             if(player != null){
                 Destroy(player.gameObject);

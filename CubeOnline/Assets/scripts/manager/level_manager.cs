@@ -91,7 +91,10 @@ public class level_manager : MonoBehaviour{
         level_manager.inst.id_vague = 0;
     }
 
-    public virtual void delete_level(){}
+    public virtual void delete_level(){
+        StopAllCoroutines();
+        print("stop level");
+    }
     public virtual void reinitialize_position_mechanism(){}
     
 

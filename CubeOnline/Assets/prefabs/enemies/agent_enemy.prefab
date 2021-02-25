@@ -221,6 +221,7 @@ MonoBehaviour:
   distance_attack: 7
   force_shoot: 10
   has_canon: 0
+  speed_agent: 2
   cadence_canon: 1.5
   speed_bullet_canon: 6
   death_effect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,

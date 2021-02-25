@@ -23,12 +23,17 @@ public class ui_manager : MonoBehaviour{
     public GameObject[] buttons_player;
     public GameObject buttons_players_container;
     public GameObject button_mode_game_container;
-    public GameObject buttons_type_cont;
+    public Animator buttons_type_cont;
     public GameObject prefab_button_game;
     public GameObject container_button_level;
+    public GameObject button_retry;
+    public GameObject button_confirm;
+
 
     public GameObject button_resume_game;
     public GameObject button_game_aventure;
+    public GameObject button_level_one;
+    public GameObject button_next_level;
 
 
     [Header("UI buttons level")]
@@ -89,11 +94,10 @@ public class ui_manager : MonoBehaviour{
     
     void Awake(){
         inst = this;
-     //   canvas.SetActive(true);  
     }
 
     public void show_menu_mode_game(){
-        //StopAllCoroutines();
+
         text_menu.text = "";
         for(int i = 0; i < score_players.Length;i++){
             score_players[i].transform.parent.gameObject.SetActive(false);
@@ -103,7 +107,7 @@ public class ui_manager : MonoBehaviour{
         menu_end_level.SetActive(false);
         buttons_players_container.SetActive(false);
         button_salon_multi.SetActive(false);
-        buttons_type_cont.SetActive(false);
+        buttons_type_cont.SetBool("show_type",false);
         button_back.SetActive(false);
         container_button_level.SetActive(false);
         text_vague_nbr.gameObject.GetComponentInParent<Animator>().SetBool("show_vague_last",false);
@@ -188,7 +192,7 @@ public class ui_manager : MonoBehaviour{
 
     public void disable_menu(){
         menu.SetActive(false);
-        buttons_type_cont.SetActive(false);
+          buttons_type_cont.SetBool("show_type",false);
     }
 
     
@@ -212,7 +216,7 @@ public class ui_manager : MonoBehaviour{
         container_button_game_found.SetActive(false);
         text_network.text = "";
         button_salon_multi.SetActive(false);
-        buttons_type_cont.SetActive(false);
+         buttons_type_cont.SetBool("show_type",false);
         text_menu.text = "Choose Your Player";
         buttons_players_container.SetActive(true);
         button_back.SetActive(true);
@@ -224,7 +228,7 @@ public class ui_manager : MonoBehaviour{
         buttons_players_container.SetActive(false);
         container_button_level.SetActive(false);
         cont_ui_cam_vehicule.SetActive(true);
-        buttons_type_cont.SetActive(true);
+         buttons_type_cont.SetBool("show_type",true);
         button_back.SetActive(true);
         ui_position = 2;  
     }
@@ -233,7 +237,7 @@ public class ui_manager : MonoBehaviour{
         print("show level container ");
         text_menu.text = "";
         cont_ui_cam_vehicule.SetActive(false);
-        buttons_type_cont.SetActive(false);
+        buttons_type_cont.SetBool("show_type",false);
         buttons_players_container.SetActive(false);
         button_mode_game_container.SetActive(false);
         container_button_level.SetActive(true);
@@ -241,6 +245,7 @@ public class ui_manager : MonoBehaviour{
         button_back.SetActive(true);
         ui_position = 3;    
     }
+    
 
    
 
@@ -325,6 +330,10 @@ public class ui_manager : MonoBehaviour{
         StartCoroutine(ui_manager.inst.set_alpha_ui_game(0.5f,0f));
         menu_end_level.SetActive(true);
         menu_end_level.GetComponent<Animator>().SetBool("show_result_end_level",true);
+        eventSystem.firstSelectedGameObject = button_next_level;
+        eventSystem.SetSelectedGameObject(button_next_level);
+        text_vague_nbr.gameObject.GetComponentInParent<Animator>().SetBool("show_vague_last",false);
+        player_manager.inst.reset_all_player();
     }
 
 
@@ -355,23 +364,20 @@ public class ui_manager : MonoBehaviour{
         eventSystem.firstSelectedGameObject = button_resume_game;
         eventSystem.SetSelectedGameObject(button_resume_game);
         menu_in_game.SetActive(true);
-        //AudioListener.pause = true;
         sound_manager.inst.pause_all_sources();
     }
 
 
     public void click_button_quit(){
-        print("button_restart gameover");
+        print("button quit menu pause");
         eventSystem.firstSelectedGameObject = button_game_aventure;
         eventSystem.SetSelectedGameObject(button_game_aventure);
         game_manager.inst.reset_level();
-        StartCoroutine(set_alpha_ui_game(2f,0f));
     }
 
     public void click_button_back_to_game(){
         Time.timeScale = 1.0f;
         menu_in_game.SetActive(false);
-        //AudioListener.pause = false;
         sound_manager.inst.play_all_sources();
     }
 
@@ -388,17 +394,18 @@ public class ui_manager : MonoBehaviour{
         menu_in_game.SetActive(false);
         menu_end_level.SetActive(false);
         menu.SetActive(true);
+        light_container.SetActive(true);
         show_menu_selection_level();
         sound_manager.inst.sound_music_menu(); 
+        eventSystem.firstSelectedGameObject = button_level_one;
+        eventSystem.SetSelectedGameObject(button_level_one);
     } 
 
     public void click_button_restart_gameover(){
         StartCoroutine(game_manager.inst.reset_and_restart());
     }
 
-    public void click_button_menu_gameover(){
-        print("button_menu_gameover");
-        show_menu_mode_game();
+    public void click_button_quit_gameover(){
         game_manager.inst.reset_level();
     }
 
@@ -408,6 +415,8 @@ public class ui_manager : MonoBehaviour{
         yield return new WaitForSeconds(2f);
         StartCoroutine(set_alpha_ui_game(1f, 0f));
         menu_game_over.SetActive(true);
+        eventSystem.firstSelectedGameObject = button_retry;
+        eventSystem.SetSelectedGameObject(button_retry);
     }
 
 
@@ -466,7 +475,11 @@ public class ui_manager : MonoBehaviour{
     public void active_buttons_acces_levels(){
         int level_complete = PlayerPrefs.GetInt("level_complete");
 
-        print("unlock level "+ level_complete);
+        if(dev_script.inst.all_access_level){
+            level_complete = 2; // 0,1,2     3 levels
+        }
+
+        print("unlock level "+ (level_complete+1));
         for (int i = 0; i <= level_complete; i++){
             buttons_level[i].interactable = true;
             buttons_level[i].transform.GetChild(0).gameObject.SetActive(false);
@@ -477,6 +490,12 @@ public class ui_manager : MonoBehaviour{
 
     public void show_button_action(bool value){
         buttonA_action.SetBool("show_buttonA",value);
+        if(value){
+            buttonA_action.transform.GetComponent<button_follow_player>().start_follow();
+        }else{
+            buttonA_action.transform.GetComponent<button_follow_player>().stop_follow();
+        }
+        
     }
 
 
@@ -485,9 +504,6 @@ public class ui_manager : MonoBehaviour{
     }
 
 
-    
-
-    
    
     
 }

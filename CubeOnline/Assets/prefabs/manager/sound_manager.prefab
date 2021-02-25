@@ -75,6 +75,8 @@ MonoBehaviour:
   interactable_sound: {fileID: 8300000, guid: 6d4b3ac50223fc04aa3708b6d4ee48d8, type: 3}
   press_buttonA_sound: {fileID: 8300000, guid: f77121fd8fae76242bf8bfbe1fec4f91, type: 3}
   turbo_sound: {fileID: 8300000, guid: 37d5af6878b823447b9c4a029f7ed5d0, type: 3}
+  boost_reload_sound: {fileID: 8300000, guid: 630e4a6cee4224444a46e4b70fc7b9e1, type: 3}
+  full_boost_sound: {fileID: 8300000, guid: 02b5bf15c1675ce42868cc1f5881d52f, type: 3}
   click: {fileID: 8300000, guid: 927cef4c3b8d3604ca482da4666071a5, type: 3}
   click_back: {fileID: 8300000, guid: 34b55568bc0e33240855a0991b19b255, type: 3}
   change_vague: {fileID: 8300000, guid: 93e0c87e8fed78b4083a2848485ccc66, type: 3}

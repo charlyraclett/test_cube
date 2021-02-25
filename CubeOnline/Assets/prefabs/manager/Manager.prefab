@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2767629690920691310}
   - component: {fileID: 2767629690920691311}
   - component: {fileID: 2767629690920691309}
+  - component: {fileID: 1742963939}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -130,9 +131,9 @@ MonoBehaviour:
   life_player: 3
   distance_great_shot: 15
   avatars_prefab:
-  - {fileID: 1518590454746285268, guid: 8fea0ebe66a3eb94fa10634c4473f962, type: 3}
+  - {fileID: 5306797500781481236, guid: e5ab089efbcb3f245a3935b89dd9a124, type: 3}
   - {fileID: 1962926036118206177, guid: 3796ac651f541694eb1c44ddc354afc2, type: 3}
-  - {fileID: 2228697627809123019, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
+  - {fileID: 6744032101067289060, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
   color:
   - {fileID: 2100000, guid: 13c532aaa1ebb8b44894260b2e5374c7, type: 2}
   - {fileID: 2100000, guid: 8b006dd7ae3dda64da68167ebf3b4e1d, type: 2}
@@ -141,3 +142,15 @@ MonoBehaviour:
   bases_anim:
   - {fileID: 0}
   start_timer: 0
+--- !u!114 &1742963939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280cff1b1db124140b6966bb90d7f0a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

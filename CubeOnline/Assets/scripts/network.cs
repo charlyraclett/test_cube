@@ -144,7 +144,7 @@ public class network : MonoBehaviour{
 
             if(id_event > 0){
                 switch(id_event){
-                    case 1 :  StartCoroutine(floor_manager.inst.delete_floor(0f)); break;
+                 //   case 1 :  StartCoroutine(floor_manager.inst.delete_floor(0f)); break;
                 }
             } 
         } 

@@ -35,7 +35,7 @@ public class controller_cube : MonoBehaviour{
     public Transform head_turn;
     public Transform body;
     public ParticleSystem trail_turbo;
-    
+   
     public Slider slider_boost;
     public Animator slider_boost_anim;
 
@@ -313,6 +313,7 @@ public class controller_cube : MonoBehaviour{
         slider_boost.value = 0f;
         slider_boost_anim.SetBool("boost",true);
         sound_manager.inst.sound_turbo();
+        sound_manager.inst.sound_reload_boost();
 
         while(elapsed < duree ){
             this.transform.Translate(_move + new Vector3(left_stick.x * speed_boost, 0f, left_stick.y * speed_boost),Space.World);
@@ -323,11 +324,8 @@ public class controller_cube : MonoBehaviour{
 
         trail_turbo.Stop();
 
-        yield return new WaitForSeconds(1f);
-
         elapsed = 0f;
         duree = reload_time_boost;
-        sound_manager.inst.sound_reload_boost();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -339,12 +337,17 @@ public class controller_cube : MonoBehaviour{
         }
 
         sound_manager.inst.audio_source_player.Stop();
+        sound_manager.inst.sound_full_boost();
 
         slider_boost.value = 1f;
         slider_boost_anim.SetBool("boost",false);
         yield return new WaitForSeconds(0.2f);
         start_timer_boost = false;
     }
+
+
+    
+   
 
 
 

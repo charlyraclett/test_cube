@@ -25,8 +25,7 @@ public class game_manager : MonoBehaviour{
         dictionary.Add(0, "I");
         dictionary.Add(1, "II");
         dictionary.Add(2, "III");
-        dictionary.Add(3, "IV"); 
-
+     
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
 
         if(!dev_script.inst.skip_menu){  
@@ -45,6 +44,8 @@ public class game_manager : MonoBehaviour{
         yield return new WaitForSeconds(1f);// end anim menu
         Instantiate(levels_prefab[id_level], new Vector3(0, 0, 0), Quaternion.identity); 
         ui_manager.inst.light_container.SetActive(false);
+        ui_manager.inst.button_confirm.SetActive(false);
+        yield return new WaitForSeconds(1f);
         ui_manager.inst.black_panel_menu.SetBool("black_panel", false);
         ui_manager.inst.refresh_text_level_nbr(dictionary[id_level]);
         yield return new WaitForSeconds(1f); // time to anim floor intro
@@ -67,19 +68,21 @@ public class game_manager : MonoBehaviour{
 
 
 
-    // trigger_ui_manager_button_exit
+    // trigger_ui_manager_button_exit_gameover
     public void reset_level(){
-        Time.timeScale = 1.0f;
-        reset_and_back_to_menu();
+        StartCoroutine(reset_and_back_to_menu());
     }
 
-   // trigger ui manager button back menu pause
-    public void reset_and_back_to_menu(){
-
-        ui_manager.inst.light_container.SetActive(true);
+   
+    IEnumerator reset_and_back_to_menu(){
         print("quit_game game_manager");
-        StopAllCoroutines();
-        level_manager.inst.stop_all();
+        ui_manager.inst.black_panel_menu.SetBool("black_panel", true);
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 1f;
+        StartCoroutine(ui_manager.inst.set_alpha_ui_game(1f,0f));
+        ui_manager.inst.light_container.SetActive(true);
+        ui_manager.inst.button_confirm.SetActive(true);
+        level_manager.inst.delete_level();
         enemies_manager.inst.remove_all_enemies();
         sound_manager.inst.sound_music_menu();
         ui_manager.inst.show_menu_mode_game();
@@ -87,6 +90,8 @@ public class game_manager : MonoBehaviour{
         camera_manager.inst.reset_cameras();
         ui_manager.inst.text_vague_nbr.text = "";
         level_manager.inst.enemies_in_game = 0;
+        ui_manager.inst.black_panel_menu.SetBool("black_panel", false);
+        StartCoroutine(sound_manager.inst.set_mixer_in_game(0.1f,1f));
     }
 
 

@@ -23,11 +23,8 @@ public class plateform_move : MonoBehaviour{
             interactable_manager.inst.player_is_in_area_interactable(this);
             col.gameObject.transform.parent = this.transform; 
         }
-       
     }
 
-
-    
     void OnTriggerExit(Collider col){ 
         if(col.tag == "Player"){   
             col.gameObject.transform.parent = null;  
@@ -37,7 +34,7 @@ public class plateform_move : MonoBehaviour{
 
 
   
-    // trigger gamepad_manager
+    // trigger interactable manager
     public void active_plateform(){
         if(is_moving)
         return;
@@ -63,7 +60,7 @@ public class plateform_move : MonoBehaviour{
 
     IEnumerator show_plateform(){
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         GetComponent<MeshRenderer>().enabled = true;
         float elapsed = 0.0f;
         float duree = 2f;

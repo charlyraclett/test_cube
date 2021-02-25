@@ -27,6 +27,10 @@ public class map_manager : MonoBehaviour{
    
     void Start(){
         Invoke("initialize",0.1f);
+
+        if(floor_container == null){
+            Debug.Log("assigner le floor_container !");
+        }
     }
 
 
@@ -34,7 +38,7 @@ public class map_manager : MonoBehaviour{
         inst = this;
         add_floor_to_list();
         add_bases_to_player_manager();
-        StartCoroutine(intro_anim_floor(0.5f,0.02f));
+        StartCoroutine(intro_anim_floor(3f,0.02f));
     }
 
 

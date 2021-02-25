@@ -38,6 +38,8 @@ public class sound_manager : MonoBehaviour{
     public AudioClip press_buttonA_sound;
     public AudioClip turbo_sound;
     public AudioClip boost_reload_sound;
+    public AudioClip full_boost_sound;
+
 
 
 
@@ -167,8 +169,12 @@ public class sound_manager : MonoBehaviour{
 
     //player
 
-     public void sound_reload_boost(){
+    public void sound_reload_boost(){
         audio_source_player.PlayOneShot(boost_reload_sound,0.5f);
+    }
+
+    public void sound_full_boost(){
+        audio_source_player.PlayOneShot(full_boost_sound,1f);
     }
 
     public void sound_interaction(){

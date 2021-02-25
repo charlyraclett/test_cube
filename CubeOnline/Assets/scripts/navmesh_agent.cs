@@ -20,6 +20,7 @@ public class navmesh_agent : MonoBehaviour{
     public float distance_attack;
     public float force_shoot;
     public bool has_canon;
+    public float speed_agent = 2f;
     [Range(1.5f,10)]
     public float cadence_canon = 1.5f;
     public float speed_bullet_canon = 6f;
@@ -41,6 +42,7 @@ public class navmesh_agent : MonoBehaviour{
         agent = GetComponent<NavMeshAgent>();
         initial_position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         agent.enabled = true;
+        agent.speed = speed_agent;
         rb.useGravity = false;
         rb.isKinematic = true;
         if(has_canon){

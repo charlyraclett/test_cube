@@ -52,6 +52,8 @@ public class turret_enemy : MonoBehaviour{
     // trigger level_two_behaviour
     public void start_turret(float delay){  
         StartCoroutine(go_start_turret(delay));
+        switch1.reinitilize();
+        switch2.reinitilize();
     }
 
     IEnumerator go_start_turret(float delay){

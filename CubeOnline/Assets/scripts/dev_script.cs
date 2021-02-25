@@ -12,6 +12,7 @@ public class dev_script : MonoBehaviour{
     public bool no_enemy;
     public bool unlimit_life;
     public bool invincible;
+    public bool all_access_level;
 
     
 
@@ -19,6 +20,7 @@ public class dev_script : MonoBehaviour{
     public enum choix_level {
         level1,
         level2, 
+        level3
     };
    
     public vague start_vague;
@@ -84,6 +86,7 @@ public class dev_script : MonoBehaviour{
     IEnumerator start_without_menu(){
         yield return new WaitForSeconds(0.1f); 
         menu.SetActive(false);
+        ui_manager.inst.light_container.SetActive(false);
         set_level();
         yield return new WaitForSeconds(1f); 
         StartCoroutine(player_manager.inst.create_player(player_manager.inst.myId,true, type_vehicule,0f));
@@ -181,6 +184,7 @@ public class dev_script : MonoBehaviour{
         switch(_level){
             case choix_level.level1 : level_id = 0; break;
             case choix_level.level2 : level_id = 1; break;
+            case choix_level.level3 : level_id = 2; break;
         }
         for (int i = 0; i < level.Length; i++){
             if(i == level_id){
