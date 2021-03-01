@@ -4,25 +4,44 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour{
 
-    public GameObject impact;
-    public int id_player_shoot;
+    Rigidbody rb;
+    Animator anim;
+    [HideInInspector] public int id_player_shoot;
+
+    [Header("Charectiristic")]
+
     public bool catapult;
     public float speed = 5f;
     public bool canon;
-    public Transform target;
-    Rigidbody rb;
-
+    public bool rocket_follow_enemy;
+    public float speed_rocket = 30f;
+    public float rotation_speed_rocket = 20f;
+   
+    [Header("Edit")]
+    public GameObject impact;
+    public GameObject trail_effect;
     public GameObject particule_fire_ground;
+
+    [Header("Info")]
+    public Transform target;
 
     bool is_touching;
     float distance_shoot_reussi;
-    float seuil_nice_shot = 10f;
+   
+
+    float timer;
 
 
     void Start(){
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         Destroy(this.gameObject, 7f);  
         StartCoroutine(calcul_distance());
+
+        if(rocket_follow_enemy){
+            trail_effect.SetActive(true);
+            search_enemy();
+        }
     }
 
 
@@ -144,28 +163,19 @@ public class bullet : MonoBehaviour{
 
 
 
-
-
-
     // bullet suit le player
     public IEnumerator follow_player(){   
 
-        Vector3 test = new Vector3(target.position.x, target.position.y, target.position.z);
         while (true){
-            transform.position = Vector3.MoveTowards(transform.position, test, 10f * Time.deltaTime);
+        if(target == null){
+            canon = true;
+            yield break;
+        }
+        Vector3 test = new Vector3(target.position.x, target.position.y, target.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, test, speed_rocket * Time.deltaTime);
             yield return null;
         }
     }
-
-    public IEnumerator refresh_position(){   
-
-        Vector3 test = new Vector3(target.position.x, target.position.y, target.position.z);
-        while (true){
-            transform.position = Vector3.MoveTowards(transform.position, test, 10f * Time.deltaTime);
-            yield return null;
-        }
-    }
-
 
 
     //rotate to player
@@ -173,17 +183,33 @@ public class bullet : MonoBehaviour{
        
         Quaternion targetRotation = Quaternion.identity;
 
-        do{
+        do{ 
             Vector3 targetDirection = (target.transform.position - transform.position).normalized;
             targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * 70f);
-            transform.position += transform.forward * 10f * Time.deltaTime; // forward
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotation_speed_rocket);
+            transform.position += transform.forward * speed_rocket * Time.deltaTime;
+            timer += Time.deltaTime * 10;
+
+            if(timer > 15){
+                canon = true;
+                yield break;
+            }
             yield return null;
- 
         } while(Quaternion.Angle(transform.rotation, targetRotation) > 0.01f);
 
         StartCoroutine(follow_player());
 
+    }
+
+
+    void search_enemy(){
+
+        if(target == null){
+            canon = true;
+            return;
+        }
+        StartCoroutine(DoRotationAtTargetDirection());
+        anim.SetTrigger("lock_enemy");
     }
 
 

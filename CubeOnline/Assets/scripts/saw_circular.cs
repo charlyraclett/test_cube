@@ -46,6 +46,7 @@ public class saw_circular : MonoBehaviour{
     }
 
    
+   
     void OnTriggerEnter(Collider col){ 
        
         if(col.tag == "Player"){      
@@ -63,6 +64,9 @@ public class saw_circular : MonoBehaviour{
             StopCoroutine("stop_collider");
         }
     }
+
+
+
 
     void OnTriggerExit(Collider col){
         if(col.tag == "ground" && toggle_ground){      

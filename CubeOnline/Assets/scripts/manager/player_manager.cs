@@ -150,7 +150,7 @@ public class player_manager : MonoBehaviour{
     public void player_dead(){
         life_player--;
         pv_player_ui.SetInteger("pv_player",life_player);
-        ui_manager.inst.flash_effect_dead();
+        ui_manager.inst.flash_effect_dead(); //++ remove rocket container
         StartCoroutine(camera_manager.inst.start_shake_cam());
         avatars_pos[myId] = null;
 
@@ -202,8 +202,10 @@ public class player_manager : MonoBehaviour{
 
         life_player = 3;
         enemies_killed = 0;
+        enemies_to_kill_per_vague = 0;
         nbr_shoot = 0;
         pv_player_ui.SetInteger("pv_player",life_player);
+        ui_manager.inst.rocket_container.SetBool("show",false);
     }
 
     

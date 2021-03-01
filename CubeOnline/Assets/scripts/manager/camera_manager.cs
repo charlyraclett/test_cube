@@ -8,6 +8,7 @@ public class camera_manager : MonoBehaviour{
     public static camera_manager inst;
 
     [Header("Edition")]
+    public Camera main_camera;
     public CinemachineVirtualCamera cam_game;
     public CinemachineVirtualCamera cam_move;
     public CinemachineVirtualCamera cam_player_finish;
@@ -17,7 +18,7 @@ public class camera_manager : MonoBehaviour{
     [Header("Info")]
     public Transform target_cam_player;
 
-    void Start(){
+    void Awake(){
         inst = this;   
     }
 

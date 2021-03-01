@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2767629690920691311}
   - component: {fileID: 2767629690920691309}
   - component: {fileID: 1742963939}
+  - component: {fileID: 1911964164}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -68,6 +69,7 @@ MonoBehaviour:
   levels_prefab:
   - {fileID: 6768955940654426667, guid: 6ab6a8e8667473145bb928e56ac32cd6, type: 3}
   - {fileID: 8817822969961288537, guid: 40619d106b9e70042a8c460d66caa603, type: 3}
+  - {fileID: 7168135776480453001, guid: 539e024fb8a458f448aa725c3a9e1c72, type: 3}
 --- !u!114 &2767629690920691311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,12 +133,12 @@ MonoBehaviour:
   life_player: 3
   distance_great_shot: 15
   avatars_prefab:
-  - {fileID: 5306797500781481236, guid: e5ab089efbcb3f245a3935b89dd9a124, type: 3}
+  - {fileID: 5024470017418754955, guid: e5ab089efbcb3f245a3935b89dd9a124, type: 3}
   - {fileID: 1962926036118206177, guid: 3796ac651f541694eb1c44ddc354afc2, type: 3}
-  - {fileID: 6744032101067289060, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
+  - {fileID: 2723470992674780824, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
   color:
   - {fileID: 2100000, guid: 13c532aaa1ebb8b44894260b2e5374c7, type: 2}
-  - {fileID: 2100000, guid: 8b006dd7ae3dda64da68167ebf3b4e1d, type: 2}
+  - {fileID: 2100000, guid: 8b1d311badc9c704583214c141e7a0f6, type: 2}
   - {fileID: 2100000, guid: bfb9f98e3ef2a644eb2344542a3a5897, type: 2}
   - {fileID: 2100000, guid: a707f765c28a8364a8120f6cf3691011, type: 2}
   bases_anim:
@@ -154,3 +156,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280cff1b1db124140b6966bb90d7f0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1911964164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767629690920691314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd41723a09a4b54b89110dde72794cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  box:
+  - {fileID: 4106263798854842465, guid: 89ace1d7f4e7d394db54facce43ba6a4, type: 3}
+  - {fileID: 6806766598053174748, guid: 2933625fe33c0f045b04b79b48d5b2db, type: 3}

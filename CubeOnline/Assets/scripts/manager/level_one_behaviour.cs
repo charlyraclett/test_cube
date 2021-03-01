@@ -142,7 +142,7 @@ public class level_one_behaviour : level_manager{
       //  pos_nest = (pos_nest + 1) % position_nest_start.Length;
         GameObject nest = Instantiate(enemies_manager.inst.nest_enemy[0],position_nest_start[position_id].position, position_nest_start[position_id].rotation);
         nest.GetComponent<nest_vehicule>().intialize_nest_container(enemies_manager.inst.enemies_prefab[one], enemies_manager.inst.enemies_prefab[two],enemies_manager.inst. enemies_prefab[three]);
-        enemies_manager.inst.enemy_in_game.Add(nest);
+        //enemies_manager.inst.enemy_in_game.Add(nest);
        
         nest.GetComponent<Animator>().SetTrigger("go_to_game");
         StartCoroutine(sound_manager.inst.fade_in_nest_move());

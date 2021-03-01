@@ -103,33 +103,49 @@ public class dev_script : MonoBehaviour{
    
     void Update(){
 
-        if(Input.GetKeyDown(KeyCode.Q)){ 
-            id = 1;
-            print("send: "+" P/" + id + data);
-            network.inst.receive_data("P/" + id + data);      
-        } 
+        // if(Input.GetKeyDown(KeyCode.Q)){ 
+        //     id = 1;
+        //     print("send: "+" P/" + id + data);
+        //     network.inst.receive_data("P/" + id + data);      
+        // } 
         
-        if(Input.GetKeyDown(KeyCode.W)){  
-            id = 2;
-            network.inst.receive_data("P/" + id + data);   
-        } 
+        // if(Input.GetKeyDown(KeyCode.W)){  
+        //     id = 2;
+        //     network.inst.receive_data("P/" + id + data);   
+        // } 
           
-        if(Input.GetKeyDown(KeyCode.E)){  
-            id = 3;
-            network.inst.receive_data("P/" + id + data); 
-        } 
+        // if(Input.GetKeyDown(KeyCode.E)){  
+        //     id = 3;
+        //     network.inst.receive_data("P/" + id + data); 
+        // } 
 
         if(Input.GetKeyDown(KeyCode.P)){  
             StartCoroutine(enemies_manager.inst.create_enemy_floor(0,2,false, 58));
         }
   
-        if(Input.GetKeyDown(KeyCode.G)){  
+        if(Input.GetKeyDown(KeyCode.V)){  
             StartCoroutine(level_manager.inst.change_vague(6));
         }
 
-        if(Input.GetKeyDown(KeyCode.L)){     
+        if(Input.GetKeyDown(KeyCode.G)){    
+            player_manager.inst.life_player = 1; 
+            invincible = false;
+            player_manager.inst.my_avatar.controller_dead();
             StartCoroutine(game_manager.inst.game_over());
-        }           
+        } 
+
+        if(Input.GetKeyDown(KeyCode.R)){    
+            consommable_manager.inst.create_box(1);
+        } 
+
+        if(Input.GetKeyDown(KeyCode.T)){    
+            consommable_manager.inst.create_box(0);
+        }  
+
+        if(Input.GetKeyDown(KeyCode.Y)){    
+            player_manager.inst.life_player--;
+            player_manager.inst.pv_player_ui.SetInteger("pv_player", player_manager.inst.life_player);
+        }                  
     }
 
 

@@ -14,6 +14,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "right_bump",
+                    "type": "Value",
+                    "id": "d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "move_cube",
                     "type": "Value",
                     "id": "95a580c9-c69f-4e12-bc59-9cdab5f2b814",
@@ -38,14 +46,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "right_bump",
-                    "type": "Value",
-                    "id": "d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "actionA",
                     "type": "Button",
                     "id": "a3a5ac12-3584-4a85-824b-7f72a10fb4af",
@@ -57,6 +57,14 @@
                     "name": "buttonB",
                     "type": "Button",
                     "id": "be7df2b4-d0b2-4a03-9d05-4c267e170a92",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "buttonY",
+                    "type": "Button",
+                    "id": "180d1618-0b16-4394-aeb7-446d4ba44299",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -194,17 +202,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cefbe91b-d66d-43e7-8442-957b8977f46e",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "right_bump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9b531a20-c39c-482a-9a04-2ab68cdf576c",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -310,6 +307,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "cross_left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cefbe91b-d66d-43e7-8442-957b8977f46e",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "right_bump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04ebec83-e181-477e-bb6c-68d221939b96",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "buttonY",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3887261e-c3b8-4a37-a8de-50f15755205c",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "buttonY",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

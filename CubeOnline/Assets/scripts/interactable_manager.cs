@@ -6,7 +6,7 @@ public class interactable_manager : MonoBehaviour{
 
     public static interactable_manager inst;
 
-    object object_interactable;
+    public object object_interactable;
     string text_button_action;
 
     void Start(){  
@@ -31,13 +31,20 @@ public class interactable_manager : MonoBehaviour{
            
             if(object_interactable.GetType() == typeof(plateform_move)){
                 action_plateform((plateform_move)object_interactable);
+            sound_manager.inst.sound_press_button_a();
+
             }
             if(object_interactable.GetType() == typeof(collider_switch_turret)){
-                do_action_switch_turret((collider_switch_turret)object_interactable);   // testasse
+                do_action_switch_turret((collider_switch_turret)object_interactable);   
+            sound_manager.inst.sound_press_button_a();
+
             }
 
+            if(object_interactable.GetType() == typeof(switch_light)){
+                do_action_switch_light((switch_light)object_interactable);   
+            }
+           
             ui_manager.inst.show_button_action(false);
-            sound_manager.inst.sound_press_button_a();
         }  
     }
 
@@ -61,9 +68,11 @@ public class interactable_manager : MonoBehaviour{
         switch_turret.active_switch();
     }
 
+    void do_action_switch_light(switch_light switch_light){
+        switch_light.active_light();
+    }
 
-
-
+    
 
 
     void change_and_show_text_button(object _interactable){
@@ -73,6 +82,10 @@ public class interactable_manager : MonoBehaviour{
         }
         if(_interactable.GetType() == typeof(collider_switch_turret)){
             text_button_action = "Deactivate";
+        }
+
+        if(_interactable.GetType() == typeof(switch_light)){
+            text_button_action = "Switch On";
         }
 
         ui_manager.inst.button_action_text.text = text_button_action;  

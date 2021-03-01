@@ -79,7 +79,8 @@ public class game_manager : MonoBehaviour{
         ui_manager.inst.black_panel_menu.SetBool("black_panel", true);
         yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 1f;
-        StartCoroutine(ui_manager.inst.set_alpha_ui_game(1f,0f));
+        sound_manager.inst.stop_all_sources();
+        StartCoroutine(ui_manager.inst.set_alpha_ui_game(0.1f,0f));
         ui_manager.inst.light_container.SetActive(true);
         ui_manager.inst.button_confirm.SetActive(true);
         level_manager.inst.delete_level();
@@ -121,7 +122,8 @@ public class game_manager : MonoBehaviour{
         map_manager.inst.reinitialze_floor();
         camera_manager.inst.reset_cameras();
         level_manager.inst.reset_level();
-        StartCoroutine(sound_manager.inst.set_mixer_in_game(1f,1f)); 
+        sound_manager.inst.stop_all_sources();
+        StartCoroutine(sound_manager.inst.set_mixer_in_game(0.2f,1f)); 
         ui_manager.inst.black_menu_gameover.GetComponent<Animator>().SetBool("black_panel",false);
         yield return new WaitForSeconds(1f); 
         StartCoroutine(launch_level());
@@ -139,7 +141,7 @@ public class game_manager : MonoBehaviour{
         level_manager.inst.stop_all();
         StartCoroutine(ui_manager.inst.show_menu_gameover()); 
         camera_manager.inst.show_cam_gameover();
-        StartCoroutine(sound_manager.inst.set_mixer_in_game(6f,0f));
+        StartCoroutine(sound_manager.inst.set_mixer_in_game(5f,0f));
     }
 
 

@@ -27,6 +27,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""right_bump"",
+                    ""type"": ""Value"",
+                    ""id"": ""d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""move_cube"",
                     ""type"": ""Value"",
                     ""id"": ""95a580c9-c69f-4e12-bc59-9cdab5f2b814"",
@@ -51,14 +59,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""right_bump"",
-                    ""type"": ""Value"",
-                    ""id"": ""d0883fa3-d9e4-4212-be18-ca8ff8f6dfe5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""actionA"",
                     ""type"": ""Button"",
                     ""id"": ""a3a5ac12-3584-4a85-824b-7f72a10fb4af"",
@@ -70,6 +70,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""buttonB"",
                     ""type"": ""Button"",
                     ""id"": ""be7df2b4-d0b2-4a03-9d05-4c267e170a92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""buttonY"",
+                    ""type"": ""Button"",
+                    ""id"": ""180d1618-0b16-4394-aeb7-446d4ba44299"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -207,17 +215,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""right_bump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9b531a20-c39c-482a-9a04-2ab68cdf576c"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
@@ -325,6 +322,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""cross_left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""right_bump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04ebec83-e181-477e-bb6c-68d221939b96"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3887261e-c3b8-4a37-a8de-50f15755205c"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -357,12 +387,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         // game_pad
         m_game_pad = asset.FindActionMap("game_pad", throwIfNotFound: true);
         m_game_pad_left_bump = m_game_pad.FindAction("left_bump", throwIfNotFound: true);
+        m_game_pad_right_bump = m_game_pad.FindAction("right_bump", throwIfNotFound: true);
         m_game_pad_move_cube = m_game_pad.FindAction("move_cube", throwIfNotFound: true);
         m_game_pad_rotate_cube = m_game_pad.FindAction("rotate_cube", throwIfNotFound: true);
         m_game_pad_pause = m_game_pad.FindAction("pause", throwIfNotFound: true);
-        m_game_pad_right_bump = m_game_pad.FindAction("right_bump", throwIfNotFound: true);
         m_game_pad_actionA = m_game_pad.FindAction("actionA", throwIfNotFound: true);
         m_game_pad_buttonB = m_game_pad.FindAction("buttonB", throwIfNotFound: true);
+        m_game_pad_buttonY = m_game_pad.FindAction("buttonY", throwIfNotFound: true);
         m_game_pad_cross_left = m_game_pad.FindAction("cross_left", throwIfNotFound: true);
         // keyboard
         m_keyboard = asset.FindActionMap("keyboard", throwIfNotFound: true);
@@ -418,24 +449,26 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_game_pad;
     private IGame_padActions m_Game_padActionsCallbackInterface;
     private readonly InputAction m_game_pad_left_bump;
+    private readonly InputAction m_game_pad_right_bump;
     private readonly InputAction m_game_pad_move_cube;
     private readonly InputAction m_game_pad_rotate_cube;
     private readonly InputAction m_game_pad_pause;
-    private readonly InputAction m_game_pad_right_bump;
     private readonly InputAction m_game_pad_actionA;
     private readonly InputAction m_game_pad_buttonB;
+    private readonly InputAction m_game_pad_buttonY;
     private readonly InputAction m_game_pad_cross_left;
     public struct Game_padActions
     {
         private @PlayerControls m_Wrapper;
         public Game_padActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @left_bump => m_Wrapper.m_game_pad_left_bump;
+        public InputAction @right_bump => m_Wrapper.m_game_pad_right_bump;
         public InputAction @move_cube => m_Wrapper.m_game_pad_move_cube;
         public InputAction @rotate_cube => m_Wrapper.m_game_pad_rotate_cube;
         public InputAction @pause => m_Wrapper.m_game_pad_pause;
-        public InputAction @right_bump => m_Wrapper.m_game_pad_right_bump;
         public InputAction @actionA => m_Wrapper.m_game_pad_actionA;
         public InputAction @buttonB => m_Wrapper.m_game_pad_buttonB;
+        public InputAction @buttonY => m_Wrapper.m_game_pad_buttonY;
         public InputAction @cross_left => m_Wrapper.m_game_pad_cross_left;
         public InputActionMap Get() { return m_Wrapper.m_game_pad; }
         public void Enable() { Get().Enable(); }
@@ -449,6 +482,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @left_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
                 @left_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
                 @left_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnLeft_bump;
+                @right_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
+                @right_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
+                @right_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
                 @move_cube.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
                 @move_cube.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
                 @move_cube.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnMove_cube;
@@ -458,15 +494,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @pause.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
                 @pause.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
                 @pause.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnPause;
-                @right_bump.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
-                @right_bump.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
-                @right_bump.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnRight_bump;
                 @actionA.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
                 @actionA.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
                 @actionA.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnActionA;
                 @buttonB.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
                 @buttonB.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
                 @buttonB.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonB;
+                @buttonY.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
+                @buttonY.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
+                @buttonY.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
                 @cross_left.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
                 @cross_left.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
                 @cross_left.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
@@ -477,6 +513,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @left_bump.started += instance.OnLeft_bump;
                 @left_bump.performed += instance.OnLeft_bump;
                 @left_bump.canceled += instance.OnLeft_bump;
+                @right_bump.started += instance.OnRight_bump;
+                @right_bump.performed += instance.OnRight_bump;
+                @right_bump.canceled += instance.OnRight_bump;
                 @move_cube.started += instance.OnMove_cube;
                 @move_cube.performed += instance.OnMove_cube;
                 @move_cube.canceled += instance.OnMove_cube;
@@ -486,15 +525,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @pause.started += instance.OnPause;
                 @pause.performed += instance.OnPause;
                 @pause.canceled += instance.OnPause;
-                @right_bump.started += instance.OnRight_bump;
-                @right_bump.performed += instance.OnRight_bump;
-                @right_bump.canceled += instance.OnRight_bump;
                 @actionA.started += instance.OnActionA;
                 @actionA.performed += instance.OnActionA;
                 @actionA.canceled += instance.OnActionA;
                 @buttonB.started += instance.OnButtonB;
                 @buttonB.performed += instance.OnButtonB;
                 @buttonB.canceled += instance.OnButtonB;
+                @buttonY.started += instance.OnButtonY;
+                @buttonY.performed += instance.OnButtonY;
+                @buttonY.canceled += instance.OnButtonY;
                 @cross_left.started += instance.OnCross_left;
                 @cross_left.performed += instance.OnCross_left;
                 @cross_left.canceled += instance.OnCross_left;
@@ -546,12 +585,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public interface IGame_padActions
     {
         void OnLeft_bump(InputAction.CallbackContext context);
+        void OnRight_bump(InputAction.CallbackContext context);
         void OnMove_cube(InputAction.CallbackContext context);
         void OnRotate_cube(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnRight_bump(InputAction.CallbackContext context);
         void OnActionA(InputAction.CallbackContext context);
         void OnButtonB(InputAction.CallbackContext context);
+        void OnButtonY(InputAction.CallbackContext context);
         void OnCross_left(InputAction.CallbackContext context);
     }
     public interface IKeyboardActions

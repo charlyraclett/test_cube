@@ -75,6 +75,11 @@ public class ui_manager : MonoBehaviour{
 
     public GameObject light_container;
 
+    public Animator rocket_container;
+    public Text rocket_nbr;
+    public Image rocket_img1;
+    public Image rocket_img2;
+
     public GameObject cont_ui_cam_vehicule;
     public int choix_type = 0;
 
@@ -333,7 +338,7 @@ public class ui_manager : MonoBehaviour{
         eventSystem.firstSelectedGameObject = button_next_level;
         eventSystem.SetSelectedGameObject(button_next_level);
         text_vague_nbr.gameObject.GetComponentInParent<Animator>().SetBool("show_vague_last",false);
-        player_manager.inst.reset_all_player();
+      
     }
 
 
@@ -498,9 +503,47 @@ public class ui_manager : MonoBehaviour{
         
     }
 
-
+    //trigger controller_cube
     public void flash_effect_dead(){
         flash_dead.SetTrigger("dead");
+        rocket_container.SetBool("show",false);
+        rocket_img1.fillAmount = 1;
+        rocket_img2.fillAmount = 1;
+    }
+
+    //trigger controller_cube
+    public void refresh_nbr_rocket(int value){
+        rocket_nbr.text = value.ToString();   
+    }
+
+
+    // trigger controller_cube
+    public void set_rocket_img(int choix_canon, int value){
+
+        if(choix_canon == 0){
+            rocket_img1.fillAmount = value;
+        }
+        if(choix_canon == 1){
+           rocket_img2.fillAmount = value;
+        } 
+    }
+
+
+    //trigger controller_cube
+    public IEnumerator anim_rocket_img(float duree){
+
+        float elapsed = 0f;
+       
+        while(elapsed < duree ){
+            float new_value  = Mathf.Lerp(0,1f, elapsed / duree);
+            rocket_img1.fillAmount = new_value;
+            rocket_img2.fillAmount = new_value;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rocket_img1.fillAmount = 1f;
+        rocket_img2.fillAmount = 1f;
     }
 
 

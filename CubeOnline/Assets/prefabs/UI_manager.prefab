@@ -69814,6 +69814,7 @@ MonoBehaviour:
   prefab_button_game: {fileID: 0}
   container_button_level: {fileID: 0}
   button_retry: {fileID: 0}
+  button_confirm: {fileID: 0}
   button_resume_game: {fileID: 0}
   button_game_aventure: {fileID: 0}
   button_level_one: {fileID: 0}
@@ -69853,6 +69854,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   light_container: {fileID: 0}
+  rocket_container: {fileID: 0}
+  rocket_nbr: {fileID: 0}
+  rocket_img1: {fileID: 0}
+  rocket_img2: {fileID: 0}
   cont_ui_cam_vehicule: {fileID: 7287165782889640853}
   choix_type: 0
   id_event: 0

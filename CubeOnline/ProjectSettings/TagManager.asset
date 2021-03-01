@@ -14,6 +14,7 @@ TagManager:
   - base_player2
   - base_player1
   - color
+  - collision
   layers:
   - Default
   - TransparentFX

@@ -15,20 +15,27 @@ public class controller_cube : MonoBehaviour{
     public bool host;
     public int id_avatar;
     public float speed = 5;
-    public float head_rotation_speed = 100f;
-    public float smooth_rotate_body = 0.1f;
+    public float head_rotation_speed = 200f;
+    public float smooth_rotate_body = 0.2f;
     public float force_shoot;
     public bool type_catapulte;
     public bool type_canon;
     public bool invulnerable;
-    public float speed_boost = 0.2f;
+    public float speed_boost = 0.3f;
     public float reload_time_boost = 2f;
+    public float jump_force = 20f;
+    public int nbr_rocket = 4;
 
     [Header("Edit")]
     public Transform origin_shoot;
+    public Transform origin_shoot_rocket1;
+    public Transform origin_shoot_rocket2;
+    public ParticleSystem shoot_effect_1;
+    public ParticleSystem shoot_effect_2;
     public ParticleSystem shoot_effect;
     public ParticleSystem intouchable_particule;
     public GameObject bullet;
+    public GameObject bullet_rocket;
     public GameObject particule_cross_hair;
     public GameObject origin_cross_hair;
     public GameObject death_effect;
@@ -54,6 +61,15 @@ public class controller_cube : MonoBehaviour{
 
     bool cube_has_boost;
     bool start_timer_boost;
+    public bool rocket_mode;
+    bool rocket_is_ready;
+    bool toggle_canon_rocket;
+    int double_shoot = 0;
+    public List<GameObject> enemy_to_kill_rocket = new List<GameObject>();
+    Transform target_rocket;
+    Transform shoot_canon_toggle;
+
+    bool toggle_light;
  
     
 
@@ -70,6 +86,9 @@ public class controller_cube : MonoBehaviour{
         gameplay.game_pad.left_bump.performed += ctx => press_for_shoot();
         gameplay.game_pad.pause.performed += ctx => button_start();
         gameplay.game_pad.actionA.performed += ctx => interactable_manager.inst.press_for_action();
+        gameplay.game_pad.buttonB.performed += ctx => activation_mode_rocket();
+        gameplay.game_pad.buttonY.performed += ctx => switch_light();
+      
       
         gameplay.game_pad.right_bump.performed += ctx => value_bumper_right = ctx.ReadValue<float>();
         gameplay.game_pad.right_bump.canceled += ctx => value_bumper_right = 0f;
@@ -94,11 +113,7 @@ public class controller_cube : MonoBehaviour{
 
     void Update(){
  
-        if (rb.velocity.y < -15f){
-            invulnerable = false;
-            controller_dead();
-        }
-
+        
         if(host){
 
             float r = right_stick.x * Time.deltaTime * head_rotation_speed;
@@ -160,13 +175,19 @@ public class controller_cube : MonoBehaviour{
         return;
         if(shoot_running)
         return;
-        if(type_canon){
+
+        if(type_canon && !rocket_mode){
             shoot_running = true;
             StartCoroutine(shoot3());
         }
-        else if (!type_catapulte){
+        else if (!type_catapulte && !rocket_mode && !rocket_is_ready){
             shoot_running = true;
             StartCoroutine(shoot());
+        }
+        else if(rocket_is_ready){
+            shoot_running = true;
+            enemy_to_kill_rocket = new List<GameObject>(enemies_manager.inst.enemy_in_game);
+            StartCoroutine(shoot_rocket());
         }
         
     }
@@ -183,7 +204,6 @@ public class controller_cube : MonoBehaviour{
             _bullet.GetComponent<bullet>().id_player_shoot = id_avatar;
             Rigidbody rb = _bullet.GetComponent<Rigidbody>();
             rb.velocity = origin_shoot.transform.TransformDirection(Vector3.forward * force_shoot);
-
             yield return new WaitForSeconds(0.02f);
             is_shooting = 0; // network
             yield return new WaitForSeconds(0.6f);
@@ -233,7 +253,6 @@ public class controller_cube : MonoBehaviour{
     }
 
 
-    // trigger bullet
     public void controller_dead(){
         if(dev_script.inst.invincible)
         return;
@@ -248,6 +267,7 @@ public class controller_cube : MonoBehaviour{
                 player_manager.inst.player_dead();
             }
             Destroy(this.gameObject); 
+            print("player destroy");
         }     
     }
 
@@ -344,6 +364,161 @@ public class controller_cube : MonoBehaviour{
         yield return new WaitForSeconds(0.2f);
         start_timer_boost = false;
     }
+
+
+
+
+    // trigger button b
+    void activation_mode_rocket(){
+        if(!rocket_mode){ 
+            rocket_mode = true;
+            anim.SetBool("mode_rocket",true);
+            ui_manager.inst.rocket_nbr.text = nbr_rocket.ToString();
+            sound_manager.inst.sound_rocket_mode();
+            Invoke("enable_rocket",1.6f);
+            return;
+        }else{
+            rocket_mode = false;
+            sound_manager.inst.sound_rocket_mode();
+            anim.SetBool("mode_rocket",false);
+            ui_manager.inst.rocket_container.SetBool("show",false);
+            rocket_is_ready = false; 
+        }
+    }
+
+    void enable_rocket(){
+        rocket_is_ready = true; 
+        ui_manager.inst.rocket_container.SetBool("show",true);
+    }
+
+
+
+
+
+
+
+
+
+
+    public IEnumerator shoot_rocket(){
+
+        if(nbr_rocket == 0){
+            sound_manager.inst.sound_no_rocket();
+            ui_manager.inst.rocket_container.SetTrigger("no_rocket");
+            yield return new WaitForSeconds(1f);
+            shoot_running = false;
+            yield break;
+        }
+
+        double_shoot = 2;
+
+        while(double_shoot > 0){
+
+            toggle_canon_rocket = !toggle_canon_rocket;
+            shoot_canon_toggle = toggle_canon_rocket ? origin_shoot_rocket1 : origin_shoot_rocket2;
+            int canon_rocket = toggle_canon_rocket ? 0 : 1;
+            ui_manager.inst.set_rocket_img(canon_rocket,0);
+            search_enemy();
+            create_bullet();
+            double_shoot--;
+            yield return new WaitForSeconds(0.6f); // cadence double shoot
+        }
+
+        if(nbr_rocket > 0){
+            StartCoroutine(ui_manager.inst.anim_rocket_img(2f));
+        }
+        yield return new WaitForSeconds(2f); // cadence de tir
+            
+        shoot_running = false;
+        enemy_to_kill_rocket.Clear();    
+    }
+
+
+
+    void create_bullet(){
+        player_manager.inst.nbr_shoot++;
+        if(toggle_canon_rocket){
+            shoot_effect_1.Play();
+            anim.SetTrigger("shoot_right");
+        }else{
+            shoot_effect_2.Play();
+            anim.SetTrigger("shoot_left");
+        }
+        sound_manager.inst.sound_rocket();
+        GameObject _bullet = Instantiate(bullet_rocket, shoot_canon_toggle.position, shoot_canon_toggle.rotation);
+        bullet my_bullet = _bullet.GetComponent<bullet>();
+        my_bullet.id_player_shoot = id_avatar;
+        my_bullet.rocket_follow_enemy = true;
+        my_bullet.target = target_rocket;
+        _bullet.GetComponent<Rigidbody>().useGravity = false;
+        nbr_rocket --;
+        ui_manager.inst.refresh_nbr_rocket(nbr_rocket);
+    }
+
+
+    void search_enemy(){
+        if(enemy_to_kill_rocket.Count > 0){
+            target_rocket = enemy_to_kill_rocket[Random.Range(0,enemy_to_kill_rocket.Count)].transform;
+            enemy_to_kill_rocket.Remove(target_rocket.gameObject); 
+        }    
+        else{
+            target_rocket = null;
+        }   
+    }
+
+    // anim_rocket
+    void mode_rocket_ready(){
+        rocket_mode = true;
+    }
+
+
+
+    
+    public void pick_up_box_rocket(int value){
+        StartCoroutine(show_rocket_win(value));       
+    }
+
+
+    IEnumerator show_rocket_win(int value){
+
+        if(!rocket_mode){
+            nbr_rocket += value;
+            yield break;
+        }
+
+        ui_manager.inst.rocket_container.SetBool("show",true);
+      
+        yield return new WaitForSeconds(0.5f);
+
+        int i = value;
+        int total = nbr_rocket + value;
+
+        while(nbr_rocket < total){
+            ui_manager.inst.set_rocket_img(0,1);
+            ui_manager.inst.set_rocket_img(1,1);
+            nbr_rocket++;
+            ui_manager.inst.refresh_nbr_rocket(nbr_rocket);
+            sound_manager.inst.sound_reload_rocket();
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        if(!rocket_mode){
+            ui_manager.inst.rocket_container.SetBool("show",false);
+        }
+    }
+
+
+
+
+    void switch_light(){
+        toggle_light = !toggle_light;
+        anim.SetBool("light",toggle_light);
+    }
+   
+
+
+   
 
 
     

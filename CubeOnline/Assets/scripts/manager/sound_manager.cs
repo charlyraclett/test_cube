@@ -39,9 +39,12 @@ public class sound_manager : MonoBehaviour{
     public AudioClip turbo_sound;
     public AudioClip boost_reload_sound;
     public AudioClip full_boost_sound;
-
-
-
+    public AudioClip mode_rocket_sound;
+    public AudioClip pick_up_sound;
+    public AudioClip no_rocket_sound;
+    public AudioClip rocket_sound;
+    public AudioClip reload_rocket_sound;
+    public AudioClip item_box_sound;
 
     [Header("UI")]
     public AudioClip click;
@@ -66,6 +69,7 @@ public class sound_manager : MonoBehaviour{
     [Header("Env")]
     public AudioClip friction;
     public AudioClip rocks;
+    public AudioClip switch_power_swicthlight;
 
     [Header("Enemy")]
     public AudioClip enemy_nest;
@@ -168,6 +172,33 @@ public class sound_manager : MonoBehaviour{
 
 
     //player
+
+    public void sound_item_box(){
+        audio_source_player.PlayOneShot(item_box_sound,1f);
+    }
+
+  
+
+    public void sound_pick_up(){
+        audio_source_player.PlayOneShot(pick_up_sound,0.5f);
+    }
+
+     public void sound_reload_rocket(){
+        audio_source_player.PlayOneShot(reload_rocket_sound,1f);
+    }
+
+    public void sound_rocket(){
+        audio_source_player.PlayOneShot(rocket_sound,1f);
+    }
+
+
+    public void sound_rocket_mode(){
+        audio_source_player.PlayOneShot(mode_rocket_sound,1f);
+    }
+
+    public void sound_no_rocket(){
+        audio_source_player.PlayOneShot(no_rocket_sound,1f);
+    }
 
     public void sound_reload_boost(){
         audio_source_player.PlayOneShot(boost_reload_sound,0.5f);
@@ -319,8 +350,21 @@ public class sound_manager : MonoBehaviour{
         audio_source_zic.Pause();
         audio_source_nest.Pause();
         audio_source_move_canon.Pause();
-
     }
+
+    public void stop_all_sources(){   
+        audio_source_player.Stop();
+        audio_source_env.Stop();
+        audio_source_bullet.Stop();
+        audio_source_move.Stop();
+        audio_source_zic.Stop();
+        audio_source_nest.Stop();
+        audio_source_move_canon.Stop();
+    }
+
+
+
+
 
     public void play_all_sources(){
         audio_source_player.Play();

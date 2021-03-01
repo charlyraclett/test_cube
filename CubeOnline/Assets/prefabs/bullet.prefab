@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3233816717621384938}
   - component: {fileID: 2832209596072652164}
   - component: {fileID: 2129949526041473298}
+  - component: {fileID: -6964576281811665405}
   - component: {fileID: -451929964053860419}
   - component: {fileID: 8923874618633451750}
-  - component: {fileID: -6964576281811665405}
   m_Layer: 0
   m_Name: bullet
   m_TagString: degat
@@ -83,6 +83,30 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &-6964576281811665405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7630094332726742158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c9f856d40518d4d9eaf05c927dcd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id_player_shoot: 0
+  target: {fileID: 0}
+  catapult: 0
+  speed: 20
+  canon: 0
+  rocket_follow_enemy: 0
+  speed_rocket: 30
+  rotation_speed_rocket: 20
+  impact: {fileID: 6690914959429050510}
+  trail_effect: {fileID: 0}
+  particule_fire_ground: {fileID: 100010, guid: 59f1504db97814317980dde401288576,
+    type: 3}
 --- !u!135 &-451929964053860419
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -112,26 +136,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6964576281811665405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7630094332726742158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31c9f856d40518d4d9eaf05c927dcd73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  impact: {fileID: 6690914959429050510}
-  id_player_shoot: 0
-  catapult: 0
-  speed: 20
-  canon: 0
-  target: {fileID: 0}
-  particule_fire_ground: {fileID: 100010, guid: 59f1504db97814317980dde401288576,
-    type: 3}
 --- !u!1001 &8908917884790935629
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,10 +22,14 @@ public class sphere_enemy : MonoBehaviour{
 
     public float force_impulse = 6f;
 
+    public bool mode_solo;
+
   
 
    
     void Start(){
+
+      
         Destroy(this.gameObject,10f);
         audio_source = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
@@ -37,6 +41,10 @@ public class sphere_enemy : MonoBehaviour{
         }else{
             direction = left;
         }
+        if(mode_solo){
+
+            rb.AddForce(0,0f, 24f, ForceMode.Impulse);
+        }
     }
 
 
@@ -45,7 +53,7 @@ public class sphere_enemy : MonoBehaviour{
     // Update is called once per frame
     void Update(){
 
-        if(is_grounded){
+        if(is_grounded && !mode_solo){
            transform.Translate(direction * Random.Range(5f, 15f) * Time.deltaTime,Space.World);
         }
     }

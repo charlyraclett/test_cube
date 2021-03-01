@@ -63,6 +63,7 @@ MonoBehaviour:
   zic_level:
   - {fileID: 8300000, guid: 0e6db8988f6abab42a8d5e48099e1c5f, type: 3}
   - {fileID: 8300000, guid: 23deabf88dd9f3f409b8faf5aaabed24, type: 3}
+  - {fileID: 8300000, guid: c577da76b1bd9a247ae502bd335e8761, type: 3}
   move: {fileID: 8300000, guid: 0e235d734afb8aa47b46dc9c613e558f, type: 3}
   move_canon: {fileID: 8300000, guid: 3c69c7e1875d9fb46afb4029a4fcf234, type: 3}
   death_sound: {fileID: 8300000, guid: 207ac786f11d2ab4db58214932d25fa3, type: 3}
@@ -77,6 +78,12 @@ MonoBehaviour:
   turbo_sound: {fileID: 8300000, guid: 37d5af6878b823447b9c4a029f7ed5d0, type: 3}
   boost_reload_sound: {fileID: 8300000, guid: 630e4a6cee4224444a46e4b70fc7b9e1, type: 3}
   full_boost_sound: {fileID: 8300000, guid: 02b5bf15c1675ce42868cc1f5881d52f, type: 3}
+  mode_rocket_sound: {fileID: 8300000, guid: 40ce0e6a49d10c8419776a633ac99ade, type: 3}
+  pick_up_sound: {fileID: 8300000, guid: 7ceae7145457dcd41996bac2a88e5953, type: 3}
+  no_rocket_sound: {fileID: 8300000, guid: 3003bd72fc3ec7a4e98d345c7a88fe36, type: 3}
+  rocket_sound: {fileID: 8300000, guid: 63c5f6527eaf7b44e90af710192e3960, type: 3}
+  reload_rocket_sound: {fileID: 8300000, guid: 5a2184ef493cf7149a9f14217c4f89ca, type: 3}
+  item_box_sound: {fileID: 8300000, guid: f81b4e7e80846db429cbf0388bc4c87b, type: 3}
   click: {fileID: 8300000, guid: 927cef4c3b8d3604ca482da4666071a5, type: 3}
   click_back: {fileID: 8300000, guid: 34b55568bc0e33240855a0991b19b255, type: 3}
   change_vague: {fileID: 8300000, guid: 93e0c87e8fed78b4083a2848485ccc66, type: 3}
@@ -96,6 +103,7 @@ MonoBehaviour:
   title_start_game: {fileID: 8300000, guid: a14c4dd415df27746af3da1afb2b6bc8, type: 3}
   friction: {fileID: 8300000, guid: fb1c699ba4543a747aa35593d0a055f7, type: 3}
   rocks: {fileID: 8300000, guid: b8bc88df38108a644991d40e528da6dc, type: 3}
+  switch_power_swicthlight: {fileID: 0}
   enemy_nest: {fileID: 8300000, guid: 5bb6688853a966146a07e1fc4690ce60, type: 3}
   move_nest: {fileID: 8300000, guid: bc2fd63e271320145b812c0a67eb2227, type: 3}
   active_nest: {fileID: 8300000, guid: a3ede44eb14854349ac2af10718a2076, type: 3}
