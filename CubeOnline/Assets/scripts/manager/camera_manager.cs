@@ -12,6 +12,7 @@ public class camera_manager : MonoBehaviour{
     public CinemachineVirtualCamera cam_game;
     public CinemachineVirtualCamera cam_move;
     public CinemachineVirtualCamera cam_player_finish;
+    public CinemachineVirtualCamera cam_level_finish;
     public CinemachineVirtualCamera cam_player_gameover;
     public CinemachineDollyCart dolly_cam_gameover;
 
@@ -20,6 +21,13 @@ public class camera_manager : MonoBehaviour{
 
     void Awake(){
         inst = this;   
+    }
+
+    void Update(){
+
+        if(Input.GetKeyDown(KeyCode.Z)){  
+            StartCoroutine(move_cam_level_finished());
+        }
     }
 
     public IEnumerator switch_cam_game(){
@@ -67,6 +75,7 @@ public class camera_manager : MonoBehaviour{
         cam_player_gameover.Priority = 0;
         dolly_cam_gameover.m_Position = 0;
         dolly_cam_gameover.m_Speed = 0;
+        cam_level_finish.Priority = 0;
     }
 
 
@@ -74,6 +83,24 @@ public class camera_manager : MonoBehaviour{
         cam_player_gameover.Priority = 20;
         dolly_cam_gameover.m_Speed = 1;
     }
+
+    public void show_cam_level_finished(){
+        cam_level_finish.LookAt = player_manager.inst.my_avatar.transform;
+        cam_level_finish.Follow = player_manager.inst.my_avatar.transform;
+        cam_level_finish.Priority = 21;
+    }
+
+    public IEnumerator move_cam_level_finished(){
+        
+        cam_player_gameover.Priority = 20;
+        dolly_cam_gameover.m_Speed = 10;
+
+        yield return new WaitForSeconds(6f);
+        cam_level_finish.Priority = 21;
+        yield return null;
+
+    }
+
 
 
 

@@ -110,7 +110,7 @@ public class navmesh_agent : MonoBehaviour{
         if(has_initialize){
             Destroy(Instantiate(death_effect, transform.position, transform.rotation),6f);
             sound_manager.inst.audio_source_move.Stop();    
-            sound_manager.inst.sound_death_player();
+            sound_manager.inst.sound_agent_death();
             enemies_manager.inst.enemy_in_game.Remove(this.gameObject);
             level_manager.inst.remove_enemy_in_game();
             player_manager.inst.enemies_killed++;

@@ -27,8 +27,8 @@ public class plateform_move : MonoBehaviour{
 
     void OnTriggerExit(Collider col){ 
         if(col.tag == "Player"){   
-            col.gameObject.transform.parent = null;  
             interactable_manager.inst.quit_aera_interactable();
+            col.gameObject.transform.parent = null;  
         }
     }
 
@@ -42,14 +42,17 @@ public class plateform_move : MonoBehaviour{
         anim.SetBool("move",toggle);
         is_moving = true;
         Invoke("ready_to_move",2f);
-        GetComponent<BoxCollider>().enabled = false;
-
     }
 
     void ready_to_move(){
         is_moving = false;
-        GetComponent<BoxCollider>().enabled = true;
     }
+
+
+
+
+
+
 
     // trigger level_manager
     public void initiale_position(){
@@ -58,8 +61,9 @@ public class plateform_move : MonoBehaviour{
     }
 
 
-    IEnumerator show_plateform(){
 
+
+    IEnumerator show_plateform(){
         yield return new WaitForSeconds(5f);
         GetComponent<MeshRenderer>().enabled = true;
         float elapsed = 0.0f;

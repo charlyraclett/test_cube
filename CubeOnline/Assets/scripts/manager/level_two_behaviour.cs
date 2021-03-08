@@ -23,6 +23,8 @@ public class level_two_behaviour : level_manager{
   
     void Start(){
         id_vague = dev_script.inst.start_at;
+        player_manager.inst.has_boost = true;
+        player_manager.inst.has_light = false;
     }
 
     
@@ -30,13 +32,14 @@ public class level_two_behaviour : level_manager{
     public override void vague_0(){ 
         print("level 2 vague 0");
         base.vague_0();
-        setting_agent(2.5f);
+        setting_agent(3f);
         StartCoroutine(enemies_manager.inst.create_enemy_floor(1f, 2, false, 0));
         StartCoroutine(enemies_manager.inst.create_enemy_floor(2f, 2, false, 7));
         StartCoroutine(enemies_manager.inst.create_enemy_floor(3f, 2, false, 74));
         StartCoroutine(enemies_manager.inst.create_enemy_floor(4f, 2, false, 81));
         level_manager.inst.enemies_in_game = 4;
         player_manager.inst.enemies_to_kill_per_vague = 4;
+        StartCoroutine(consommable_manager.inst.create_box(3f,1));   
     }
     
 
@@ -68,7 +71,8 @@ public class level_two_behaviour : level_manager{
         pressoir_left_loitain.start_pressoir(4f);
         pressoir_right_lointain.start_pressoir(4.5f);
         player_manager.inst.enemies_to_kill_per_vague = 4;
-        level_manager.inst.enemies_in_game = 8;  
+        level_manager.inst.enemies_in_game = 8; 
+        StartCoroutine(consommable_manager.inst.create_box(3f,1));   
     }
 
     public override void vague_4(){ 
@@ -104,9 +108,8 @@ public class level_two_behaviour : level_manager{
 
 
     public override void reset_level(){
-        print("reset level");
         base.reset_level();
-        turret.end_turret();
+        turret.reinitialize();
         plateform.initiale_position();
         plateform2.initiale_position();
         saw.reset_saw();

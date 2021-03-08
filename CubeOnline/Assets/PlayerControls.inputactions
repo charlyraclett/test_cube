@@ -70,9 +70,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "cross_left",
+                    "name": "cross_up",
                     "type": "Button",
-                    "id": "d83ea349-99c3-4c8a-864a-52835e293e24",
+                    "id": "2c39bfc1-9434-40c6-a1e2-e7808998557f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "cross_down",
+                    "type": "Button",
+                    "id": "7368fb43-9b35-4bf1-b2e1-7b75ad653496",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -301,17 +309,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9b4d6ce0-0bfb-4129-b71a-633831356a96",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "cross_left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "cefbe91b-d66d-43e7-8442-957b8977f46e",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -340,6 +337,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "buttonY",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a3bfb8b-fb86-4838-930d-ac38cb37ae76",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "buttonY",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9234de14-bf0e-401c-bea7-fe2ee3fe3e56",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "cross_up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "929a0a3b-ed04-44b3-b8d2-c8f258bf50f9",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "cross_down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

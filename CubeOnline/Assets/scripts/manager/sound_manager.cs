@@ -16,18 +16,20 @@ public class sound_manager : MonoBehaviour{
     public AudioSource audio_source_nest;
     public AudioSource audio_source_ui;
     public AudioSource audio_source_move_canon;
+    public AudioSource audio_source_event;
 
     public AudioMixer mixer_in_game;
 
 
     [Header("Zic level")]
     public AudioClip[] zic_level;
+    public AudioClip zic_end_chapter;
+    
     
 
     [Header("Player")]
     public AudioClip move;
     public AudioClip move_canon;
-    public AudioClip death_sound;
     public AudioClip death_player;
     public AudioClip shoot_player;
     public AudioClip shoot_2_player;
@@ -45,6 +47,7 @@ public class sound_manager : MonoBehaviour{
     public AudioClip rocket_sound;
     public AudioClip reload_rocket_sound;
     public AudioClip item_box_sound;
+    public AudioClip light_mode_sound;
 
     [Header("UI")]
     public AudioClip click;
@@ -77,7 +80,9 @@ public class sound_manager : MonoBehaviour{
     public AudioClip active_nest;
     public AudioClip bip_enemy;
     public AudioClip fire;
-   
+    public AudioClip bomb_death_sound;
+    public AudioClip electron_death_sound;
+
    
    
     void Awake(){
@@ -90,6 +95,13 @@ public class sound_manager : MonoBehaviour{
         audio_source_zic.volume = 0.3f;
         audio_source_zic.clip = zic_level[id_level];
         audio_source_zic.Play(); 
+    }
+
+    public void sound_end_chapter(){
+        audio_source_event.loop = false;
+        audio_source_event.volume = 1f;
+        audio_source_event.clip = zic_end_chapter;
+        audio_source_event.Play(); 
     }
     
 
@@ -177,8 +189,6 @@ public class sound_manager : MonoBehaviour{
         audio_source_player.PlayOneShot(item_box_sound,1f);
     }
 
-  
-
     public void sound_pick_up(){
         audio_source_player.PlayOneShot(pick_up_sound,0.5f);
     }
@@ -189,6 +199,10 @@ public class sound_manager : MonoBehaviour{
 
     public void sound_rocket(){
         audio_source_player.PlayOneShot(rocket_sound,1f);
+    }
+
+    public void sound_light_mode(){
+        audio_source_player.PlayOneShot(light_mode_sound,0.3f);
     }
 
 
@@ -220,8 +234,8 @@ public class sound_manager : MonoBehaviour{
         audio_source_player.PlayOneShot(turbo_sound,1f);
     }
 
-    public void sound_death_player(){
-        audio_source_player.PlayOneShot(death_player,0.5f);
+    public void sound_death_player(AudioClip clip){
+        audio_source_player.PlayOneShot(clip,0.5f);
     }
 
     public void sound_shoot_player(){ 
@@ -241,7 +255,7 @@ public class sound_manager : MonoBehaviour{
     }
 
     public void sound_bomb_death(){  
-        audio_source_bullet.PlayOneShot(death_sound,1f);
+        audio_source_bullet.PlayOneShot(bomb_death_sound,1f);
     }
 
     public void sound_end_intouched(){  
@@ -302,6 +316,14 @@ public class sound_manager : MonoBehaviour{
         audio_source_nest.PlayOneShot(bip_enemy,1f);
     }
 
+    public void sound_electron_death(){
+        audio_source_nest.PlayOneShot(electron_death_sound,1f);
+    }
+
+    public void sound_agent_death(){
+        audio_source_nest.PlayOneShot(death_player,1f);
+    }
+
     public void sound_enemy_nest(){
         audio_source_env.PlayOneShot(enemy_nest,0.4f);
     }
@@ -342,7 +364,8 @@ public class sound_manager : MonoBehaviour{
     }
 
 
-    public void pause_all_sources(){   
+    public void pause_all_sources(){  
+       
         audio_source_player.Pause();
         audio_source_env.Pause();
         audio_source_bullet.Pause();
@@ -353,13 +376,20 @@ public class sound_manager : MonoBehaviour{
     }
 
     public void stop_all_sources(){   
-        audio_source_player.Stop();
-        audio_source_env.Stop();
-        audio_source_bullet.Stop();
-        audio_source_move.Stop();
-        audio_source_zic.Stop();
-        audio_source_nest.Stop();
-        audio_source_move_canon.Stop();
+
+       
+        // audio_source_player.Stop();
+        // audio_source_env.Stop();
+        // audio_source_bullet.Stop();
+        // audio_source_move.Stop();
+        // audio_source_zic.Stop();
+        // audio_source_nest.Stop();
+        // audio_source_move_canon.Stop();
+
+        AudioSource[] audiosource = FindObjectsOfType<AudioSource>();
+        foreach(AudioSource _audio in audiosource){
+            _audio.Stop();
+        }
     }
 
 
@@ -367,6 +397,7 @@ public class sound_manager : MonoBehaviour{
 
 
     public void play_all_sources(){
+        print("play all source");
         audio_source_player.Play();
         audio_source_env.Play();
         audio_source_bullet.Play();

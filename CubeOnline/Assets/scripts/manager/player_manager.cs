@@ -8,6 +8,12 @@ public class player_manager : MonoBehaviour{
 
     public bool destroy_player_prefs;
 
+    [Header("Equipement")]
+
+    public bool has_rocket;
+    public bool has_light;
+    public bool has_boost;
+
     [Header("Info")]
     public controller_cube my_avatar;
     public int myId;
@@ -24,11 +30,15 @@ public class player_manager : MonoBehaviour{
 
     [Header("Edition")]
     public Animator pv_player_ui;
+    public Animator buttons_light_ui;
+    public Animator buttons_rocket_ui;
+    public Animator buttons_boost_ui;
+
+    public ParticleSystem win_pv_effect;
     public int life_player = 3;
     public float distance_great_shot = 12f;
     public GameObject[] avatars_prefab;
     public Material[] color;
-   
     public Animator[] bases_anim;
 
 
@@ -141,6 +151,12 @@ public class player_manager : MonoBehaviour{
             }
         }
         controller.is_moving = true;
+        if(has_light)
+        show_button_light(true);
+        if(has_rocket)
+        show_button_rocket(true);
+        if(has_boost)
+        show_button_boost(true);
         yield return null;
     }
 
@@ -189,7 +205,6 @@ public class player_manager : MonoBehaviour{
 
     public void reset_all_player(){
 
-        print("reset players");
         foreach(Transform player in avatars_pos){
             if(player != null){
                 Destroy(player.gameObject);
@@ -206,6 +221,27 @@ public class player_manager : MonoBehaviour{
         nbr_shoot = 0;
         pv_player_ui.SetInteger("pv_player",life_player);
         ui_manager.inst.rocket_container.SetBool("show",false);
+        show_button_light(false);
+    }
+
+
+    public void add_pv_player(){
+        life_player++;
+        win_pv_effect.Play();
+        pv_player_ui.SetInteger("pv_player",player_manager.inst.life_player);   
+    }
+
+
+    public void show_button_light(bool value){
+        buttons_light_ui.SetBool("show_button",value);
+    }
+
+    public void show_button_rocket(bool value){
+        buttons_rocket_ui.SetBool("show_button",value);
+    }
+
+    public void show_button_boost(bool value){
+        buttons_boost_ui.SetBool("show_button",value);
     }
 
     

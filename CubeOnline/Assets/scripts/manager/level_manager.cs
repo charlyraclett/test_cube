@@ -80,7 +80,10 @@ public class level_manager : MonoBehaviour{
     public void finished(){
         game_manager.inst.level_complete();  
     }
-
+    
+    public virtual void special_event(){
+        
+    }
 
     public virtual void stop_all(){
         StopAllCoroutines();
@@ -92,9 +95,10 @@ public class level_manager : MonoBehaviour{
     }
 
     public virtual void delete_level(){
-        StopAllCoroutines();
-        print("stop level");
+        Destroy(game_manager.inst.current_level);
+      //  StopAllCoroutines();
     }
+    
     public virtual void reinitialize_position_mechanism(){}
     
 

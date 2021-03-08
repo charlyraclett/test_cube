@@ -57,7 +57,7 @@ public class turret_enemy : MonoBehaviour{
     }
 
     IEnumerator go_start_turret(float delay){
-        reinitialize();
+      //  reinitialize();
         yield return new WaitForSeconds(delay);
         anim.SetBool("in_game",true);
         audio_source.PlayOneShot(move_turret,1f);
@@ -118,11 +118,14 @@ public class turret_enemy : MonoBehaviour{
         anim.SetBool("in_game",false);
         audio_source.PlayOneShot(move_turret,1f);
         level_manager.inst.remove_enemy_in_game(); 
+        print("end turret");
     }
 
 
 
-    void reinitialize(){  
+    public void reinitialize(){  
+        StopAllCoroutines();
+        anim.SetBool("in_game",false);
         value_meter = 0f;
         bar_slider.value = value_meter; 
         fill.color = gradient.Evaluate(0f);

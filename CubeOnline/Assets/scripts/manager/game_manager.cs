@@ -14,6 +14,7 @@ public class game_manager : MonoBehaviour{
     public int id_level;
 
     public GameObject[] levels_prefab;
+    public GameObject current_level;
     Dictionary<int, string> dictionary = new Dictionary<int, string>();
 
 
@@ -22,9 +23,9 @@ public class game_manager : MonoBehaviour{
    
     void Start(){
         inst = this; 
-        dictionary.Add(0, "I");
-        dictionary.Add(1, "II");
-        dictionary.Add(2, "III");
+        dictionary.Add(0, "I -");
+        dictionary.Add(1, "II -");
+        dictionary.Add(2, "Last");
      
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
 
@@ -42,7 +43,7 @@ public class game_manager : MonoBehaviour{
     public IEnumerator launch_game(){
         sound_manager.inst.sound_start_game_anim();
         yield return new WaitForSeconds(1f);// end anim menu
-        Instantiate(levels_prefab[id_level], new Vector3(0, 0, 0), Quaternion.identity); 
+        current_level = Instantiate(levels_prefab[id_level], new Vector3(0, 0, 0), Quaternion.identity); 
         ui_manager.inst.light_container.SetActive(false);
         ui_manager.inst.button_confirm.SetActive(false);
         yield return new WaitForSeconds(1f);
@@ -81,16 +82,17 @@ public class game_manager : MonoBehaviour{
         Time.timeScale = 1f;
         sound_manager.inst.stop_all_sources();
         StartCoroutine(ui_manager.inst.set_alpha_ui_game(0.1f,0f));
-        ui_manager.inst.light_container.SetActive(true);
-        ui_manager.inst.button_confirm.SetActive(true);
+       // ui_manager.inst.light_container.SetActive(true);
+       // ui_manager.inst.button_confirm.SetActive(true);
+       // ui_manager.inst.text_vague_nbr.text = "";
+        ui_manager.inst.show_menu_mode_game();
+        player_manager.inst.reset_all_player();
         level_manager.inst.delete_level();
         enemies_manager.inst.remove_all_enemies();
         sound_manager.inst.sound_music_menu();
-        ui_manager.inst.show_menu_mode_game();
-        player_manager.inst.reset_all_player();
         camera_manager.inst.reset_cameras();
-        ui_manager.inst.text_vague_nbr.text = "";
         level_manager.inst.enemies_in_game = 0;
+        Destroy(current_level);
         ui_manager.inst.black_panel_menu.SetBool("black_panel", false);
         StartCoroutine(sound_manager.inst.set_mixer_in_game(0.1f,1f));
     }

@@ -69,7 +69,7 @@ MonoBehaviour:
   levels_prefab:
   - {fileID: 6768955940654426667, guid: 6ab6a8e8667473145bb928e56ac32cd6, type: 3}
   - {fileID: 8817822969961288537, guid: 40619d106b9e70042a8c460d66caa603, type: 3}
-  - {fileID: 7168135776480453001, guid: 539e024fb8a458f448aa725c3a9e1c72, type: 3}
+  - {fileID: 4916348407857020422, guid: b945c116c0661004f92238d4bdd5f258, type: 3}
 --- !u!114 &2767629690920691311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroy_player_prefs: 0
+  has_rocket: 1
+  has_light: 1
+  has_boost: 1
   my_avatar: {fileID: 0}
   myId: 0
   choix_type: 0
@@ -130,6 +133,10 @@ MonoBehaviour:
   point_players: 00000000000000000000000000000000
   player_active_multi: 0
   pv_player_ui: {fileID: 0}
+  buttons_light_ui: {fileID: 0}
+  buttons_rocket_ui: {fileID: 0}
+  buttons_boost_ui: {fileID: 0}
+  win_pv_effect: {fileID: 0}
   life_player: 3
   distance_great_shot: 15
   avatars_prefab:

@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class level_three_behaviour : level_manager{
 
-    [Header("Prefab Enemy")]
-    public bomb_enemy bomb; // for setting before instantiate
 
-    [Header("Edition Enemy")]
-    public wall_fire firewall1;
-    public wall_fire firewall2;
-    public wall_air airwall;
-    public gear_floor gear_floor;
-    public Transform[] position_nest_start;
-    
+    public elevator _elevator;
 
+
+
+    void Start(){
+        id_vague = dev_script.inst.start_at;
+        player_manager.inst.has_light = true;
+    }
+
+
+   
     public override void vague_0(){ 
-        print("vague 0");
-        base.vague_0();
+       // base.vague_0();
+        print("level III vague 0"); 
     }
 
     public override void vague_1(){ 
@@ -42,6 +43,12 @@ public class level_three_behaviour : level_manager{
 
     public override void stop_all(){
         StopAllCoroutines();
+    }
+
+
+    public override void special_event(){
+
+        StartCoroutine(_elevator.elevator_in_game(8f));
     }
 
 

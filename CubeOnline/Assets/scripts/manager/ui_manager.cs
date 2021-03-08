@@ -58,6 +58,12 @@ public class ui_manager : MonoBehaviour{
     public Text[] score_players;
     public Text text_menu;
     public Text text_network;
+
+    [Header("Menu end chapter")]
+    public GameObject menu_end_chapter;
+    public GameObject button_menu_end_chapter;
+
+
  
     public GameObject container_button_game_found;
   
@@ -76,7 +82,7 @@ public class ui_manager : MonoBehaviour{
     public GameObject light_container;
 
     public Animator rocket_container;
-    public Text rocket_nbr;
+    public TMP_Text rocket_nbr;
     public Image rocket_img1;
     public Image rocket_img2;
 
@@ -102,6 +108,10 @@ public class ui_manager : MonoBehaviour{
     }
 
     public void show_menu_mode_game(){
+
+        light_container.SetActive(true);
+        button_confirm.SetActive(true);
+        text_vague_nbr.text = "";
 
         text_menu.text = "";
         for(int i = 0; i < score_players.Length;i++){
@@ -393,6 +403,7 @@ public class ui_manager : MonoBehaviour{
     IEnumerator show_level_after_level_finished(){
         black_panel_end_level.SetTrigger("hide_screen");
         yield return new WaitForSeconds(1.2f);
+        menu_end_chapter.SetActive(false);
         player_manager.inst.reset_all_player();
         level_manager.inst.delete_level();
         camera_manager.inst.reset_cameras();
@@ -400,7 +411,9 @@ public class ui_manager : MonoBehaviour{
         menu_end_level.SetActive(false);
         menu.SetActive(true);
         light_container.SetActive(true);
+        button_confirm.SetActive(true);
         show_menu_selection_level();
+        StartCoroutine(sound_manager.inst.set_mixer_in_game(0.2f,1f)); 
         sound_manager.inst.sound_music_menu(); 
         eventSystem.firstSelectedGameObject = button_level_one;
         eventSystem.SetSelectedGameObject(button_level_one);
@@ -544,6 +557,19 @@ public class ui_manager : MonoBehaviour{
 
         rocket_img1.fillAmount = 1f;
         rocket_img2.fillAmount = 1f;
+    }
+
+
+
+
+
+
+
+
+    public void show_menu_end_chapter(bool value){
+        menu_end_chapter.SetActive(true);
+        eventSystem.firstSelectedGameObject = button_menu_end_chapter;
+        eventSystem.SetSelectedGameObject(button_menu_end_chapter);
     }
 
 

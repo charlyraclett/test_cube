@@ -78,6 +78,30 @@ public class cylinder_push : MonoBehaviour{
         }
     }
 
+    // trigger switch
+    public IEnumerator stop(){ 
+
+        temp_speed_rotation = 0f;
+        is_rotate = true;
+
+        float elapsed = 0.0f;
+        float duree = 4f;
+
+        while( elapsed < duree ){
+            float new_value  = Mathf.Lerp(speed_rotation,0, elapsed / duree);
+            temp_speed_rotation = new_value;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        speed_rotation = 0f;
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("in_game",false);
+        play_fx_sound(sound_alert,1f);
+        yield return new WaitForSeconds(0.3f);
+        play_fx_sound(sound_move,1f);
+    }
+
 
     void play_fx_sound(AudioClip clip, float vol){
     

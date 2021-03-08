@@ -40,8 +40,10 @@ public class controller_cube : MonoBehaviour{
     public GameObject origin_cross_hair;
     public GameObject death_effect;
     public Transform head_turn;
+    public Transform pivot_canon;
     public Transform body;
     public ParticleSystem trail_turbo;
+    public AudioClip death_sound;
    
     public Slider slider_boost;
     public Animator slider_boost_anim;
@@ -70,6 +72,9 @@ public class controller_cube : MonoBehaviour{
     Transform shoot_canon_toggle;
 
     bool toggle_light;
+    public float step_angle_canon = 5f;
+    public float initiale_angle = -25f;
+    Vector3 currentEulerAngles;
  
     
 
@@ -77,6 +82,8 @@ public class controller_cube : MonoBehaviour{
     void Awake(){
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        pivot_canon.localEulerAngles = new Vector3(initiale_angle, 0f, 0f);
+        
         if(!host){
             invulnerable = true;
         }
@@ -88,7 +95,8 @@ public class controller_cube : MonoBehaviour{
         gameplay.game_pad.actionA.performed += ctx => interactable_manager.inst.press_for_action();
         gameplay.game_pad.buttonB.performed += ctx => activation_mode_rocket();
         gameplay.game_pad.buttonY.performed += ctx => switch_light();
-      
+        gameplay.game_pad.cross_up.performed += ctx => up_canon();
+        gameplay.game_pad.cross_down.performed += ctx => down_canon();
       
         gameplay.game_pad.right_bump.performed += ctx => value_bumper_right = ctx.ReadValue<float>();
         gameplay.game_pad.right_bump.canceled += ctx => value_bumper_right = 0f;
@@ -120,8 +128,6 @@ public class controller_cube : MonoBehaviour{
             Vector3 rot = new Vector3 (head_turn.rotation.x,r,head_turn.rotation.z);
             head_turn.Rotate(Vector3.up,r); 
 
-           
-
             if(r == 0f){
                 sound_manager.inst.audio_source_move_canon.Stop();
             }else{
@@ -141,7 +147,7 @@ public class controller_cube : MonoBehaviour{
                 this.transform.Translate(move,Space.World);
                 play_fx_sound(Mathf.Clamp(direction.magnitude, 0.4f,1.5f));
 
-                if(value_bumper_right > 0 && !cube_has_boost && !start_timer_boost){
+                if(player_manager.inst.has_boost && value_bumper_right > 0 && !cube_has_boost && !start_timer_boost){
                     cube_has_boost = true;
                     start_timer_boost = true;
                     StartCoroutine(add_turbo_boost(move));
@@ -155,16 +161,16 @@ public class controller_cube : MonoBehaviour{
             }
 
             
-            if(Input.GetKeyDown(KeyCode.Space) && type_catapulte){ 
-                show_particule_cross_hair();
-            }
+            // if(Input.GetKeyDown(KeyCode.Space) && type_catapulte){ 
+            //     show_particule_cross_hair();
+            // }
 
-            if(Input.GetKeyUp(KeyCode.Space) && type_catapulte){ 
-                if(shoot_running) 
-                return;
-                shoot_running = true;
-                StartCoroutine(shoot_catapult());
-            }
+            // if(Input.GetKeyUp(KeyCode.Space) && type_catapulte){ 
+            //     if(shoot_running) 
+            //     return;
+            //     shoot_running = true;
+            //     StartCoroutine(shoot_catapult());
+            // }
 
         }  
     }
@@ -262,7 +268,7 @@ public class controller_cube : MonoBehaviour{
             sound_manager.inst.stop_sound_player_death();
             Destroy(_death,6f); 
             is_dead = 1;
-            sound_manager.inst.sound_death_player();
+            sound_manager.inst.sound_death_player(death_sound);
             if(host){
                 player_manager.inst.player_dead();
             }
@@ -310,7 +316,6 @@ public class controller_cube : MonoBehaviour{
             yield return new WaitForSeconds(1f);
             invulnerable = false;
         }
-
     }
 
     // trigger gamepad
@@ -370,6 +375,10 @@ public class controller_cube : MonoBehaviour{
 
     // trigger button b
     void activation_mode_rocket(){
+        if(!host)
+        return;
+        if(!player_manager.inst.has_rocket)
+        return;
         if(!rocket_mode){ 
             rocket_mode = true;
             anim.SetBool("mode_rocket",true);
@@ -512,11 +521,31 @@ public class controller_cube : MonoBehaviour{
 
 
     void switch_light(){
+        if(!host)
+        return;
+        if(!player_manager.inst.has_light)
+        return;
         toggle_light = !toggle_light;
         anim.SetBool("light",toggle_light);
+        sound_manager.inst.sound_light_mode();
     }
    
 
+    void up_canon(){
+         if(!host)
+        return;
+        currentEulerAngles -= new Vector3(step_angle_canon, 0, 0);
+        currentEulerAngles.x = currentEulerAngles.x < -25f ? -25f : currentEulerAngles.x;
+        pivot_canon.localEulerAngles = currentEulerAngles;
+    }
+
+    void down_canon(){
+         if(!host)
+        return;
+        currentEulerAngles += new Vector3(step_angle_canon, 0, 0);
+        currentEulerAngles.x = currentEulerAngles.x > 0f ? 0f : currentEulerAngles.x;
+        pivot_canon.localEulerAngles = currentEulerAngles;
+    }
 
    
 

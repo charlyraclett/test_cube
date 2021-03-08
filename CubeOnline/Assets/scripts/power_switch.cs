@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class power_switch : MonoBehaviour{
 
@@ -8,12 +9,16 @@ public class power_switch : MonoBehaviour{
 
 
     [Header("Characteristic")]
+    public bool first_switch;
     public string code;
+    public bool has_help_sound;
   
     [Header("Edit")]
     public collider_switch_power[] switchs;
     public switch_light switch_light;
     public electric_generator _generator;
+    public Animator tooltips;
+
   
     [Header("Edit Sound")]
     public AudioClip code_wrong_sound;
@@ -27,6 +32,8 @@ public class power_switch : MonoBehaviour{
     float pitch_sound = 1f;
     int index = 0;
 
+    int count_essai;
+
 
     void Start(){
         audio_source = GetComponent<AudioSource>();
@@ -34,7 +41,7 @@ public class power_switch : MonoBehaviour{
 
 
 
-    // trigger button
+    // trigger collider button
     public void data_button(collider_switch_power my_switch){
         check_code(my_switch.id_switch);
     }
@@ -47,16 +54,18 @@ public class power_switch : MonoBehaviour{
         if(power_is_activate)
         return;
 
-        if(receivecode.Length != 4){
+        if(receivecode.Length != code.Length){
             receivecode += number_code;
             play_sound_each_code(number_code);
         }
 
-        if(receivecode.Length == 4){
+        if(receivecode.Length == code.Length){
             if(receivecode == code){
                 StartCoroutine(good_code());
             }else{
                 StartCoroutine(reinitialze_switchs());
+                if(!first_switch)
+                show_tips_code();
             }
         }
     }
@@ -94,20 +103,33 @@ public class power_switch : MonoBehaviour{
 
     void play_sound_each_code(string number_code){
 
-        char c = number_code[0];
-        char d = code[index];
+        if(has_help_sound){
 
-        if(c == d){
-            pitch_sound += 0.3f;
-            index++;
-        }else{
-            pitch_sound = 1f;
-            index = 0;
+            char c = number_code[0];
+            char d = code[index];
+
+            if(c == d){
+                pitch_sound += 0.3f;
+                index++;
+            }else{
+                pitch_sound = 1f;
+                index = 0;
+            }
         }
 
         audio_source_pitch.pitch = pitch_sound;
         audio_source_pitch.volume = 0.8f;
         audio_source_pitch.Play();
     }
+
+
+    void show_tips_code(){
+        count_essai++; 
+        if(count_essai == 3){ 
+            tooltips.SetTrigger("show");
+            count_essai = 0;
+        } 
+    }
+
 
 }

@@ -136,7 +136,7 @@ public class network : MonoBehaviour{
                             avatars_pos[id_player].localRotation = Quaternion.Euler(rotX, rotY, rotZ);
                         }
                         if(shoot == 1){
-                            StartCoroutine(avatar_controller.shoot());
+                          //  StartCoroutine(avatar_controller.shoot());
                         }
                         ui_manager.inst.score_players[id_player].text  = score.ToString(); 
                     }

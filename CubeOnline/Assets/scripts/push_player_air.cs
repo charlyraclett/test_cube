@@ -27,7 +27,7 @@ public class push_player_air : MonoBehaviour{
         controller_cube player = col.GetComponent<controller_cube>();
         if(player.invulnerable)
         yield break;
-
+        player.host = false;
         interactable_manager.inst.quit_aera_interactable(); 
         Rigidbody player_rb = col.GetComponent<Rigidbody>();
         audio_source.Play();

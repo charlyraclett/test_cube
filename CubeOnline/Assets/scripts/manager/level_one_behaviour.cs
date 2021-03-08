@@ -19,6 +19,9 @@ public class level_one_behaviour : level_manager{
 
     void Start(){
         id_vague = dev_script.inst.start_at;
+        player_manager.inst.has_boost = false;
+        player_manager.inst.has_rocket = false;
+        player_manager.inst.has_light = false;
     }
 
 
@@ -43,6 +46,7 @@ public class level_one_behaviour : level_manager{
         StartCoroutine(create_nest(8f,1,1,1,0));
         level_manager.inst.enemies_in_game = 6; 
         player_manager.inst.enemies_to_kill_per_vague = 6;
+        StartCoroutine(consommable_manager.inst.create_box(20,0));   
     }
 
     public override void vague_3(){  

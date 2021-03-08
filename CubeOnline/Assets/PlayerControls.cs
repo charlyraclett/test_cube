@@ -83,9 +83,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""cross_left"",
+                    ""name"": ""cross_up"",
                     ""type"": ""Button"",
-                    ""id"": ""d83ea349-99c3-4c8a-864a-52835e293e24"",
+                    ""id"": ""2c39bfc1-9434-40c6-a1e2-e7808998557f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""cross_down"",
+                    ""type"": ""Button"",
+                    ""id"": ""7368fb43-9b35-4bf1-b2e1-7b75ad653496"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -314,17 +322,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9b4d6ce0-0bfb-4129-b71a-633831356a96"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""cross_left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""cefbe91b-d66d-43e7-8442-957b8977f46e"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
@@ -353,6 +350,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""buttonY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a3bfb8b-fb86-4838-930d-ac38cb37ae76"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""buttonY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9234de14-bf0e-401c-bea7-fe2ee3fe3e56"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""cross_up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""929a0a3b-ed04-44b3-b8d2-c8f258bf50f9"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""cross_down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -394,7 +424,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_game_pad_actionA = m_game_pad.FindAction("actionA", throwIfNotFound: true);
         m_game_pad_buttonB = m_game_pad.FindAction("buttonB", throwIfNotFound: true);
         m_game_pad_buttonY = m_game_pad.FindAction("buttonY", throwIfNotFound: true);
-        m_game_pad_cross_left = m_game_pad.FindAction("cross_left", throwIfNotFound: true);
+        m_game_pad_cross_up = m_game_pad.FindAction("cross_up", throwIfNotFound: true);
+        m_game_pad_cross_down = m_game_pad.FindAction("cross_down", throwIfNotFound: true);
         // keyboard
         m_keyboard = asset.FindActionMap("keyboard", throwIfNotFound: true);
         m_keyboard_A = m_keyboard.FindAction("A", throwIfNotFound: true);
@@ -456,7 +487,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_game_pad_actionA;
     private readonly InputAction m_game_pad_buttonB;
     private readonly InputAction m_game_pad_buttonY;
-    private readonly InputAction m_game_pad_cross_left;
+    private readonly InputAction m_game_pad_cross_up;
+    private readonly InputAction m_game_pad_cross_down;
     public struct Game_padActions
     {
         private @PlayerControls m_Wrapper;
@@ -469,7 +501,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @actionA => m_Wrapper.m_game_pad_actionA;
         public InputAction @buttonB => m_Wrapper.m_game_pad_buttonB;
         public InputAction @buttonY => m_Wrapper.m_game_pad_buttonY;
-        public InputAction @cross_left => m_Wrapper.m_game_pad_cross_left;
+        public InputAction @cross_up => m_Wrapper.m_game_pad_cross_up;
+        public InputAction @cross_down => m_Wrapper.m_game_pad_cross_down;
         public InputActionMap Get() { return m_Wrapper.m_game_pad; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -503,9 +536,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @buttonY.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
                 @buttonY.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
                 @buttonY.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnButtonY;
-                @cross_left.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
-                @cross_left.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
-                @cross_left.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_left;
+                @cross_up.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_up;
+                @cross_up.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_up;
+                @cross_up.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_up;
+                @cross_down.started -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_down;
+                @cross_down.performed -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_down;
+                @cross_down.canceled -= m_Wrapper.m_Game_padActionsCallbackInterface.OnCross_down;
             }
             m_Wrapper.m_Game_padActionsCallbackInterface = instance;
             if (instance != null)
@@ -534,9 +570,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @buttonY.started += instance.OnButtonY;
                 @buttonY.performed += instance.OnButtonY;
                 @buttonY.canceled += instance.OnButtonY;
-                @cross_left.started += instance.OnCross_left;
-                @cross_left.performed += instance.OnCross_left;
-                @cross_left.canceled += instance.OnCross_left;
+                @cross_up.started += instance.OnCross_up;
+                @cross_up.performed += instance.OnCross_up;
+                @cross_up.canceled += instance.OnCross_up;
+                @cross_down.started += instance.OnCross_down;
+                @cross_down.performed += instance.OnCross_down;
+                @cross_down.canceled += instance.OnCross_down;
             }
         }
     }
@@ -592,7 +631,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnActionA(InputAction.CallbackContext context);
         void OnButtonB(InputAction.CallbackContext context);
         void OnButtonY(InputAction.CallbackContext context);
-        void OnCross_left(InputAction.CallbackContext context);
+        void OnCross_up(InputAction.CallbackContext context);
+        void OnCross_down(InputAction.CallbackContext context);
     }
     public interface IKeyboardActions
     {

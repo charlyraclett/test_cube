@@ -15,6 +15,7 @@ TagManager:
   - base_player1
   - color
   - collision
+  - electron_enemy
   layers:
   - Default
   - TransparentFX
