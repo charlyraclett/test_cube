@@ -23,13 +23,7 @@ public class camera_manager : MonoBehaviour{
         inst = this;   
     }
 
-    void Update(){
-
-        if(Input.GetKeyDown(KeyCode.Z)){  
-            StartCoroutine(move_cam_level_finished());
-        }
-    }
-
+   
     public IEnumerator switch_cam_game(){
         yield return new WaitForSeconds(0.5f);
         cam_game.Priority = 15;   
@@ -71,11 +65,13 @@ public class camera_manager : MonoBehaviour{
     }
 
     public void reset_cameras(){
+        print("reset cam");
         cam_player_finish.Priority = 0;
         cam_player_gameover.Priority = 0;
         dolly_cam_gameover.m_Position = 0;
         dolly_cam_gameover.m_Speed = 0;
         cam_level_finish.Priority = 0;
+        cam_game.Priority = 20;   
     }
 
 
@@ -90,40 +86,6 @@ public class camera_manager : MonoBehaviour{
         cam_level_finish.Priority = 21;
     }
 
-    public IEnumerator move_cam_level_finished(){
-        
-        cam_player_gameover.Priority = 20;
-        dolly_cam_gameover.m_Speed = 10;
-
-        yield return new WaitForSeconds(6f);
-        cam_level_finish.Priority = 21;
-        yield return null;
-
-    }
-
-
-
-
-
-
-    public IEnumerator start_shake_cam_pressoir(){ 
-       
-        CinemachineBasicMultiChannelPerlin perlin = cam_game.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        float elapsed = 0.0f;
-        float duree = 0.1f; 
-      
-        perlin.m_AmplitudeGain = 1f;
-        
-        yield return new WaitForSeconds(0.2f);
-        elapsed = 0.0f;
-        duree = 0.1f; 
-        while( elapsed < duree ){
-            perlin.m_AmplitudeGain = Mathf.Lerp(1f,0f,elapsed / duree);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        perlin.m_AmplitudeGain = 0f;  
-    }
-      
+ 
     
 }

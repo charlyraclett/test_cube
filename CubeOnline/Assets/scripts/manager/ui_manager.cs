@@ -243,13 +243,12 @@ public class ui_manager : MonoBehaviour{
         buttons_players_container.SetActive(false);
         container_button_level.SetActive(false);
         cont_ui_cam_vehicule.SetActive(true);
-         buttons_type_cont.SetBool("show_type",true);
+        buttons_type_cont.SetBool("show_type",true);
         button_back.SetActive(true);
         ui_position = 2;  
     }
 
     public void show_menu_selection_level(){ 
-        print("show level container ");
         text_menu.text = "";
         cont_ui_cam_vehicule.SetActive(false);
         buttons_type_cont.SetBool("show_type",false);
@@ -265,8 +264,6 @@ public class ui_manager : MonoBehaviour{
    
 
     public void back_button(){
-
-        print("back");
         sound_manager.inst.sound_click_back();
         text_network.text = "";
         switch(ui_position){
@@ -348,9 +345,7 @@ public class ui_manager : MonoBehaviour{
         eventSystem.firstSelectedGameObject = button_next_level;
         eventSystem.SetSelectedGameObject(button_next_level);
         text_vague_nbr.gameObject.GetComponentInParent<Animator>().SetBool("show_vague_last",false);
-      
     }
-
 
 
     public void refresh_text_vague_nbr(string value){
@@ -373,7 +368,6 @@ public class ui_manager : MonoBehaviour{
     }
 
 
-    
     public void show_menu_paused(){
         Time.timeScale = 0.0f;
         eventSystem.firstSelectedGameObject = button_resume_game;
@@ -384,7 +378,6 @@ public class ui_manager : MonoBehaviour{
 
 
     public void click_button_quit(){
-        print("button quit menu pause");
         eventSystem.firstSelectedGameObject = button_game_aventure;
         eventSystem.SetSelectedGameObject(button_game_aventure);
         game_manager.inst.reset_level();

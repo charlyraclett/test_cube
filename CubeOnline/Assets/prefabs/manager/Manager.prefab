@@ -70,6 +70,7 @@ MonoBehaviour:
   - {fileID: 6768955940654426667, guid: 6ab6a8e8667473145bb928e56ac32cd6, type: 3}
   - {fileID: 8817822969961288537, guid: 40619d106b9e70042a8c460d66caa603, type: 3}
   - {fileID: 4916348407857020422, guid: b945c116c0661004f92238d4bdd5f258, type: 3}
+  current_level: {fileID: 0}
 --- !u!114 &2767629690920691311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +143,7 @@ MonoBehaviour:
   avatars_prefab:
   - {fileID: 5024470017418754955, guid: e5ab089efbcb3f245a3935b89dd9a124, type: 3}
   - {fileID: 1962926036118206177, guid: 3796ac651f541694eb1c44ddc354afc2, type: 3}
-  - {fileID: 2723470992674780824, guid: 6629fb0b3041a5f4688356b04c60f65e, type: 3}
+  - {fileID: 6686903527057396304, guid: 1e4263bf1b53168438075503cfbcbb3f, type: 3}
   color:
   - {fileID: 2100000, guid: 13c532aaa1ebb8b44894260b2e5374c7, type: 2}
   - {fileID: 2100000, guid: 8b1d311badc9c704583214c141e7a0f6, type: 2}

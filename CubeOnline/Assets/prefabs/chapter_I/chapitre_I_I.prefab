@@ -62094,6 +62094,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall_flame (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1693251891950519559, guid: fa8af7d8442a3ae44a0cc8eb3561e141,
+        type: 3}
+      propertyPath: Pan2D
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 1693251891950519576, guid: fa8af7d8442a3ae44a0cc8eb3561e141,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -62195,6 +62200,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: wall_flame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693251891950519559, guid: fa8af7d8442a3ae44a0cc8eb3561e141,
+        type: 3}
+      propertyPath: Pan2D
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1693251891950519576, guid: fa8af7d8442a3ae44a0cc8eb3561e141,
         type: 3}

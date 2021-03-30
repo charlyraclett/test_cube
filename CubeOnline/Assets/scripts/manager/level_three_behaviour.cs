@@ -12,6 +12,7 @@ public class level_three_behaviour : level_manager{
     void Start(){
         id_vague = dev_script.inst.start_at;
         player_manager.inst.has_light = true;
+        player_manager.inst.has_rocket = true;
     }
 
 

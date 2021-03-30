@@ -19,7 +19,7 @@ public class level_one_behaviour : level_manager{
 
     void Start(){
         id_vague = dev_script.inst.start_at;
-        player_manager.inst.has_boost = false;
+        player_manager.inst.has_boost = true;
         player_manager.inst.has_rocket = false;
         player_manager.inst.has_light = false;
     }

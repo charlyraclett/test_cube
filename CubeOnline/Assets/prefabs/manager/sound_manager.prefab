@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4959305650675236895}
   - component: {fileID: 4959305650675236894}
   - component: {fileID: 381046072}
+  - component: {fileID: 903670844}
   m_Layer: 0
   m_Name: sound_manager
   m_TagString: Untagged
@@ -59,11 +60,13 @@ MonoBehaviour:
   audio_source_nest: {fileID: 4959305650675236895}
   audio_source_ui: {fileID: 4959305650675236894}
   audio_source_move_canon: {fileID: 381046072}
+  audio_source_event: {fileID: 903670844}
   mixer_in_game: {fileID: 24100000, guid: eaf10e53899329c4291536681e6eb34d, type: 2}
   zic_level:
   - {fileID: 8300000, guid: 0e6db8988f6abab42a8d5e48099e1c5f, type: 3}
   - {fileID: 8300000, guid: 23deabf88dd9f3f409b8faf5aaabed24, type: 3}
   - {fileID: 8300000, guid: c577da76b1bd9a247ae502bd335e8761, type: 3}
+  zic_end_chapter: {fileID: 8300000, guid: 59e0927fee9bf0f4b86f92fc72d5942b, type: 3}
   move: {fileID: 8300000, guid: 0e235d734afb8aa47b46dc9c613e558f, type: 3}
   move_canon: {fileID: 8300000, guid: 3c69c7e1875d9fb46afb4029a4fcf234, type: 3}
   death_player: {fileID: 8300000, guid: d2b0bbeb539c6034695ff5be27537e90, type: 3}
@@ -83,6 +86,7 @@ MonoBehaviour:
   rocket_sound: {fileID: 8300000, guid: 63c5f6527eaf7b44e90af710192e3960, type: 3}
   reload_rocket_sound: {fileID: 8300000, guid: 5a2184ef493cf7149a9f14217c4f89ca, type: 3}
   item_box_sound: {fileID: 8300000, guid: f81b4e7e80846db429cbf0388bc4c87b, type: 3}
+  light_mode_sound: {fileID: 8300000, guid: 20b02ab29b681694ba4b729a9aa90160, type: 3}
   click: {fileID: 8300000, guid: 927cef4c3b8d3604ca482da4666071a5, type: 3}
   click_back: {fileID: 8300000, guid: 34b55568bc0e33240855a0991b19b255, type: 3}
   change_vague: {fileID: 8300000, guid: 93e0c87e8fed78b4083a2848485ccc66, type: 3}
@@ -109,6 +113,8 @@ MonoBehaviour:
   bip_enemy: {fileID: 8300000, guid: 65f782771d652f74a8ebbb012a2a7754, type: 3}
   fire: {fileID: 8300000, guid: 2036e1cbc636ce5459160ca5dd05998a, type: 3}
   bomb_death_sound: {fileID: 8300000, guid: b3b8a452b67aba8478cfb3e1fc60d308, type: 3}
+  electron_death_sound: {fileID: 8300000, guid: 207ac786f11d2ab4db58214932d25fa3,
+    type: 3}
 --- !u!82 &4959305650675236880
 AudioSource:
   m_ObjectHideFlags: 0
@@ -804,6 +810,103 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &903670844
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959305650675236887}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -8131639654917857482, guid: eaf10e53899329c4291536681e6eb34d,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

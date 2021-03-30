@@ -8,7 +8,7 @@ public class bullet : MonoBehaviour{
     Animator anim;
     [HideInInspector] public int id_player_shoot;
 
-    [Header("Charectiristic")]
+    [Header("Charactiristic")]
 
     public bool catapult;
     public float speed = 5f;
@@ -102,6 +102,7 @@ public class bullet : MonoBehaviour{
 
 
     void count_shoot(){
+        if(!rocket_follow_enemy)
         StartCoroutine(player_manager.inst.refresh_score(id_player_shoot, distance_shoot_reussi));  
     }
 

@@ -69841,6 +69841,8 @@ MonoBehaviour:
   - {fileID: 0}
   text_menu: {fileID: 0}
   text_network: {fileID: 0}
+  menu_end_chapter: {fileID: 0}
+  button_menu_end_chapter: {fileID: 0}
   container_button_game_found: {fileID: 0}
   ui_position: 0
   menu_end_level: {fileID: 0}

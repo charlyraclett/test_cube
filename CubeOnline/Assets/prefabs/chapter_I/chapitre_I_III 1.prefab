@@ -10448,8 +10448,14 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4648436195923633024, guid: eb59e3fc54e36c94680598638eb3e4ad,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: acb6181a9187715478a41e55d29c4f8e, type: 2}
     m_RemovedComponents:
     - {fileID: 4648436194201908543, guid: eb59e3fc54e36c94680598638eb3e4ad, type: 3}
+    - {fileID: 4648436195923633025, guid: eb59e3fc54e36c94680598638eb3e4ad, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: eb59e3fc54e36c94680598638eb3e4ad, type: 3}
 --- !u!4 &4145297148235447905 stripped
 Transform:

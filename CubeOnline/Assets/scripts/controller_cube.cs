@@ -273,7 +273,6 @@ public class controller_cube : MonoBehaviour{
                 player_manager.inst.player_dead();
             }
             Destroy(this.gameObject); 
-            print("player destroy");
         }     
     }
 

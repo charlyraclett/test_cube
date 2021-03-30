@@ -133,7 +133,6 @@ public class player_manager : MonoBehaviour{
             StartCoroutine(controller.player_invulnerable());   
         }
        
-      
         cube.transform.parent = bases_pos[id].transform;
         bases_pos[id].GetComponent<Animator>().SetBool("turn_player_create",true);
         yield return new WaitForSeconds(1f);

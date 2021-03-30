@@ -254,9 +254,7 @@ public class sound_manager : MonoBehaviour{
         audio_source_bullet.PlayOneShot(death_bullet,0.6f);
     }
 
-    public void sound_bomb_death(){  
-        audio_source_bullet.PlayOneShot(bomb_death_sound,1f);
-    }
+  
 
     public void sound_end_intouched(){  
         audio_source_bullet.PlayOneShot(untouched_sound,1f);
@@ -326,6 +324,10 @@ public class sound_manager : MonoBehaviour{
 
     public void sound_enemy_nest(){
         audio_source_env.PlayOneShot(enemy_nest,0.4f);
+    }
+
+    public void sound_bomb_death(){  
+        audio_source_bullet.PlayOneShot(bomb_death_sound,0.6f);
     }
 
 

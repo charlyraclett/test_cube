@@ -119,8 +119,7 @@ public class switch_light : MonoBehaviour{
         yield return new WaitForSeconds(0.5f);
 
         GameObject[] electrons = GameObject.FindGameObjectsWithTag("electron_enemy");
-        print("search electrons");
-
+        
         foreach (GameObject electron in electrons){
             electron.GetComponent<follow_waypoint>().destroy_electron();
             yield return new WaitForSeconds(0.3f);
